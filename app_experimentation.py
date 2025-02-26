@@ -30,7 +30,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 # Load LLaMA model
 @st.cache_resource
 def load_llama_model():
-    model_name = "meta-llama/Llama-2-7b-chat-hf"  # Updated to a valid model name
+    model_name = "meta-llama/Llama-3.2-1B"  # Updated name
     tokenizer = AutoTokenizer.from_pretrained(model_name, token=HF_API_KEY)
     
     # Adjust model loading based on GPU availability
