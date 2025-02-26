@@ -1,6 +1,7 @@
 streamlit==1.25.0
 torch==2.2.0
-numpy
+numpy==2.2.3
+pillow==9.5.0
 pandas
 transformers
 sentence-transformers
