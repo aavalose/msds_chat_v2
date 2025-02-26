@@ -1,6 +1,6 @@
 streamlit==1.25.0
 torch==2.2.0
-numpy==2.2.3
+numpy<2  # Downgrade NumPy to be compatible with Streamlit
 pillow==9.5.0
 pandas
 transformers
