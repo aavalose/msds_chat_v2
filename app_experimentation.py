@@ -12,7 +12,7 @@ from sentence_transformers import SentenceTransformer
 @st.cache_resource
 def load_qa_data():
     # Load Questions and Answers from CSV
-    qa_df = pd.read_csv("~/data/bot-dataset/Questions_and_Answers.csv")
+    qa_df = pd.read_csv("Questions_and_Answers.csv")
     
     # Initialize sentence embedding model
     embedder = SentenceTransformer("all-MiniLM-L6-v2")
