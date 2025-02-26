@@ -5,14 +5,13 @@ from datetime import datetime
 import pandas as pd
 import json
 import os
-from transformers import AutoTokenizer, AutoModelForCausalLM
 from sentence_transformers import SentenceTransformer
-from huggingface_hub import login, HfApi
+import google.generativeai as genai
 
 # Handle missing API key safely
-HF_API_KEY = st.secrets.get("HUGGINGFACE_API_KEY", None)
-if HF_API_KEY:
-    login(HF_API_KEY)  # Authenticate
+GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY", None)
+if GOOGLE_API_KEY:
+    genai.configure(api_key=GOOGLE_API_KEY)
 
 # Load CSV data and create embeddings
 @st.cache_resource
@@ -24,30 +23,13 @@ def load_qa_data():
 
 qa_df, embedder, question_embeddings = load_qa_data()
 
-# Detect device
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
-# Load LLaMA model
+# Configure Gemini model
 @st.cache_resource
-def load_llama_model():
-    model_name = "meta-llama/Llama-3.2-1B"  # Updated name
-    tokenizer = AutoTokenizer.from_pretrained(model_name, token=HF_API_KEY)
-    
-    # Adjust model loading based on GPU availability
-    model_kwargs = {"torch_dtype": torch.float16} if device == "cuda" else {"torch_dtype": torch.float32}
-    
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        token=HF_API_KEY,
-        device_map="auto" if device == "cuda" else None,
-        **model_kwargs
-    ).to(device)
+def load_gemini_model():
+    model = genai.GenerativeModel('gemini-pro')
+    return model
 
-    tokenizer.pad_token = tokenizer.eos_token
-    model.config.pad_token_id = tokenizer.pad_token_id
-    return model, tokenizer
-
-llama_model, llama_tokenizer = load_llama_model()
+gemini_model = load_gemini_model()
 
 # Save conversation to a JSON file
 def save_conversation(session_id, user_message, bot_response):
@@ -90,47 +72,28 @@ def find_most_similar_question(user_input, similarity_threshold=0.5):
         st.error(f"Error finding similar question: {str(e)}")
         return None, None, 0.0
 
-# Generate response using LLaMA
-def get_llama_response(user_input, retrieved_question=None, retrieved_answer=None):
+# Generate response using Gemini
+def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=None):
     try:
         if retrieved_question and retrieved_answer:
-            context = f"""
+            prompt = f"""
             A student has asked: "{user_input}"
             The most relevant question from the database is: "{retrieved_question}"
             The official answer is: "{retrieved_answer}"
-            Your task is to **restate this answer clearly and concisely** while keeping the original meaning intact.
-            - **Do not invent** new information.
-            - **Do not include unrelated details**.
+            Your task is to restate this answer clearly and concisely while keeping the original meaning intact.
+            - Do not invent new information.
+            - Do not include unrelated details.
             - Ensure the answer is precise and professional.
-            Final Answer:
             """
         else:
-            context = f"""
+            prompt = f"""
             The student has asked: "{user_input}"
             No relevant answer was found. Respond only if the question is related to the USF MSDS program.
-            Final Answer:
             """
 
-        inputs = llama_tokenizer(context, return_tensors="pt", padding=True, truncation=True).to(device)
+        response = gemini_model.generate_content(prompt)
+        return response.text
         
-        with torch.no_grad():
-            output = llama_model.generate(
-                inputs.input_ids, 
-                attention_mask=inputs.attention_mask,  
-                max_new_tokens=150,  # Increased for more complete responses
-                no_repeat_ngram_size=3,  
-                temperature=0.3,  
-                top_p=0.8,        
-                do_sample=True,
-                pad_token_id=llama_tokenizer.pad_token_id
-            )
-        
-        response = llama_tokenizer.decode(output[0], skip_special_tokens=True)
-        
-        if "Final Answer:" in response:
-            response = response.split("Final Answer:")[1].strip()
-        
-        return response
     except Exception as e:
         st.error(f"Error generating response: {str(e)}")
         return "I apologize, but I encountered an error while generating the response."
@@ -146,7 +109,7 @@ def get_bot_response(user_input):
     if matched_question and matched_answer:
         st.session_state.debug_matched_question = matched_question
         st.session_state.debug_matched_answer = matched_answer
-        return get_llama_response(user_input, matched_question, matched_answer)
+        return get_gemini_response(user_input, matched_question, matched_answer)
     
     return "I'm sorry, but I can only answer questions related to the University of San Francisco's MSDS program."
 
@@ -187,7 +150,7 @@ def main():
             for q in example_questions:
                 if st.button(q, key=f"btn_{q[:20]}"): # Added unique keys for buttons
                     matched_question, matched_answer, similarity = find_most_similar_question(q)
-                    bot_response = get_llama_response(q, matched_question, matched_answer) if matched_question else "I'm sorry, but I can only answer questions related to the USF MSDS program."
+                    bot_response = get_gemini_response(q, matched_question, matched_answer) if matched_question else "I'm sorry, but I can only answer questions related to the USF MSDS program."
                     st.session_state.chat_history.append(("You", q))
                     st.session_state.chat_history.append(("Bot", bot_response))
                     save_conversation(st.session_state.session_id, q, bot_response)
