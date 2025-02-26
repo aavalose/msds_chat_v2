@@ -1,6 +1,6 @@
 streamlit==1.25.0
 torch==2.2.0
-numpy==2.0.4
-pandas==2.1.4
-transformers==4.36.1
-sentence-transformers==4.2.0
+numpy
+pandas
+transformers
+sentence-transformers
