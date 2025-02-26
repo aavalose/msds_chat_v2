@@ -9,7 +9,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from sentence_transformers import SentenceTransformer
 from huggingface_hub import login, HfApi
 
-HF_API_KEY = st.secrets["general"]["HUGGINGFACE_API_KEY"]
+HF_API_KEY = st.secrets["HUGGINGFACE_API_KEY"]
 login(HF_API_KEY)  # Authenticate
 
 # Load CSV data and create embeddings
