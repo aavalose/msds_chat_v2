@@ -26,32 +26,48 @@ genai.configure(api_key=GOOGLE_API_KEY)
 # Initialize ChromaDB client
 @st.cache_resource
 def init_chroma():
-    chroma_client = chromadb.Client()
-    # Use OpenAI's embedding function (you can change this to other embedding functions if needed)
+    # Create a persistent directory for ChromaDB
+    os.makedirs("chroma_db", exist_ok=True)
+    
+    # Initialize the client with persistence
+    chroma_client = chromadb.PersistentClient(path="chroma_db")
+    
+    # Use default embedding function
     embedding_function = embedding_functions.DefaultEmbeddingFunction()
     return chroma_client, embedding_function
 
 chroma_client, embedding_function = init_chroma()
 
 # Create a collection with the specified embedding function
-qa_collection = chroma_client.create_collection(
-    name="msds_program_qa",
-    embedding_function=embedding_function,
-    get_or_create=True
-)
-
-# Load QA data
-qa_df = pd.read_csv("Questions_and_Answers.csv")
-
-# Add data to the collection
 try:
-    qa_collection.upsert(
-        ids=[str(i) for i in qa_df.index.tolist()],  # Convert ids to strings
-        documents=qa_df['Question'].tolist(),
-        metadatas=qa_df[['Answer']].to_dict(orient='records')
+    qa_collection = chroma_client.create_collection(
+        name="msds_program_qa",
+        embedding_function=embedding_function,
+        get_or_create=True
     )
+    
+    # Load QA data
+    try:
+        qa_df = pd.read_csv("Questions_and_Answers.csv")
+        
+        # Add data to the collection
+        try:
+            # First, delete existing documents if any
+            qa_collection.delete(where={})
+            
+            # Then add new documents
+            qa_collection.upsert(
+                ids=[str(i) for i in qa_df.index.tolist()],  # Convert ids to strings
+                documents=qa_df['Question'].tolist(),
+                metadatas=qa_df[['Answer']].to_dict(orient='records')
+            )
+        except Exception as e:
+            st.error(f"Error adding data to collection: {str(e)}")
+    except Exception as e:
+        st.error(f"Error loading Questions_and_Answers.csv: {str(e)}")
 except Exception as e:
-    st.error(f"Error adding data to collection: {str(e)}")
+    st.error(f"Error creating ChromaDB collection: {str(e)}")
+    st.stop()
 
 # Configure Gemini model
 @st.cache_resource
