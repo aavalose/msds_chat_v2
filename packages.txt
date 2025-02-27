@@ -1,2 +1,3 @@
 zlib1g-dev
 libjpeg-dev
+sqlite3 >= 3.35.0
