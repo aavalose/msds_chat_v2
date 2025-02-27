@@ -1,5 +1,4 @@
 import streamlit as st
-import torch
 import numpy as np
 from datetime import datetime
 import pandas as pd
@@ -52,8 +51,11 @@ try:
         
         # Add data to the collection
         try:
-            # First, delete existing documents if any
-            qa_collection.delete(where={})
+            # Get all existing IDs
+            existing_ids = qa_collection.get()["ids"]
+            if existing_ids:
+                # Delete existing documents if any
+                qa_collection.delete(ids=existing_ids)
             
             # Then add new documents
             qa_collection.upsert(
