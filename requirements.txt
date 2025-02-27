@@ -8,3 +8,4 @@ sentence-transformers
 accelerate>=0.26.0
 google.generativeai
 chromadb
+sqlite3 >= 3.35.0
