@@ -1,0 +1,26 @@
+[
+  {
+    "session_id": "20250226-170419",
+    "timestamp": "2025-02-26 17:04:30",
+    "user_message": "What is the deadline for international students?",
+    "bot_response": "Yes, the March 1st deadline applies to international students as well.\n"
+  },
+  {
+    "session_id": "20250226-170649",
+    "timestamp": "2025-02-26 17:06:55",
+    "user_message": "What is the deadline for international students?",
+    "bot_response": "Hi there! Great question! Yes, the application deadline of March 1st applies to international students as well. Make sure you get your application in by then. Good luck with your application - we look forward to reading it!\n"
+  },
+  {
+    "session_id": "20250226-170813",
+    "timestamp": "2025-02-26 17:08:19",
+    "user_message": "What is the deadline for international students?",
+    "bot_response": "Hi there!\n\nRegarding the application deadline for international students, it's the same as for all other applicants \u2013 **March 1st**.\n\nSo yes, the March 1st deadline applies to international students as well. Make sure to get your application in by then! Good luck with your application; we look forward to reviewing it.\n"
+  },
+  {
+    "session_id": "20250226-170813",
+    "timestamp": "2025-02-26 17:08:40",
+    "user_message": "What are the prerequisite courses for the MSDS program?",
+    "bot_response": "Hi there! Great question about the prerequisite courses for the MSDS program.\n\nWe require three prerequisite courses for admission: Inferential Statistics, Linear Algebra, and a Programming course. We also *highly* recommend having coursework in Calculus and Data Structures under your belt, as they'll be super helpful in the program.\n\nTo help you figure out if the courses you've already taken (or are planning to take) meet our requirements, check out the \"How to Apply\" page on our website. There, you'll find a list of key concepts you should understand for each subject. We also have an FAQ page with a list of pre-approved institutions and their equivalent courses \u2013 and even the corresponding USF undergraduate courses that fulfill the prerequisites!\n\nIf you're still unsure after reviewing those resources, feel free to email us with the course description and the name of the institution where you took the course(s). We're happy to help you figure it out!\n\nDon't worry if you're missing a prerequisite or two. Many students take them before starting the program. Good luck with your application! We're excited to hear from you.\n"
+  }
+]
