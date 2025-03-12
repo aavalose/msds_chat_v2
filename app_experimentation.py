@@ -104,7 +104,7 @@ def save_conversation(session_id, user_message, bot_response):
         st.error(f"Error saving conversation: {str(e)}")
 
 # Find the most similar question using ChromaDB
-def find_most_similar_question(user_input, similarity_threshold=0.5):
+def find_most_similar_question(user_input, similarity_threshold=0.45):
     try:
         results = qa_collection.query(
             query_texts=[user_input],
