@@ -1,0 +1,100 @@
+# University of San Francisco (USF) Overview
+- Private Jesuit university in San Francisco, California
+- Founded in 1855
+- Nearly 9,000 students
+- 59 major programs (undergraduate and graduate)
+- Locations: Golden Gate main campus, downtown San Francisco, Orange County, Sacramento, San Jose, Santa Rosa
+
+# Master of Science in Data Science (MSDS) Program
+## Program Basics
+- Full-time, one-year program
+- Located at USF's downtown San Francisco campus
+- 35-unit curriculum
+- Starts annually in early July
+
+## Curriculum Focus
+- AI and data science
+- Career paths: data scientists, machine learning engineers, data engineers, AI engineers
+- Technical topics:
+  - Data Processing and Visualization
+  - A/B testing
+  - Python, SQL, NoSQL database management
+  - Spark, AWS, and cloud computing tools
+  - Machine Learning and Deep Learning
+  - Natural Language Processing
+  - Generative AI and Large Language Models
+- Business acumen development
+- Resume writing and interview preparation
+
+## Program Structure
+### Data Science Boot Camp
+- Intensive review of foundational knowledge
+- Accelerated courses in probability & statistics
+- Computation for analytics
+- Linear algebra competency exam requirement
+- Exploratory data analysis & visualization
+
+### Nine-Month Practicum
+- 16 hours per week for approximately nine months
+- Real-world data science problems
+- Guaranteed practicum placement
+- ~50 companies pitch projects annually
+- Team-based approach with faculty and company mentors
+- Begins mid-October
+- May be paid or unpaid
+- Two dedicated days per week for practicum work
+
+### Cloud Computing Partnerships
+- Amazon Web Services (AWS) Educate
+- Google Cloud Platform (GCP) for Education
+- Databricks University Alliance
+- MongoDB for Academia
+- Benefits: credits, trainings, potential project featuring
+
+### Class Schedule
+- Monday through Friday daytime classes
+- Four classes per module (half-semester)
+- Cohort-based learning with small class sizes
+- 100% time commitment required (outside work not permitted)
+
+## Program Learning Outcomes
+- Statistical models (theory and application)
+- Machine learning techniques (theory and application)
+- Programming languages and technologies (R, Python, SQL, AWS, Hive, Spark, Hadoop)
+- Real-world problem-solving experience
+- Professional communication skills
+
+## Career Support
+- 10 hours of required career training
+- Workshops: job search, resume preparation, interviewing, salary negotiation
+- Alumni-facilitated mock interviews
+- Weekly faculty mentoring
+- Alumni connections and networking events
+- Recruiting events and info sessions
+- Data Institute Conference networking
+
+## Student Demographics
+### Class Composition
+- Gender: 58% Male, 42% Female
+- Average Age: 25 (Range: 21-50)
+- 41% International, 59% Domestic/Permanent Resident
+- 65% U.S. Minorities
+
+### Academic Background
+- Average Undergraduate GPA: 3.43
+- 15% with Advanced Degrees
+- Undergraduate Majors:
+  - Computer Science (18%)
+  - Data Science (17%)
+  - Mathematics (14%)
+  - Engineering (13%)
+  - Statistics (9%)
+  - Economics (8%)
+  - Business Administration (6%)
+  - Biological Sciences (5%)
+  - Other (10%)
+
+### Work Experience
+- 34% with One Year or Less Experience
+- Average Prior Work Experience: 3.5 years
+- Range: 0-21 years

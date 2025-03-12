@@ -1,0 +1,148 @@
+{
+    "faculty": [
+      {
+        "role": "Program Director",
+        "name": "Shan Wang",
+        "email": "swang151@usfca.edu",
+        "description": "Dr. Shan Wang is the program director and an assistant professor in the MS in Data Science program at the University of San Francisco. Her research interests include nonparametric statistics, biomedical data science, and utilizing data-driven methods to address social and environmental problems.",
+        "education": "PhD, Statistics, Purdue University, 2015; BS, Mathematics, Fudan University, 2009"
+      },
+      {
+        "role": "Administrative Director",
+        "name": "Aija Tapaninen",
+        "email": "atapaninen@usfca.edu",
+        "description": "Aija Tapaninen has been with USF since 2014. Prior to joining the MSDS program team, she has held positions in the Strategic Enrollment Management division and at the School of Management, working with the campus community on a range of topics related to graduate student education. Before USF, Aija was in graduate admissions and student affairs at UC Berkeley and UCLA.",
+        "education": "University of San Francisco, MBA, 2017; University of San Francisco, MA in Organization & Leadership, 2010; San Francisco State University, BA in Intercultural Communication, 2005"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "David Guy Brizan",
+        "email": "dgbrizan@usfca.edu",
+        "office_location": "Harney Science Center 404",
+        "description": "David is an associate professor at the University of San Francisco. His research interests are natural language processing, machine learning, and databases — specifically on the personal and cultural/demographic information transmitted during speech and typing. This research may lead to more accurate speech recognition systems. Prior to joining USF, David was a research assistant in the Speech Lab at Queens College and an instructor at Hunter College. He has previously worked for the City of...",
+        "education": "PhD, Computer Science, CUNY Graduate Center (candidate); MS Computer Science, San Francisco State University; BS Computer & Information Science, Brooklyn College",
+        "expertise": "Speech Processing; Applications of Machine Learning"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "Cody Carroll",
+        "email": "cjcarroll@usfca.edu",
+        "description": "Cody Carroll is an assistant professor with joint appointments in the Department of Mathematics and Statistics and the Master's in Data Science program (MSDS). He holds a PhD and MS in Statistics from the University of California, Davis and a BS in mathematics from the University of Texas at Austin. His methodological research interests focus on functional and longitudinal data, particularly in the context of human growth and aging, and his interdisciplinary work has spanned a wide range of...",
+        "education": "UC Davis, PhD in Statistics, 2021; UC Davis, MS in Statistics, 2017; UT Austin, BS in Mathematics, 2014",
+        "expertise": "Time warping & curve registration; Multivariate functional data; Statistical consulting; Communication through statistics"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "Mahesh Chaudhari",
+        "email": "mchaudhari@usfca.edu",
+        "office_location": "101 Howard, Room 524",
+        "description": "Mahesh Chaudhari is an assistant professor in the MS in Data Science program at the University of San Francisco. His research interests include databases, data engineering and cloud computing. Prior to joining USF, Dr. Chaudhari has 11 years of industry experience in managing and leading teams for building autonomous data infrastructure in hybrid cloud environments. He is passionate about data and extracting meaningful information from data. Outside of his research and work, he is interested in...",
+        "education": "Arizona State University, PhD in Computer Science, 2011; Mississippi State University, MS in Computer Science 2003; University of Mumbai, Mumbai, India, BE in Computer Science and Engineering, 1999...",
+        "expertise": "Data engineering; Cloud computing; Building autonomous data processing infrastructure"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "Robert Clements",
+        "email": "rclements@usfca.edu",
+        "description": "Robert Clements is an assistant professor in the MS in Data Science program and the Director of the Center for AI and Data Ethics. He is interested in innovative and creative approaches to data science education and studying the societal impacts of AI and datafication. Prior to joining USF he had a nearly ten-year career in industry, holding several positions throughout the San Francisco Bay Area as a data scientist and data science manager/director, working primarily in developing machine...",
+        "education": "UCLA, PhD in Statistics, 2011; UCLA, MS in Statistics, 2009; Humboldt State University, BA in Mathematics, 2006",
+        "expertise": "Machine Learning; MLOps; Applied Statistics; AI and Data Ethics"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "Stephen Devlin",
+        "email": "smdevlin@usfca.edu",
+        "office_location": "Harney Science Center 122C",
+        "description": "Stephen Devlin is a Professor in the Department of Mathematics and Statistics and the Master's in Data Science program (MSDS). He has also served as department chair and director of the undergraduate data science program. Stephen has a bachelor's degree from Manhattan College in New York, and a Ph.D. in mathematics from the University of Maryland. He was a C.L.E. Moore Instructor at MIT before moving to the University of San Francisco. His research interests include both pure and applied...",
+        "education": "PhD, Mathematics, University of Maryland, 2001"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "Mustafa Hajij",
+        "email": "mhajij@usfca.edu",
+        "description": "Mustafa Hajij is an assistant professor at the MSDS program at University of San Francisco. He received his masters in Computer Science, PhD in Mathematics from Louisiana State University and postdoctoral training at the computer science departments at University of South Florida and Ohio State University. Before joining MSDS program he was an assistant professor at the department of Mathematics and Computer Science at Santa Clara University. Prior to SCU, he spent a year as an AI research...",
+        "education": "Louisiana State University, PhD in Mathematics; Louisiana State University, MS in Computer Science; Jordan University for Science and Technology, MS in Mathematics; Damascus University, BS in...",
+        "expertise": "Deep Learning; Algorithms"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "Yannet Interian",
+        "email": "yinterian@usfca.edu",
+        "office_location": "101 Howard, 605",
+        "description": "Yannet is an associate professor in the Master's in Data Science program, and her research interests lie in the application of machine learning and deep learning to medical data. She holds a PhD in applied mathematics from Cornell University and a BS in mathematics from the University of Havana, Cuba. After a postdoctoral fellowship at UC Berkeley, she worked for five years as a data scientist at Google. Yannet co-founded Akualab, a start-up that helped organizations develop data-driven products...",
+        "education": "Cornell University, PhD in Applied Mathematics, 2006"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "Victor Palacios",
+        "email": "vpalacios@usfca.edu",
+        "description": "Victor received his master's degree in data science from the University of San Francisco and is currently working in the same field at the University of San Francisco as the Director of Data Science Partnerships. He teaches and mentors courses on data science, machine learning, Python, and KNIME. His initial projects and interests were in the deception detection space and also in health care, but originally his love of data science blossomed from natural language processing in the translation...",
+        "education": "University of San Francisco, MS in Data Science, 2021; Nagoya University, MS in Information Science, 2015; UC Berkeley, BA in Japanese, 2011",
+        "expertise": "Natural language processing; Deception"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "James Wilson",
+        "email": "jdwilson4@usfca.edu",
+        "office_location": "Harney Science Center Office 121A",
+        "description": "James is a statistics and data science educator, researcher, mentor, and enthusiast. His research merges computational statistics, random graph theory, and machine learning to provide interpretable machinery to model, explore, and analyze complex interacting and imaging systems. He is particularly interested in understanding the interplay between social dynamics and neuro-biological systems that describe aging, behavior and disease. His research has been supported by grants from the National...",
+        "education": "PhD, Statistics and Operations Research, University of North Carolina, 2015; MS, Mathematical Sciences, Clemson University, 2010; BS, Mathematics and Chemistry, Campbell University, 2008"
+      },
+      {
+        "role": "Full-Time Faculty",
+        "name": "Diane Woodbridge",
+        "email": "dwoodbridge@usfca.edu",
+        "office_location": "101 Howard 606",
+        "description": "Diane Woodbridge is an associate professor in the MS in Data Science program at the University of San Francisco. Her research interests include scalable database management systems, data fusion, and machine learning focusing on remote health monitoring (IoT in Healthcare). Prior to joining USF, Professor Woodbridge was with the scalable analysis and visualization department at Sandia National Laboratories.",
+        "education": "PhD, Computer Science, University of California, Los Angeles; MS, Computer Science, University of California, Los Angeles; BS, Computer Science and Engineering, Sogang University, South Korea"
+      },
+      {
+        "role": "Part-Time Faculty",
+        "name": "Sundar Dorai-Raj",
+        "email": "sdorairaj@usfca.edu",
+        "office_location": "101 Howard St.",
+        "description": "Sundar Dorai-Raj has been a data scientist at Google since 2009. He has spent most of his career working on Ads products, from YouTube Ads, where he helped launch YouTube's first skippable ad format, to Brand Lift and Google Analytics. He currently manages a team of data scientists who focus on privacy-centric analytics, quantifying the effectiveness of YouTube advertising, and Bayesian methods for online experiments. His expertise includes A/B testing, statistical modeling, machine learning...",
+        "education": "Virginia Tech, PhD in Statistics, 2001; Virginia Tech, MS in Statistics, 1999; University of Alabama, MA in Applied Math, 1997; University of Alabama, BS in Applied Math, 1995"
+      },
+      {
+        "role": "Part-Time Faculty",
+        "name": "Mark Graves",
+        "email": "mgraves@usfca.edu",
+        "description": "Mark Graves has fifteen years experience in developing software, informatics, and data science solutions for healthcare and the pharmaceutical industry. After earning his Ph.D. in computer science (artificial intelligence), he completed fellowships in genomics, moral psychology, and moral theology. He has held teaching or research positions at eight institutions of higher learning and published over eighty technical and scholarly works in computer science, biology, psychology, and theology...",
+        "education": "Graduate Theological Union/Jesuit School of Theology, MA in Systematic & Philosophical Theology, 2005; University of Michigan, PhD in Computer Science, 1993; Georgia Institute of Technology, MS in...",
+        "expertise": "Artificial Intelligence/data science (Natural Language Processing); Moral, systematic & philosophical theology; Moral psychology & well-being; Religion, science & technology; Theological anthropology & science"
+      },
+      {
+        "role": "Part-Time Faculty",
+        "name": "Stephen Hsu",
+        "email": "sjhsu@dons.usfca.edu",
+        "description": "Stephen Hsu is a Solutions Architect helping companies end-to-end data projects with experience deriving insights from data to augment decisions in industries such as finance, retail, and healthcare. His direct experience as key data personas in data analysis, data engineering, and data science bring industry knowledge as well as experience in his user-focused projects, hackathons, and data-driven consultations. Stephen specializes in data visualization, predictive modeling, and communication...",
+        "education": "USF MS in Data Science, 2018; UC Berkeley, BA in Cognitive Science, 2017",
+        "expertise": "Data Engineering; Data Science; Machine Learning; Data Visualizations"
+      },
+      {
+        "role": "Part-Time Faculty",
+        "name": "Nico Thiebaut",
+        "email": "nthiebaut@usfca.edu",
+        "description": "Drawn to theoretical physics, Nico Thiebaut became an instructor at the University of Paris-Saclay, pursuing a PhD in quantum physics. Machine learning soon caught his fascination, leading him to a three-year exploration as a data scientist. Nico crafted an enriching online big data course and a dynamic deep learning program for master's students. A 2018 move to San Francisco sparked a new chapter, where Nico was working with a startup before leading a machine learning team for a recruitment...",
+        "education": "University of Paris-Saclay, PhD in Theoretical Physics, 2015; Ecole Normale Superieur, MA in Condensed Matter Physics, 2011",
+        "expertise": "Explainable machine learning; Natural language processing; Deep learning"
+      },
+      {
+        "role": "Faculty Emeritus",
+        "name": "Terence Parr",
+        "email": "parrt@cs.usfca.edu",
+        "office_location": "101 Howard 607",
+        "description": "Terence is a professor of computer science and is the creator of the ANTLR parser generator. He herded programmers and implemented the large jGuru developers web site, during which time he developed and refined the StringTemplate engine. Terence has consulted for and held various technical positions at companies such as IBM, Lockheed Missiles and Space, NeXT, and Renault Automation. Terence was an expert witness for Google in the Oracle v Google Android lawsuit. His passion is writing software.",
+        "education": "Purdue University, PhD in Computer Engineering, 1993; University of Minnesota, Postdoctoral Fellow at the Army High-Performance Computing Research Center",
+        "expertise": "Software engineering; Programming language design and implementation; How programmers communicate with machines to build new software"
+      },
+      {
+        "role": "Visiting Faculty",
+        "name": "Nathaniel Stevens",
+        "email": "ntstevens@usfca.edu",
+        "description": "Nathaniel is interested in using data to make decisions, solve problems, and improve processes. Specifically, his research interests lie in methodological development at the intersection of data science and industrial statistics; his publications span topics including experimental design and A/B testing, social network modeling and monitoring, survival and reliability analysis, measurement system analysis, and the development of estimation-based alternatives to traditional hypothesis testing...",
+        "education": "PhD, Statistics, University of Waterloo, 2015; MMATH, Statistics, University of Waterloo, 2011; BMATH, Statistics, University of Waterloo, 2010; Minor, Pure Math and Psychology, University of..."
+      }
+    ]
+  }
