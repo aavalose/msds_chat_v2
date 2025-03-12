@@ -128,33 +128,67 @@ def find_most_similar_question(user_input, similarity_threshold=0.45):
 # Generate response using Gemini
 def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=None):
     try:
-        if retrieved_question and retrieved_answer:
-            prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program. 
-            A prospective or current student has asked: "{user_input}"
-            
-            I found a similar question in our database: "{retrieved_question}"
-            With this official answer: "{retrieved_answer}"
-            
-            Please respond to the student's question in a natural, conversational way while:
-            1. Maintaining accuracy of the official information
-            2. Adapting the tone to be friendly and helpful
-            3. Addressing their specific question directly
-            4. Using clear and accessible language
-            5. Adding a brief encouraging or helpful note if appropriate
-            
-            Remember to stay within the scope of the official answer while making it more conversational."""
-        else:
+        # Check if the query is about faculty
+        if "faculty" in user_input.lower() or "professor" in user_input.lower() or "instructor" in user_input.lower():
             prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program.
             
-            A student has asked: "{user_input}"
+            A student has asked about faculty: "{user_input}"
             
-            While I don't have a direct answer from our database for this specific question, please:
-            1. Only respond if the question is clearly related to the USF MSDS program
-            2. If it is related, politely explain that you don't have specific information about this aspect
-            3. Suggest they contact the program office for accurate information
-            4. Maintain a helpful and professional tone
+            Please use the following faculty information to answer their question:
             
-            If the question is completely unrelated to the USF MSDS program, politely explain that you can only assist with MSDS program-related questions."""
+            ```
+            {open('faculty.json', 'r').read()}
+            ```
+            
+            Please respond in a natural, conversational way while:
+            1. Providing accurate information about the faculty members
+            2. Being friendly and helpful
+            3. Addressing their specific question directly
+            4. Using clear and accessible language
+            """
+        else:
+            # First check if the answer is in general_info.txt
+            general_info = open('general_info.txt', 'r').read()
+            
+            if retrieved_question and retrieved_answer:
+                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program. 
+                A prospective or current student has asked: "{user_input}"
+                
+                First, check if the answer is in this general information about the program:
+                ```
+                {general_info}
+                ```
+                
+                If not found in the general information, I found a similar question in our database: "{retrieved_question}"
+                With this official answer: "{retrieved_answer}"
+                
+                Please respond to the student's question in a natural, conversational way while:
+                1. Maintaining accuracy of the official information
+                2. Adapting the tone to be friendly and helpful
+                3. Addressing their specific question directly
+                4. Using clear and accessible language
+                5. Adding a brief encouraging or helpful note if appropriate
+                
+                Remember to stay within the scope of the official answer while making it more conversational."""
+            else:
+                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program.
+                
+                A student has asked: "{user_input}"
+                
+                First, check if the answer is in this general information about the program:
+                ```
+                {general_info}
+                ```
+                
+                If the answer is found in the general information, please respond based on that.
+                
+                If not found in the general information:
+                1. Only respond if the question is clearly related to the USF MSDS program
+                2. If it is related, politely explain that you don't have specific information about this aspect
+                3. Suggest they contact the program office for accurate information
+                4. Maintain a helpful and professional tone
+                
+                If the question is completely unrelated to the USF MSDS program, politely explain that you can only assist with MSDS program-related questions."""
 
         model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
