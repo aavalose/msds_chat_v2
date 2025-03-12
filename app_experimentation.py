@@ -147,48 +147,49 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
             4. Using clear and accessible language
             """
         else:
-            # First check if the answer is in general_info.txt
+            # Load general information
             general_info = open('general_info.txt', 'r').read()
             
             if retrieved_question and retrieved_answer:
                 prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program. 
                 A prospective or current student has asked: "{user_input}"
                 
-                First, check if the answer is in this general information about the program:
+                I found a similar question in our database: "{retrieved_question}"
+                With this official answer: "{retrieved_answer}"
+                
+                I also have this general information about the program:
                 ```
                 {general_info}
                 ```
                 
-                If not found in the general information, I found a similar question in our database: "{retrieved_question}"
-                With this official answer: "{retrieved_answer}"
-                
                 Please respond to the student's question in a natural, conversational way while:
-                1. Maintaining accuracy of the official information
-                2. Adapting the tone to be friendly and helpful
-                3. Addressing their specific question directly
-                4. Using clear and accessible language
-                5. Adding a brief encouraging or helpful note if appropriate
+                1. Primarily using the matched question/answer as your main source of information
+                2. Supplementing with relevant general information if helpful
+                3. Maintaining accuracy of the official information
+                4. Using a friendly and helpful tone
+                5. Addressing their specific question directly
+                6. Using clear and accessible language
                 
-                Remember to stay within the scope of the official answer while making it more conversational."""
+                If the student's question isn't fully addressed by the matched answer, you may draw from the general information to provide a more complete response."""
             else:
                 prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program.
                 
                 A student has asked: "{user_input}"
                 
-                First, check if the answer is in this general information about the program:
+                Please use this general information about the program to help answer their question:
                 ```
                 {general_info}
                 ```
                 
-                If the answer is found in the general information, please respond based on that.
-                
-                If not found in the general information:
-                1. Only respond if the question is clearly related to the USF MSDS program
-                2. If it is related, politely explain that you don't have specific information about this aspect
-                3. Suggest they contact the program office for accurate information
+                Please:
+                1. If the answer can be found in the general information, provide a helpful and accurate response
+                2. Only respond to questions related to the USF MSDS program
+                3. If you don't have enough information to fully answer their question:
+                   - Share what relevant information you do have
+                   - Acknowledge what specific aspects you don't have information about
+                   - Suggest they contact the program office for those specific details
                 4. Maintain a helpful and professional tone
-                
-                If the question is completely unrelated to the USF MSDS program, politely explain that you can only assist with MSDS program-related questions."""
+                5. Be clear about what you know vs. what you're unsure about"""
 
         model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
@@ -202,16 +203,17 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
 def get_bot_response(user_input):
     if not user_input.strip():
         return "Please enter a question."
-        
+    
+    # First try to find a similar question
     matched_question, matched_answer, similarity = find_most_similar_question(user_input)
     st.session_state.debug_similarity = similarity
     
-    if matched_question and matched_answer:
-        st.session_state.debug_matched_question = matched_question
-        st.session_state.debug_matched_answer = matched_answer
-        return get_gemini_response(user_input, matched_question, matched_answer)
+    # Store matched Q&A in session state for debugging
+    st.session_state.debug_matched_question = matched_question if matched_question else ""
+    st.session_state.debug_matched_answer = matched_answer if matched_answer else ""
     
-    return "I'm sorry, but I can only answer questions related to the University of San Francisco's MSDS program."
+    # Generate response using Gemini, passing matched Q&A if found
+    return get_gemini_response(user_input, matched_question, matched_answer)
 
 def main():
     st.title("USF MSDS Program Chatbot")
