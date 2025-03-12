@@ -267,16 +267,21 @@ def main():
                 st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
                 save_conversation(st.session_state.session_id, user_message, bot_response)
         
-        # Display chat history (most recent first, user question before assistant response)
+        # Get chat history pairs in reverse order (newest first)
+        chat_pairs = []
         for i in range(0, len(st.session_state.chat_history), 2):
             if i + 1 < len(st.session_state.chat_history):
                 user_msg = st.session_state.chat_history[i]
                 bot_msg = st.session_state.chat_history[i + 1]
-                st.write("🧑 **You:**")
-                st.write(user_msg["content"])
-                st.write("🤖 **Assistant:**")
-                st.write(bot_msg["content"])
-                st.write("---")
+                chat_pairs.append((user_msg, bot_msg))
+
+        # Display newest messages first
+        for user_msg, bot_msg in reversed(chat_pairs):
+            st.write("🧑 **You:**")
+            st.write(user_msg["content"])
+            st.write("🤖 **Assistant:**")
+            st.write(bot_msg["content"])
+            st.write("---")
 
 if __name__ == "__main__":
     main()
