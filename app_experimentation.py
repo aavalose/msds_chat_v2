@@ -137,21 +137,14 @@ def find_most_similar_question(user_input, similarity_threshold=0.45):
     try:
         # Add error handling for empty collection
         if qa_collection.count() == 0:
-            st.warning("No questions available in the database.")
             return None, None, 0.0
             
         results = qa_collection.query(
             query_texts=[user_input],
-            n_results=1,
-            include=['documents', 'metadatas', 'distances']  # Explicitly specify what to include
+            n_results=1
         )
         
-        # Check if results contain any matches
-        if (results and 
-            'documents' in results and results['documents'] and 
-            'distances' in results and results['distances'] and 
-            'metadatas' in results and results['metadatas']):
-            
+        if results['documents'][0]:
             similarity = 1 - results['distances'][0][0]  # Convert distance to similarity
             
             if similarity >= similarity_threshold:
@@ -160,8 +153,8 @@ def find_most_similar_question(user_input, similarity_threshold=0.45):
                 return matched_question, matched_answer, similarity
         
         return None, None, 0.0
-    except Exception as e:
-        st.error(f"Error finding similar question: {str(e)}")
+    except Exception:
+        # Just return None values without showing any error
         return None, None, 0.0
 
 # Generate response using Gemini
