@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import google.generativeai as genai
+from pymongo import MongoClient
 
 # Configure sqlite3 to use pysqlite3
 __import__('pysqlite3')
@@ -21,6 +22,13 @@ if not GOOGLE_API_KEY:
     st.stop()
 
 genai.configure(api_key=GOOGLE_API_KEY)
+
+# Add MongoDB configuration near the top of the file
+# Use st.secrets to store your MongoDB connection string
+MONGO_CONNECTION_STRING = st.secrets.get("MONGO_CONNECTION_STRING")
+if not MONGO_CONNECTION_STRING:
+    st.error("MongoDB connection string not found. Please configure it in your Streamlit secrets.")
+    st.stop()
 
 # Initialize ChromaDB client
 @st.cache_resource
@@ -79,29 +87,27 @@ def load_gemini_model():
 
 gemini_model = load_gemini_model()
 
-# Save conversation to a JSON file
+# Initialize MongoDB client
+@st.cache_resource
+def init_mongodb():
+    client = MongoClient(MONGO_CONNECTION_STRING)
+    db = client.MSDSchatbot  # database name
+    return db.conversations  # collection name
+
+conversations_collection = init_mongodb()
+
+# Replace the save_conversation function
 def save_conversation(session_id, user_message, bot_response):
-    os.makedirs("conversations", exist_ok=True)
-    filename = "conversations/chat_history.json"
-    
     try:
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                conversations = json.load(f)
-        else:
-            conversations = []
-        
-        conversations.append({
+        conversation = {
             "session_id": session_id,
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "timestamp": datetime.now(),
             "user_message": user_message,
             "bot_response": bot_response
-        })
-        
-        with open(filename, 'w') as f:
-            json.dump(conversations, f, indent=2)
+        }
+        conversations_collection.insert_one(conversation)
     except Exception as e:
-        st.error(f"Error saving conversation: {str(e)}")
+        st.error(f"Error saving conversation to MongoDB: {str(e)}")
 
 # Find the most similar question using ChromaDB
 def find_most_similar_question(user_input, similarity_threshold=0.45):
