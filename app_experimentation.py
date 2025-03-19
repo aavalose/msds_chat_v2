@@ -123,6 +123,8 @@ def save_conversation(session_id, user_message, bot_response):
         conversation = {
             "session_id": session_id,
             "timestamp": datetime.now(),
+            "user_name": st.session_state.user_name,
+            "user_email": st.session_state.user_email,
             "user_message": user_message,
             "bot_response": bot_response
         }
@@ -256,7 +258,7 @@ def main():
     st.title("USF MSDS Program Chatbot")
     
     # Initialize session state variables
-    for key in ['debug_matched_question', 'debug_matched_answer', 'debug_similarity', 'chat_history', 'session_id']:
+    for key in ['debug_matched_question', 'debug_matched_answer', 'debug_similarity', 'chat_history', 'session_id', 'user_name', 'user_email']:
         if key not in st.session_state:
             st.session_state[key] = "" if key != 'chat_history' else []
             if key == 'debug_similarity':
@@ -267,6 +269,18 @@ def main():
     tab1, tab2, tab3 = st.tabs(["Chat", "About", "Debug"])
 
     with tab1:
+        # Add user information collection at the top of the chat tab
+        if not st.session_state.user_name or not st.session_state.user_email:
+            col1, col2 = st.columns(2)
+            with col1:
+                st.session_state.user_name = st.text_input("Please enter your name:", key="name_input")
+            with col2:
+                st.session_state.user_email = st.text_input("Please enter your email:", key="email_input")
+            
+            if not st.session_state.user_name or not st.session_state.user_email:
+                st.warning("Please provide both your name and email to continue.")
+                st.stop()
+
         with st.sidebar:
             st.subheader("Session Management")
             st.write(f"Current Session ID: {st.session_state.session_id}")
@@ -289,7 +303,7 @@ def main():
             for q in example_questions:
                 if st.button(q, key=f"btn_{q[:20]}"): # Added unique keys for buttons
                     matched_question, matched_answer, similarity = find_most_similar_question(q)
-                    bot_response = get_gemini_response(q, matched_question, matched_answer) if matched_question else "I'm sorry, but I can only answer questions related to the USF MSDS program."
+                    bot_response = get_bot_response(q)
                     st.session_state.chat_history.append({"role": "user", "content": q})
                     st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
                     save_conversation(st.session_state.session_id, q, bot_response)
