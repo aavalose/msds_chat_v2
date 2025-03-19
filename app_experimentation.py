@@ -90,14 +90,35 @@ gemini_model = load_gemini_model()
 # Initialize MongoDB client
 @st.cache_resource
 def init_mongodb():
-    client = MongoClient(MONGO_CONNECTION_STRING)
-    db = client.MSDSchatbot  # database name
-    return db.conversations  # collection name
+    try:
+        # Add SSL and connection pool configurations
+        client = MongoClient(
+            MONGO_CONNECTION_STRING,
+            tls=True,
+            tlsAllowInvalidCertificates=False,
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=10000,
+            retryWrites=True,
+            maxPoolSize=50
+        )
+        
+        # Test the connection
+        client.admin.command('ping')
+        
+        db = client.MSDSchatbot
+        return db.conversations
+    except Exception as e:
+        st.error(f"Failed to connect to MongoDB: {str(e)}")
+        return None
 
 conversations_collection = init_mongodb()
 
-# Replace the save_conversation function
+# Modify save_conversation to handle None collection
 def save_conversation(session_id, user_message, bot_response):
+    if conversations_collection is None:
+        st.error("MongoDB connection not available")
+        return
+        
     try:
         conversation = {
             "session_id": session_id,
