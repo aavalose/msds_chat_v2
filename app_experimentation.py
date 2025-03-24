@@ -14,7 +14,7 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import chromadb
 from chromadb.utils import embedding_functions
-from sentence_transformers import SentenceTransformer
+from transformers import AutoTokenizer, AutoModel
 
 # Handle missing API key safely
 GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY")
@@ -34,19 +34,23 @@ if not MONGO_CONNECTION_STRING:
 # Initialize ChromaDB client
 @st.cache_resource
 def init_chroma():
-    # Create a persistent directory for ChromaDB
-    os.makedirs("chroma_db", exist_ok=True)
-    
-    # Initialize the client with persistence
-    chroma_client = chromadb.PersistentClient(path="chroma_db")
-    
-    # Use a more sophisticated embedding model for better semantic matching
-    model = SentenceTransformer('all-MiniLM-L6-v2')  # Good balance of speed and accuracy
-    embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
-        model_name='all-MiniLM-L6-v2'
-    )
-    
-    return chroma_client, embedding_function
+    try:
+        # Create a persistent directory for ChromaDB
+        os.makedirs("chroma_db", exist_ok=True)
+        
+        # Initialize the client with persistence
+        chroma_client = chromadb.PersistentClient(path="chroma_db")
+        
+        # Use HuggingFace embedding function with a smaller, more compatible model
+        embedding_function = embedding_functions.HuggingFaceEmbeddingFunction(
+            model_name="all-MiniLM-L6-v2",
+            encode_kwargs={'normalize_embeddings': True}
+        )
+        
+        return chroma_client, embedding_function
+    except Exception as e:
+        st.error(f"Error initializing ChromaDB: {str(e)}")
+        raise e
 
 chroma_client, embedding_function = init_chroma()
 
@@ -58,24 +62,20 @@ try:
     except:
         pass
         
-    # Create new collection with the improved embedding function
+    # Create new collection
     qa_collection = chroma_client.create_collection(
         name="msds_program_qa",
-        embedding_function=embedding_function,
-        metadata={"hnsw:space": "cosine"}  # Use cosine similarity
+        embedding_function=embedding_function
     )
     
-    # Load and preprocess QA data
+    # Load QA data
     try:
         qa_df = pd.read_csv("Questions_and_Answers.csv")
-        
-        # Preprocess all questions in the database
-        processed_questions = [preprocess_query(q) for q in qa_df['Question']]
         
         # Add data to the collection
         qa_collection.upsert(
             ids=[str(i) for i in qa_df.index.tolist()],
-            documents=processed_questions,  # Use processed questions
+            documents=qa_df['Question'].tolist(),
             metadatas=qa_df[['Answer']].to_dict(orient='records')
         )
     except Exception as e:

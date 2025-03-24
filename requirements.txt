@@ -8,8 +8,9 @@ chromadb>=0.4.22
 pysqlite3-binary>=0.5.2
 python-dotenv>=1.0.0
 --find-links https://download.pytorch.org/whl/torch_stable.html
-torch==2.1.2+cpu
+torch==2.0.1+cpu
 
 # For embeddings (with specific versions for compatibility)
-transformers==4.35.2
-sentence-transformers==2.2.2
+transformers==4.33.2
+sentence-transformers==2.2.0
+protobuf>=4.25.1
