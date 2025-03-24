@@ -14,6 +14,7 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import chromadb
 from chromadb.utils import embedding_functions
+from sentence_transformers import SentenceTransformer
 
 # Handle missing API key safely
 GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY")
@@ -39,40 +40,44 @@ def init_chroma():
     # Initialize the client with persistence
     chroma_client = chromadb.PersistentClient(path="chroma_db")
     
-    # Use default embedding function
-    embedding_function = embedding_functions.DefaultEmbeddingFunction()
+    # Use a more sophisticated embedding model for better semantic matching
+    model = SentenceTransformer('all-MiniLM-L6-v2')  # Good balance of speed and accuracy
+    embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
+        model_name='all-MiniLM-L6-v2'
+    )
+    
     return chroma_client, embedding_function
 
 chroma_client, embedding_function = init_chroma()
 
 # Create a collection with the specified embedding function
 try:
+    # Delete existing collection if it exists
+    try:
+        chroma_client.delete_collection(name="msds_program_qa")
+    except:
+        pass
+        
+    # Create new collection with the improved embedding function
     qa_collection = chroma_client.create_collection(
         name="msds_program_qa",
         embedding_function=embedding_function,
-        get_or_create=True
+        metadata={"hnsw:space": "cosine"}  # Use cosine similarity
     )
     
-    # Load QA data
+    # Load and preprocess QA data
     try:
         qa_df = pd.read_csv("Questions_and_Answers.csv")
         
+        # Preprocess all questions in the database
+        processed_questions = [preprocess_query(q) for q in qa_df['Question']]
+        
         # Add data to the collection
-        try:
-            # Get all existing IDs
-            existing_ids = qa_collection.get()["ids"]
-            if existing_ids:
-                # Delete existing documents if any
-                qa_collection.delete(ids=existing_ids)
-            
-            # Then add new documents
-            qa_collection.upsert(
-                ids=[str(i) for i in qa_df.index.tolist()],  # Convert ids to strings
-                documents=qa_df['Question'].tolist(),
-                metadatas=qa_df[['Answer']].to_dict(orient='records')
-            )
-        except Exception as e:
-            st.error(f"Error adding data to collection: {str(e)}")
+        qa_collection.upsert(
+            ids=[str(i) for i in qa_df.index.tolist()],
+            documents=processed_questions,  # Use processed questions
+            metadatas=qa_df[['Answer']].to_dict(orient='records')
+        )
     except Exception as e:
         st.error(f"Error loading Questions_and_Answers.csv: {str(e)}")
 except Exception as e:
@@ -153,22 +158,32 @@ def update_feedback(conversation_id, feedback):
 # Find the most similar question using ChromaDB
 def find_most_similar_question(user_input, similarity_threshold=0.45):
     try:
-        # Add error handling for empty collection
         if qa_collection.count() == 0:
             return None, None, 0.0
-            
+        
+        # Preprocess the user input
+        processed_input = preprocess_query(user_input)
+        
         results = qa_collection.query(
-            query_texts=[user_input],
-            n_results=3  # Increased to get more potential matches
+            query_texts=[processed_input],
+            n_results=3
         )
         
         if not results['documents'][0]:
             return None, None, 0.0
-            
+        
         # Find the best match among the top 3 results
         best_similarity = 0.0
         best_question = None
         best_answer = None
+        
+        # Debug information
+        if st.session_state.get('debug_mode', False):
+            st.write("Top 3 matches:")
+            for i, (doc, dist) in enumerate(zip(results['documents'][0], results['distances'][0])):
+                sim = 1 - dist
+                st.write(f"{i+1}. Question: {doc}")
+                st.write(f"   Similarity: {sim:.3f}")
         
         for i, distance in enumerate(results['distances'][0]):
             similarity = 1 - distance
@@ -182,6 +197,39 @@ def find_most_similar_question(user_input, similarity_threshold=0.45):
     except Exception as e:
         st.error(f"Error in find_most_similar_question: {str(e)}")
         return None, None, 0.0
+
+# Add a query preprocessing function
+def preprocess_query(query):
+    """Normalize and expand common variations in queries"""
+    query = query.lower().strip()
+    
+    # Define common semantic equivalents
+    semantic_mappings = {
+        'earn': 'salary',
+        'earning': 'salary',
+        'earnings': 'salary',
+        'make': 'salary',
+        'pay': 'salary',
+        'income': 'salary',
+        'cost': 'tuition',
+        'price': 'tuition',
+        'expense': 'tuition',
+        'duration': 'time',
+        'length': 'time',
+        'requirements': 'required',
+        'need': 'required',
+        'prerequisites': 'required',
+        'after graduation': 'graduates',
+        'when i graduate': 'graduates',
+    }
+    
+    # Apply mappings
+    processed_query = query
+    for key, value in semantic_mappings.items():
+        if key in processed_query:
+            processed_query = processed_query.replace(key, value)
+    
+    return processed_query
 
 # Generate response using Gemini
 def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=None):
