@@ -1,4 +1,5 @@
 import sys
+import os
 
 try:
     import pysqlite3
@@ -11,7 +12,6 @@ import numpy as np
 from datetime import datetime
 import pandas as pd
 import json
-import os
 import google.generativeai as genai
 from pymongo import MongoClient
 
