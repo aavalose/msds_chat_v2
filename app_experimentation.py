@@ -2,15 +2,27 @@ import streamlit as st
 from datetime import datetime
 import sys
 import os
+from pathlib import Path
+
+# Get the absolute path to the directory containing this script
+current_dir = Path(__file__).parent.absolute()
 
 # Add the current directory to Python path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+if str(current_dir) not in sys.path:
+    sys.path.append(str(current_dir))
 
-# Now import the modules
-from src.models.gemini_model import GeminiModel
-from src.database.chroma_client import ChromaDBClient
-from src.database.mongo_client import MongoDBClient
-from src.chat.chat_processor import ChatProcessor
+try:
+    # Try importing with relative paths
+    from .src.models.gemini_model import GeminiModel
+    from .src.database.chroma_client import ChromaDBClient
+    from .src.database.mongo_client import MongoDBClient
+    from .src.chat.chat_processor import ChatProcessor
+except ImportError:
+    # If relative imports fail, try absolute imports
+    from src.models.gemini_model import GeminiModel
+    from src.database.chroma_client import ChromaDBClient
+    from src.database.mongo_client import MongoDBClient
+    from src.chat.chat_processor import ChatProcessor
 
 # Initialize components
 @st.cache_resource

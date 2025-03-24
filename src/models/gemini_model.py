@@ -6,7 +6,8 @@ class GeminiModel:
             raise ValueError("Google API key not found. Please configure it in your Streamlit secrets.")
         
         try:
-            genai.configure(api_key=api_key)
+            import streamlit as st
+            genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
             self.model = genai.GenerativeModel('gemini-2.0-flash')
         except Exception as e:
             raise Exception(f"Failed to initialize Gemini model: {str(e)}")
