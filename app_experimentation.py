@@ -48,36 +48,51 @@ def init_chroma():
         st.error(f"Error initializing ChromaDB: {str(e)}")
         raise e
 
-chroma_client, embedding_function = init_chroma()
+# Add this function to handle collection creation and data loading
+@st.cache_resource
+def init_qa_collection(chroma_client, embedding_function):
+    try:
+        # Try to get existing collection first
+        try:
+            qa_collection = chroma_client.get_collection(
+                name="msds_program_qa",
+                embedding_function=embedding_function
+            )
+            st.success("Successfully connected to existing QA collection")
+        except:
+            # If collection doesn't exist, create it and load data
+            qa_collection = chroma_client.create_collection(
+                name="msds_program_qa",
+                embedding_function=embedding_function
+            )
+            st.info("Created new QA collection")
 
-# Create a collection with the specified embedding function
-try:
-    # Delete existing collection if it exists
-    try:
-        chroma_client.delete_collection(name="msds_program_qa")
-    except:
-        pass
-        
-    # Create new collection
-    qa_collection = chroma_client.create_collection(
-        name="msds_program_qa",
-        embedding_function=embedding_function
-    )
-    
-    # Load QA data
-    try:
-        qa_df = pd.read_csv("Questions_and_Answers.csv")
-        
-        # Add data to the collection
-        qa_collection.upsert(
-            ids=[str(i) for i in qa_df.index.tolist()],
-            documents=qa_df['Question'].tolist(),
-            metadatas=qa_df[['Answer']].to_dict(orient='records')
-        )
+            # Load QA data
+            try:
+                qa_df = pd.read_csv("Questions_and_Answers.csv")
+                
+                # Add data to the collection
+                qa_collection.add(
+                    ids=[str(i) for i in qa_df.index.tolist()],
+                    documents=qa_df['Question'].tolist(),
+                    metadatas=qa_df[['Answer']].to_dict(orient='records')
+                )
+                st.success("Successfully loaded QA data")
+            except Exception as e:
+                st.error(f"Error loading Questions_and_Answers.csv: {str(e)}")
+                raise e
+
+        return qa_collection
     except Exception as e:
-        st.error(f"Error loading Questions_and_Answers.csv: {str(e)}")
+        st.error(f"Error initializing QA collection: {str(e)}")
+        raise e
+
+# Initialize ChromaDB and collection
+try:
+    chroma_client, embedding_function = init_chroma()
+    qa_collection = init_qa_collection(chroma_client, embedding_function)
 except Exception as e:
-    st.error(f"Error creating ChromaDB collection: {str(e)}")
+    st.error(f"Failed to initialize ChromaDB: {str(e)}")
     st.stop()
 
 # Configure Gemini model
@@ -258,7 +273,7 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
             4. Using clear and accessible language
             """
         else:
-            if retrieved_question and retrieved_answer and st.session_state.debug_similarity >= 0.45:
+            if retrieved_question and retrieved_answer and st.session_state.debug_similarity >= 0.3:
                 prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program. 
                 
                 User question: "{user_input}"
@@ -435,6 +450,52 @@ def main():
             st.write(f"Similarity Score: {st.session_state.debug_similarity:.3f}")
             st.write(f"Matched Question: {st.session_state.debug_matched_question}")
             st.write(f"Matched Answer: {st.session_state.debug_matched_answer}")
+
+# Add after imports
+def check_required_files():
+    required_files = [
+        "Questions_and_Answers.csv",
+        "faculty.json",
+        "general_info.txt"
+    ]
+    
+    missing_files = []
+    for file in required_files:
+        if not os.path.exists(file):
+            missing_files.append(file)
+    
+    if missing_files:
+        st.error(f"Missing required files: {', '.join(missing_files)}")
+        st.write("Please make sure all required files are in the correct location:")
+        for file in missing_files:
+            st.write(f"- {file}")
+        st.stop()
+
+# Add this after check_required_files()
+def verify_qa_data():
+    try:
+        qa_df = pd.read_csv("Questions_and_Answers.csv")
+        required_columns = ['Question', 'Answer']
+        
+        # Check if required columns exist
+        missing_columns = [col for col in required_columns if col not in qa_df.columns]
+        if missing_columns:
+            st.error(f"Missing required columns in Questions_and_Answers.csv: {', '.join(missing_columns)}")
+            st.stop()
+            
+        # Check if there's data
+        if len(qa_df) == 0:
+            st.error("Questions_and_Answers.csv is empty")
+            st.stop()
+            
+        st.success(f"Successfully loaded {len(qa_df)} QA pairs")
+        return qa_df
+    except Exception as e:
+        st.error(f"Error reading Questions_and_Answers.csv: {str(e)}")
+        st.stop()
+
+# Add this call after check_required_files()
+qa_df = verify_qa_data()
 
 if __name__ == "__main__":
     main()
