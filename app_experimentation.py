@@ -1,5 +1,12 @@
 import streamlit as st
 from datetime import datetime
+import sys
+import os
+
+# Add the current directory to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Now import the modules
 from src.models.gemini_model import GeminiModel
 from src.database.chroma_client import ChromaDBClient
 from src.database.mongo_client import MongoDBClient
