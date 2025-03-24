@@ -159,28 +159,39 @@ def find_most_similar_question(user_input, similarity_threshold=0.45):
             
         results = qa_collection.query(
             query_texts=[user_input],
-            n_results=1
+            n_results=3  # Increased to get more potential matches
         )
         
-        if results['documents'][0]:
-            similarity = 1 - results['distances'][0][0]  # Convert distance to similarity
+        if not results['documents'][0]:
+            return None, None, 0.0
             
-            if similarity >= similarity_threshold:
-                matched_question = results['documents'][0][0]
-                matched_answer = results['metadatas'][0][0]['Answer']
-                return matched_question, matched_answer, similarity
+        # Find the best match among the top 3 results
+        best_similarity = 0.0
+        best_question = None
+        best_answer = None
         
-        return None, None, 0.0
-    except Exception:
-        # Just return None values without showing any error
+        for i, distance in enumerate(results['distances'][0]):
+            similarity = 1 - distance
+            if similarity >= similarity_threshold and similarity > best_similarity:
+                best_similarity = similarity
+                best_question = results['documents'][0][i]
+                best_answer = results['metadatas'][0][i]['Answer']
+        
+        return best_question, best_answer, best_similarity
+            
+    except Exception as e:
+        st.error(f"Error in find_most_similar_question: {str(e)}")
         return None, None, 0.0
 
 # Generate response using Gemini
 def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=None):
     try:
+        # Load general information
+        general_info = open('general_info.txt', 'r').read()
+        
         # Check if the query is about faculty
         if "faculty" in user_input.lower() or "professor" in user_input.lower() or "instructor" in user_input.lower():
-            prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program.
+            prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
             
             A student has asked about faculty: "{user_input}"
             
@@ -197,48 +208,47 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
             4. Using clear and accessible language
             """
         else:
-            # Load general information
-            general_info = open('general_info.txt', 'r').read()
-            
-            if retrieved_question and retrieved_answer:
-                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program. 
-                A prospective or current student has asked: "{user_input}"
+            if retrieved_question and retrieved_answer and st.session_state.debug_similarity >= 0.45:
+                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program. 
                 
-                I found a similar question in our database: "{retrieved_question}"
-                With this official answer: "{retrieved_answer}"
+                User question: "{user_input}"
                 
-                I also have this general information about the program:
+                I found this similar question in our database (similarity: {st.session_state.debug_similarity:.2f}):
+                Question: "{retrieved_question}"
+                Official answer: "{retrieved_answer}"
+                
+                Additional context:
                 ```
                 {general_info}
                 ```
                 
-                Please respond to the student's question in a natural, conversational way while:
-                1. Primarily using the matched question/answer as your main source of information
-                2. Supplementing with relevant general information if helpful
-                3. Maintaining accuracy of the official information
-                4. Using a friendly and helpful tone
-                5. Addressing their specific question directly
-                6. Using clear and accessible language
+                Instructions:
+                1. The matched question/answer pair has a similarity score of {st.session_state.debug_similarity:.2f}
+                2. If the similarity is high (>0.6), prioritize the official answer
+                3. If the similarity is moderate (0.45-0.6), blend the official answer with general information
+                4. Always maintain accuracy and be explicit about any uncertainty
+                5. Use a friendly, conversational tone
+                6. Address the specific aspects of the user's question
                 
-                If the student's question isn't fully addressed by the matched answer, you may draw from the general information to provide a more complete response."""
+                Please provide a complete response that best answers the user's specific question."""
             else:
-                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS (Master of Science in Data Science) program.
+                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
                 
-                A student has asked: "{user_input}"
+                User question: "{user_input}"
                 
-                Please use this general information about the program to help answer their question:
+                Please use this general information to help answer their question:
                 ```
                 {general_info}
                 ```
                 
-                Please:
+                Instructions:
                 1. If the answer can be found in the general information, provide a helpful and accurate response
                 2. Only respond to questions related to the USF MSDS program
-                3. If you don't have enough information to fully answer their question:
+                3. If you don't have enough information:
                    - Share what relevant information you do have
-                   - Acknowledge what specific aspects you don't have information about
-                   - Suggest they contact the program office for those specific details
-                4. Maintain a helpful and professional tone
+                   - Acknowledge what you don't know
+                   - Suggest contacting the program office for those details
+                4. Use a helpful and professional tone
                 5. Be clear about what you know vs. what you're unsure about"""
 
         model = genai.GenerativeModel('gemini-2.0-flash')
@@ -256,11 +266,18 @@ def get_bot_response(user_input):
     
     # First try to find a similar question
     matched_question, matched_answer, similarity = find_most_similar_question(user_input)
-    st.session_state.debug_similarity = similarity
     
-    # Store matched Q&A in session state for debugging
-    st.session_state.debug_matched_question = matched_question if matched_question else ""
-    st.session_state.debug_matched_answer = matched_answer if matched_answer else ""
+    # Debug information
+    st.session_state.debug_similarity = similarity
+    st.session_state.debug_matched_question = matched_question if matched_question else "No match found"
+    st.session_state.debug_matched_answer = matched_answer if matched_answer else "No answer found"
+    
+    # Add debug output
+    if st.session_state.get('debug_mode', False):
+        st.write("Debug Info:")
+        st.write(f"Similarity Score: {similarity:.3f}")
+        st.write(f"Matched Question: {matched_question}")
+        st.write(f"Matched Answer: {matched_answer}")
     
     # Generate response using Gemini, passing matched Q&A if found
     return get_gemini_response(user_input, matched_question, matched_answer)
@@ -360,6 +377,14 @@ def main():
                         update_feedback(st.session_state.conversation_ids[-(i+1)], "negative")
                         st.success("Thank you for your feedback!")
             st.write("---")
+
+    with tab3:
+        st.session_state.debug_mode = st.checkbox("Enable Debug Mode", value=False)
+        if st.session_state.debug_mode:
+            st.write("Last Query Debug Info:")
+            st.write(f"Similarity Score: {st.session_state.debug_similarity:.3f}")
+            st.write(f"Matched Question: {st.session_state.debug_matched_question}")
+            st.write(f"Matched Answer: {st.session_state.debug_matched_answer}")
 
 if __name__ == "__main__":
     main()
