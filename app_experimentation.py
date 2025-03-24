@@ -136,6 +136,20 @@ def save_conversation(session_id, user_message, bot_response, response_time):
         st.error(f"Error saving conversation to MongoDB: {str(e)}")
         return None
 
+# Add this function after save_conversation
+def update_feedback(conversation_id, feedback):
+    if conversations_collection is None:
+        st.error("MongoDB connection not available")
+        return
+        
+    try:
+        conversations_collection.update_one(
+            {"_id": conversation_id},
+            {"$set": {"feedback": feedback}}
+        )
+    except Exception as e:
+        st.error(f"Error updating feedback: {str(e)}")
+
 # Find the most similar question using ChromaDB
 def find_most_similar_question(user_input, similarity_threshold=0.45):
     try:
@@ -256,7 +270,7 @@ def main():
     
     # Initialize session state variables
     for key in ['debug_matched_question', 'debug_matched_answer', 'debug_similarity', 
-                'chat_history', 'session_id', 'conversation_ids']:  # Removed user_name and user_email
+                'chat_history', 'session_id', 'conversation_ids']:
         if key not in st.session_state:
             st.session_state[key] = "" if key not in ['chat_history', 'conversation_ids'] else []
             if key == 'debug_similarity':
@@ -300,10 +314,23 @@ def main():
         
         if st.button("Send", key="send_button") and user_message:
             with st.spinner("Thinking..."):
+                start_time = datetime.now()
                 bot_response = get_bot_response(user_message)
+                response_time = (datetime.now() - start_time).total_seconds()
+                
                 st.session_state.chat_history.append({"role": "user", "content": user_message})
                 st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
-                save_conversation(st.session_state.session_id, user_message, bot_response, 0.0)
+                
+                conversation_id = save_conversation(
+                    st.session_state.session_id, 
+                    user_message, 
+                    bot_response,
+                    response_time
+                )
+                if conversation_id:
+                    if 'conversation_ids' not in st.session_state:
+                        st.session_state.conversation_ids = []
+                    st.session_state.conversation_ids.append(conversation_id)
         
         # Get chat history pairs in reverse order (newest first)
         chat_pairs = []
@@ -314,11 +341,24 @@ def main():
                 chat_pairs.append((user_msg, bot_msg))
 
         # Display newest messages first
-        for user_msg, bot_msg in reversed(chat_pairs):
+        for i, (user_msg, bot_msg) in enumerate(reversed(chat_pairs)):
             st.write("🧑 **You:**")
             st.write(user_msg["content"])
             st.write("🤖 **Assistant:**")
             st.write(bot_msg["content"])
+            
+            # Add feedback buttons
+            col1, col2, col3 = st.columns([1, 1, 3])
+            with col1:
+                if st.button("👍", key=f"thumbs_up_{i}"):
+                    if i < len(st.session_state.conversation_ids):
+                        update_feedback(st.session_state.conversation_ids[-(i+1)], "positive")
+                        st.success("Thank you for your feedback!")
+            with col2:
+                if st.button("👎", key=f"thumbs_down_{i}"):
+                    if i < len(st.session_state.conversation_ids):
+                        update_feedback(st.session_state.conversation_ids[-(i+1)], "negative")
+                        st.success("Thank you for your feedback!")
             st.write("---")
 
 if __name__ == "__main__":
