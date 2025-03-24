@@ -14,7 +14,7 @@ setup(
         "sentence-transformers",
         "accelerate>=0.26.0",
         "google-generativeai>=0.3.0",
-        "chromadb>=0.4.0",
+        " chromadb==0.4.22",
         "pysqlite3-binary>=0.5.0",
         "pymongo[srv]",
         "dnspython",

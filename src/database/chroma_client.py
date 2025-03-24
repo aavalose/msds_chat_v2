@@ -4,15 +4,14 @@ import os
 import pandas as pd
 
 class ChromaDBClient:
-    def __init__(self, db_path="chroma_db"):
-        self.db_path = db_path
+    def __init__(self):
         self.client = self._init_client()
         self.embedding_function = embedding_functions.DefaultEmbeddingFunction()
         self.collection = self._init_collection()
 
     def _init_client(self):
-        os.makedirs(self.db_path, exist_ok=True)
-        return chromadb.PersistentClient(path=self.db_path)
+        # Use in-memory client instead of persistent client
+        return chromadb.Client()
 
     def _init_collection(self):
         try:
@@ -29,12 +28,21 @@ class ChromaDBClient:
         return collection
 
     def _load_qa_data(self, collection):
-        qa_df = pd.read_csv("Questions_and_Answers.csv")
-        collection.add(
-            ids=[str(i) for i in qa_df.index.tolist()],
-            documents=qa_df['Question'].tolist(),
-            metadatas=qa_df[['Answer']].to_dict(orient='records')
-        )
+        try:
+            qa_df = pd.read_csv("Questions_and_Answers.csv")
+            collection.add(
+                ids=[str(i) for i in qa_df.index.tolist()],
+                documents=qa_df['Question'].tolist(),
+                metadatas=qa_df[['Answer']].to_dict(orient='records')
+            )
+        except Exception as e:
+            print(f"Error loading QA data: {str(e)}")
+            # Create a minimal collection if data loading fails
+            collection.add(
+                ids=["0"],
+                documents=["Default question"],
+                metadatas=[{"Answer": "Please contact the MSDS program office for more information."}]
+            )
 
     def find_similar_question(self, query, similarity_threshold=0.3):
         if self.collection.count() == 0:
