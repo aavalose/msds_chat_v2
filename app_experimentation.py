@@ -1,16 +1,15 @@
+import __import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 import streamlit as st
 import numpy as np
 from datetime import datetime
 import pandas as pd
 import json
 import os
-import sys
 import google.generativeai as genai
 from pymongo import MongoClient
-
-# Configure sqlite3 to use pysqlite3
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import chromadb
 from chromadb.utils import embedding_functions
