@@ -13,7 +13,7 @@ if str(project_root) not in sys.path:
 
 # Use direct imports (no relative imports)
 from src.models.gemini_model import GeminiModel
-from src.database.chroma_client import ChromaDBClient
+from src.database.similarity_client import SimilarityClient
 from src.database.mongo_client import MongoDBClient
 from src.chat.chat_processor import ChatProcessor
 
@@ -28,9 +28,9 @@ def init_components():
             st.stop()
             
         gemini_model = GeminiModel(api_key)
-        chroma_client = ChromaDBClient()
+        similarity_client = SimilarityClient()
         mongo_client = MongoDBClient(st.secrets["MONGO_CONNECTION_STRING"])
-        chat_processor = ChatProcessor(gemini_model, chroma_client, mongo_client)
+        chat_processor = ChatProcessor(gemini_model, similarity_client, mongo_client)
         return chat_processor
     except Exception as e:
         st.error(f"Failed to initialize components: {str(e)}")

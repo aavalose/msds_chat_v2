@@ -1,9 +1,9 @@
 from datetime import datetime
 
 class ChatProcessor:
-    def __init__(self, gemini_model, chroma_client, mongo_client):
-        self.model = gemini_model
-        self.chroma_client = chroma_client
+    def __init__(self, gemini_model, similarity_client, mongo_client):
+        self.gemini_model = gemini_model
+        self.similarity_client = similarity_client
         self.mongo_client = mongo_client
 
     def process_message(self, user_input, session_id):
@@ -11,10 +11,10 @@ class ChatProcessor:
         
         # Find similar question
         matched_question, matched_answer, similarity = \
-            self.chroma_client.find_similar_question(user_input)
+            self.similarity_client.find_similar_question(user_input)
 
         # Generate response
-        bot_response = self.model.generate_response(
+        bot_response = self.gemini_model.generate_response(
             user_input, matched_question, matched_answer, similarity
         )
 
