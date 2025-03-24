@@ -50,20 +50,20 @@ def init_chroma():
 
 # Add this function to handle collection creation and data loading
 @st.cache_resource
-def init_qa_collection(chroma_client, embedding_function):
+def init_qa_collection(_chroma_client, _embedding_function):
     try:
         # Try to get existing collection first
         try:
-            qa_collection = chroma_client.get_collection(
+            qa_collection = _chroma_client.get_collection(
                 name="msds_program_qa",
-                embedding_function=embedding_function
+                embedding_function=_embedding_function
             )
             st.success("Successfully connected to existing QA collection")
         except:
             # If collection doesn't exist, create it and load data
-            qa_collection = chroma_client.create_collection(
+            qa_collection = _chroma_client.create_collection(
                 name="msds_program_qa",
-                embedding_function=embedding_function
+                embedding_function=_embedding_function
             )
             st.info("Created new QA collection")
 
