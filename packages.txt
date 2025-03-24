@@ -1,3 +1,5 @@
 zlib1g-dev
 libjpeg-dev
 sqlite3
+python3.11
+python3.11-dev

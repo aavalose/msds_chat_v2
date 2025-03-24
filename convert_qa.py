@@ -44,4 +44,4 @@ def convert_qa_to_csv(input_file, output_file):
         print("No new questions to add.")
 
 if __name__ == "__main__":
-    convert_qa_to_csv('march_text.txt', 'Questions_and_Answers.csv') 
+    convert_qa_to_csv('february_text.txt', 'Questions_and_Answers.csv') 
