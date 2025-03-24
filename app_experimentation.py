@@ -114,7 +114,7 @@ def init_mongodb():
 conversations_collection = init_mongodb()
 
 # Modify save_conversation to handle None collection
-def save_conversation(session_id, user_message, bot_response):
+def save_conversation(session_id, user_message, bot_response, response_time):
     if conversations_collection is None:
         st.error("MongoDB connection not available")
         return
@@ -123,14 +123,18 @@ def save_conversation(session_id, user_message, bot_response):
         conversation = {
             "session_id": session_id,
             "timestamp": datetime.now(),
-            "user_name": st.session_state.user_name,
-            "user_email": st.session_state.user_email,
             "user_message": user_message,
-            "bot_response": bot_response
+            "bot_response": bot_response,
+            "feedback": None,
+            "similarity_score": st.session_state.debug_similarity,
+            "matched_question": st.session_state.debug_matched_question,
+            "response_time_seconds": response_time
         }
-        conversations_collection.insert_one(conversation)
+        result = conversations_collection.insert_one(conversation)
+        return str(result.inserted_id)
     except Exception as e:
         st.error(f"Error saving conversation to MongoDB: {str(e)}")
+        return None
 
 # Find the most similar question using ChromaDB
 def find_most_similar_question(user_input, similarity_threshold=0.45):
@@ -251,9 +255,10 @@ def main():
     st.title("USF MSDS Program Chatbot")
     
     # Initialize session state variables
-    for key in ['debug_matched_question', 'debug_matched_answer', 'debug_similarity', 'chat_history', 'session_id', 'user_name', 'user_email']:
+    for key in ['debug_matched_question', 'debug_matched_answer', 'debug_similarity', 
+                'chat_history', 'session_id', 'conversation_ids']:  # Removed user_name and user_email
         if key not in st.session_state:
-            st.session_state[key] = "" if key != 'chat_history' else []
+            st.session_state[key] = "" if key not in ['chat_history', 'conversation_ids'] else []
             if key == 'debug_similarity':
                 st.session_state[key] = 0.0
             elif key == 'session_id':
@@ -262,18 +267,7 @@ def main():
     tab1, tab2, tab3 = st.tabs(["Chat", "About", "Debug"])
 
     with tab1:
-        # Add user information collection at the top of the chat tab
-        if not st.session_state.user_name or not st.session_state.user_email:
-            col1, col2 = st.columns(2)
-            with col1:
-                st.session_state.user_name = st.text_input("Please enter your name:", key="name_input")
-            with col2:
-                st.session_state.user_email = st.text_input("Please enter your email:", key="email_input")
-            
-            if not st.session_state.user_name or not st.session_state.user_email:
-                st.warning("Please provide both your name and email to continue.")
-                st.stop()
-
+        
         with st.sidebar:
             st.subheader("Session Management")
             st.write(f"Current Session ID: {st.session_state.session_id}")
@@ -299,7 +293,7 @@ def main():
                     bot_response = get_bot_response(q)
                     st.session_state.chat_history.append({"role": "user", "content": q})
                     st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
-                    save_conversation(st.session_state.session_id, q, bot_response)
+                    save_conversation(st.session_state.session_id, q, bot_response, 0.0)
         
         st.subheader("Ask me about USF's MSDS program")
         user_message = st.text_input("Type your question here:", key="user_input")
@@ -309,7 +303,7 @@ def main():
                 bot_response = get_bot_response(user_message)
                 st.session_state.chat_history.append({"role": "user", "content": user_message})
                 st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
-                save_conversation(st.session_state.session_id, user_message, bot_response)
+                save_conversation(st.session_state.session_id, user_message, bot_response, 0.0)
         
         # Get chat history pairs in reverse order (newest first)
         chat_pairs = []
