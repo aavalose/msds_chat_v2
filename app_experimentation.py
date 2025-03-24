@@ -14,7 +14,6 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import chromadb
 from chromadb.utils import embedding_functions
-from transformers import AutoTokenizer, AutoModel
 
 # Handle missing API key safely
 GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY")
@@ -41,11 +40,8 @@ def init_chroma():
         # Initialize the client with persistence
         chroma_client = chromadb.PersistentClient(path="chroma_db")
         
-        # Use HuggingFace embedding function with a smaller, more compatible model
-        embedding_function = embedding_functions.HuggingFaceEmbeddingFunction(
-            model_name="all-MiniLM-L6-v2",
-            encode_kwargs={'normalize_embeddings': True}
-        )
+        # Use ChromaDB's default embedding function
+        embedding_function = embedding_functions.DefaultEmbeddingFunction()
         
         return chroma_client, embedding_function
     except Exception as e:
@@ -156,7 +152,7 @@ def update_feedback(conversation_id, feedback):
         st.error(f"Error updating feedback: {str(e)}")
 
 # Find the most similar question using ChromaDB
-def find_most_similar_question(user_input, similarity_threshold=0.45):
+def find_most_similar_question(user_input, similarity_threshold=0.3):
     try:
         if qa_collection.count() == 0:
             return None, None, 0.0
@@ -166,20 +162,20 @@ def find_most_similar_question(user_input, similarity_threshold=0.45):
         
         results = qa_collection.query(
             query_texts=[processed_input],
-            n_results=3
+            n_results=5
         )
         
         if not results['documents'][0]:
             return None, None, 0.0
         
-        # Find the best match among the top 3 results
+        # Find the best match among the top results
         best_similarity = 0.0
         best_question = None
         best_answer = None
         
         # Debug information
         if st.session_state.get('debug_mode', False):
-            st.write("Top 3 matches:")
+            st.write("Top matches:")
             for i, (doc, dist) in enumerate(zip(results['documents'][0], results['distances'][0])):
                 sim = 1 - dist
                 st.write(f"{i+1}. Question: {doc}")
@@ -198,7 +194,7 @@ def find_most_similar_question(user_input, similarity_threshold=0.45):
         st.error(f"Error in find_most_similar_question: {str(e)}")
         return None, None, 0.0
 
-# Add a query preprocessing function
+# Enhance the preprocess_query function
 def preprocess_query(query):
     """Normalize and expand common variations in queries"""
     query = query.lower().strip()
@@ -221,6 +217,12 @@ def preprocess_query(query):
         'prerequisites': 'required',
         'after graduation': 'graduates',
         'when i graduate': 'graduates',
+        'job': 'career',
+        'work': 'career',
+        'employment': 'career',
+        'courses': 'classes',
+        'subjects': 'classes',
+        'topics': 'classes',
     }
     
     # Apply mappings
