@@ -1,3 +1,5 @@
+import google.generativeai as genai
+
 class GeminiModel:
     def __init__(self, api_key):
         genai.configure(api_key=api_key)
