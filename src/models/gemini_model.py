@@ -2,8 +2,14 @@ import google.generativeai as genai
 
 class GeminiModel:
     def __init__(self, api_key):
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-2.0-flash')
+        if not api_key:
+            raise ValueError("Google API key not found. Please configure it in your Streamlit secrets.")
+        
+        try:
+            genai.configure(api_key=api_key)
+            self.model = genai.GenerativeModel('gemini-2.0-flash')
+        except Exception as e:
+            raise Exception(f"Failed to initialize Gemini model: {str(e)}")
 
     def _create_faculty_prompt(self, user_input, faculty_info):
         return f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.

@@ -9,7 +9,13 @@ from src.chat.chat_processor import ChatProcessor
 @st.cache_resource
 def init_components():
     try:
-        gemini_model = GeminiModel(st.secrets["GOOGLE_API_KEY"])
+        # Get API key from Streamlit secrets
+        api_key = st.secrets.get("GOOGLE_API_KEY")
+        if not api_key:
+            st.error("Google API key not found in Streamlit secrets.")
+            st.stop()
+            
+        gemini_model = GeminiModel(api_key)
         chroma_client = ChromaDBClient()
         mongo_client = MongoDBClient(st.secrets["MONGO_CONNECTION_STRING"])
         chat_processor = ChatProcessor(gemini_model, chroma_client, mongo_client)
