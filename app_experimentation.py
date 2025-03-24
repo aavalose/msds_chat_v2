@@ -11,18 +11,11 @@ current_dir = Path(__file__).parent.absolute()
 if str(current_dir) not in sys.path:
     sys.path.append(str(current_dir))
 
-try:
-    # Try importing with relative paths
-    from .src.models.gemini_model import GeminiModel
-    from .src.database.chroma_client import ChromaDBClient
-    from .src.database.mongo_client import MongoDBClient
-    from .src.chat.chat_processor import ChatProcessor
-except ImportError:
-    # If relative imports fail, try absolute imports
-    from src.models.gemini_model import GeminiModel
-    from src.database.chroma_client import ChromaDBClient
-    from src.database.mongo_client import MongoDBClient
-    from src.chat.chat_processor import ChatProcessor
+# Remove the try-except block with relative imports and use absolute imports directly
+from src.models.gemini_model import GeminiModel
+from src.database.chroma_client import ChromaDBClient
+from src.database.mongo_client import MongoDBClient
+from src.chat.chat_processor import ChatProcessor
 
 # Initialize components
 @st.cache_resource
