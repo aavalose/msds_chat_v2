@@ -4,14 +4,14 @@ import sys
 import os
 from pathlib import Path
 
-# Get the absolute path to the directory containing this script
-current_dir = Path(__file__).parent.absolute()
+# Get the absolute path to the project root directory
+project_root = Path(__file__).parent.absolute()
 
-# Add the current directory to Python path
-if str(current_dir) not in sys.path:
-    sys.path.append(str(current_dir))
+# Add the project root to Python path
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
-# Remove the try-except block with relative imports and use absolute imports directly
+# Use direct imports (no relative imports)
 from src.models.gemini_model import GeminiModel
 from src.database.chroma_client import ChromaDBClient
 from src.database.mongo_client import MongoDBClient
