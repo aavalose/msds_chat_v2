@@ -203,7 +203,7 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         results = qa_collection.query(
             query_texts=[processed_input],
             n_results=5,
-            where={"category": category} if category and category != "Other" else None
+            where={"Category": category} if category and category != "Other" else None
         )
         
         if not results['documents'][0]:
@@ -230,6 +230,11 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
                 best_similarity = similarity
                 best_question = results['documents'][0][i]
                 best_answer = results['metadatas'][0][i]['Answer']
+        
+        # Add this debug logging
+        if st.session_state.get('debug_mode', False):
+            st.write(f"Querying with category filter: {category}")
+            st.write(f"Number of results: {len(results['documents'][0])}")
         
         return best_question, best_answer, best_similarity
             
