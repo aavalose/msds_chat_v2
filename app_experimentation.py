@@ -72,8 +72,8 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
 
         # Load QA data with more detailed error handling
         try:
-            # Add error_bad_lines=False to skip problematic rows
-            qa_df = pd.read_csv("labeled_qa.csv", on_bad_lines='warn')
+            # Change labeled_qa.csv to Questions_and_Answers.csv
+            qa_df = pd.read_csv("Questions_and_Answers.csv", on_bad_lines='warn')
             
             # Verify required columns exist
             required_columns = ['Category', 'Question', 'Answer']  # Updated order
@@ -98,7 +98,7 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
             st.success(f"Successfully loaded {len(qa_df)} QA pairs")
         except Exception as e:
             st.error(f"Error loading file: {str(e)}")
-            st.error("Please ensure labeled_qa.csv has these columns: Category, Question, Answer")
+            st.error("Please ensure Questions_and_Answers.csv has these columns: Category, Question, Answer")
             raise e
 
         return qa_collection
@@ -517,7 +517,7 @@ def main():
 # Add after imports
 def check_required_files():
     required_files = [
-        "Questions_and_Answers.csv",
+        "labeled_qa.csv",
         "faculty.json",
         "general_info.txt"
     ]
@@ -537,24 +537,24 @@ def check_required_files():
 # Add this after check_required_files()
 def verify_qa_data():
     try:
-        qa_df = pd.read_csv("Questions_and_Answers.csv")
-        required_columns = ['Question', 'Answer']
+        qa_df = pd.read_csv("labeled_qa.csv")
+        required_columns = ['Category', 'Question', 'Answer']
         
         # Check if required columns exist
         missing_columns = [col for col in required_columns if col not in qa_df.columns]
         if missing_columns:
-            st.error(f"Missing required columns in Questions_and_Answers.csv: {', '.join(missing_columns)}")
+            st.error(f"Missing required columns in labeled_qa.csv: {', '.join(missing_columns)}")
             st.stop()
             
         # Check if there's data
         if len(qa_df) == 0:
-            st.error("Questions_and_Answers.csv is empty")
+            st.error("labeled_qa.csv is empty")
             st.stop()
             
         st.success(f"Successfully loaded {len(qa_df)} QA pairs")
         return qa_df
     except Exception as e:
-        st.error(f"Error reading Questions_and_Answers.csv: {str(e)}")
+        st.error(f"Error reading labeled_qa.csv: {str(e)}")
         st.stop()
 
 # Add this call after check_required_files()
