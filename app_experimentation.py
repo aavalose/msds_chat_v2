@@ -229,7 +229,7 @@ def preprocess_query(query):
    
     # Categorize the query using Gemini
     try:
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         prompt = f"""Categorize this question into exactly ONE of the following categories:
         - Admissions: Questions about getting into the program, requirements, deadlines
         - Application: Questions about the application process, documents needed
