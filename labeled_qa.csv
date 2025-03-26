@@ -1,6 +1,6 @@
 Category,Question,Answer
-Application Process,Is the application deadline the same for international students?,Yes. This also applies to international students.
-Application Process,Are there specific formatting requirements for the statement of purpose?,We don't have any specific requirements for the statement formatting, so what you submitted is fine.
+Application Process,Is the application deadline the same for international students?,"Yes. This also applies to international students.
+Application Process,Are there specific formatting requirements for the statement of purpose?,We don't have any specific requirements for the statement formatting."
 Admission Requirements,What conditions are included in admission offers for current undergraduate students?,"The only condition there could be is completion of an in progress prerequisite, and of course, a conferral of bachelor's degree. GPA is only evaluated at the time of admission review."
 Financial Aid & Scholarships,What financial assistance options are available for graduate students?,"All admitted candidates will be considered for program scholarships, which will be detailed in the admission letter. No separate application is required. However, please note that our scholarships cover a maximum of 20% of tuition, so students will need to secure additional funding sources for the program. You can check the Program Overview and FAQs for additional information."
 Admission Requirements,Can I apply without formal prerequisite coursework?,We do prefer to see formal coursework in all three areas of prerequisites. It would be very unlikely for a candidate to be admitted if they lacked such courses in all three subject areas.
@@ -42,3 +42,6 @@ Career Outcomes,What job positions do graduates typically get?,"Data Scientist, 
 Admission Statistics,What is the typical GPA of admitted students?,The average undergraduate GPA for admitted students is 3.43
 Admission Statistics,What academic backgrounds do applicants typically have?,"The most common majors that apply are Computer Science, Data Science, Mathematics, Economics, and Statistics. However, students from all backgrounds are encouraged to apply."
 Admission Statistics,How much work experience do most applicants have?,"On average, one third of the previous cohorts have had 1 year or less of work experience with the average years worked coming to around 3.5 years."
+
+
+
