@@ -15,17 +15,8 @@ import json
 import google.generativeai as genai
 from pymongo import MongoClient
 from sklearn.metrics.pairwise import cosine_similarity
-from rouge_score import rouge_scorer
-import nltk
-from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
-import plotly.express as px
-import plotly.graph_objects as go
-
-# Download NLTK data
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
+import chromadb
+from chromadb.utils import embedding_functions
 
 # Handle missing API key safely
 GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY")
@@ -368,66 +359,8 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
         st.error(f"Error generating response: {str(e)}")
         return "I apologize, but I encountered an error while generating the response."
 
-# Retry decorator for API calls
-@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=10))
-def get_embedding(text):
-    """Get embedding with retry logic"""
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    embedding_response = model.generate_content(f"Represent this text for retrieval: {text}")
-    return np.array(embedding_response.embedding)
 
-# Calculate metrics between generated response and reference answer
-def calculate_metrics(generated_response, reference_answer):
-    if not generated_response or not reference_answer:
-        return None
-    
-    metrics = {}
-    
-    # Calculate ROUGE scores
-    try:
-        scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
-        rouge_scores = scorer.score(reference_answer, generated_response)
-        
-        metrics['rouge1_precision'] = rouge_scores['rouge1'].precision
-        metrics['rouge1_recall'] = rouge_scores['rouge1'].recall
-        metrics['rouge1_fmeasure'] = rouge_scores['rouge1'].fmeasure
-        
-        metrics['rouge2_precision'] = rouge_scores['rouge2'].precision
-        metrics['rouge2_recall'] = rouge_scores['rouge2'].recall
-        metrics['rouge2_fmeasure'] = rouge_scores['rouge2'].fmeasure
-        
-        metrics['rougeL_precision'] = rouge_scores['rougeL'].precision
-        metrics['rougeL_recall'] = rouge_scores['rougeL'].recall
-        metrics['rougeL_fmeasure'] = rouge_scores['rougeL'].fmeasure
-    except Exception as e:
-        st.warning(f"Error calculating ROUGE scores: {str(e)}")
-    
-    # Calculate BLEU score
-    try:
-        reference_tokens = nltk.word_tokenize(reference_answer.lower())
-        generated_tokens = nltk.word_tokenize(generated_response.lower())
-        
-        smoothing = SmoothingFunction().method1
-        bleu_score = sentence_bleu([reference_tokens], generated_tokens, smoothing_function=smoothing)
-        metrics['bleu'] = bleu_score
-    except Exception as e:
-        st.warning(f"Error calculating BLEU score: {str(e)}")
-    
-    # Get embeddings for cosine similarity
-    try:
-        # Get embeddings using our retry-enabled function
-        ref_embedding = get_embedding(reference_answer)
-        gen_embedding = get_embedding(generated_response)
-        
-        # Calculate cosine similarity
-        cos_sim = cosine_similarity([ref_embedding], [gen_embedding])[0][0]
-        metrics['cosine_similarity'] = float(cos_sim)
-    except Exception as e:
-        st.warning(f"Error calculating embedding cosine similarity: {str(e)}")
-    
-    # Add more metrics here if needed
-    
-    return metrics
+
 
 # Get bot response (modified to include metrics)
 def get_bot_response(user_input):
@@ -456,13 +389,6 @@ def get_bot_response(user_input):
     
     # Generate response using Gemini, passing matched Q&A if found
     bot_response = get_gemini_response(user_input, matched_question, matched_answer)
-    
-    # Calculate metrics if we have a reference answer
-    metrics = None
-    if matched_answer:
-        metrics = calculate_metrics(bot_response, matched_answer)
-        
-    return bot_response, metrics
 
 def main():
     st.title("USF MSDS Program Chatbot")
