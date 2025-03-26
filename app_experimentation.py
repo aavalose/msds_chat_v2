@@ -70,9 +70,21 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
             )
             st.info(f"Created new QA collection: {collection_name}")
 
-            # Load QA data
+            # Load QA data with more detailed error handling
             try:
-                qa_df = pd.read_csv("labeled_qa.csv")
+                # Add error_bad_lines=False to skip problematic rows
+                qa_df = pd.read_csv("labeled_qa.csv", on_bad_lines='warn')
+                
+                # Verify required columns exist
+                required_columns = ['Question', 'Answer', 'Category']
+                missing_columns = [col for col in required_columns if col not in qa_df.columns]
+                if missing_columns:
+                    raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
+                
+                # Display DataFrame info for debugging
+                if st.session_state.get('debug_mode', False):
+                    st.write("CSV columns:", qa_df.columns.tolist())
+                    st.write("First few rows:", qa_df.head())
                 
                 # Add data to the collection
                 qa_collection.add(
@@ -80,9 +92,10 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
                     documents=qa_df['Question'].tolist(),
                     metadatas=qa_df[['Answer', 'Category']].to_dict(orient='records')
                 )
-                st.success("Successfully loaded QA data")
+                st.success(f"Successfully loaded {len(qa_df)} QA pairs")
             except Exception as e:
                 st.error(f"Error loading file: {str(e)}")
+                st.error("Please ensure labeled_qa.csv has exactly these columns: Question, Answer, Category")
                 raise e
 
         return qa_collection
