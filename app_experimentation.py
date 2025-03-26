@@ -53,22 +53,22 @@ def init_chroma():
 
 # Add this function to handle collection creation and data loading
 @st.cache_resource
-def init_qa_collection(_chroma_client, _embedding_function):
+def init_qa_collection(_chroma_client, _embedding_function, collection_name="msds_program_qa_labeled"):
     try:
         # Try to get existing collection first
         try:
             qa_collection = _chroma_client.get_collection(
-                name="msds_program_qa",
+                name=collection_name,
                 embedding_function=_embedding_function
             )
-            st.success("Successfully connected to existing QA collection")
+            st.success(f"Successfully connected to existing QA collection: {collection_name}")
         except:
             # If collection doesn't exist, create it and load data
             qa_collection = _chroma_client.create_collection(
-                name="msds_program_qa",
+                name=collection_name,
                 embedding_function=_embedding_function
             )
-            st.info("Created new QA collection")
+            st.info(f"Created new QA collection: {collection_name}")
 
             # Load QA data
             try:
@@ -223,13 +223,9 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
 
 # Enhance the preprocess_query function
 def preprocess_query(query):
-    """Normalize and expand common variations in queries"""
-    # Initialize processed_query with the normalized input
     processed_query = query.lower().strip()
-   
-    # Categorize the query using Gemini
     try:
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-1.0-pro')
         prompt = f"""Categorize this question into exactly ONE of the following categories:
         - Admissions: Questions about getting into the program, requirements, deadlines
         - Application: Questions about the application process, documents needed
@@ -255,11 +251,7 @@ def preprocess_query(query):
         
         response = model.generate_content(prompt)
         category = response.text.strip()
-        
-        # Add the category as metadata
-        processed_query = f"{processed_query} [category:{category}]"
     except Exception as e:
-        # If categorization fails, set category to "Other"
         category = "Other"
         if st.session_state.get('debug_mode', False):
             st.error(f"Error categorizing query: {str(e)}")
