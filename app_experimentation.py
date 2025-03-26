@@ -72,17 +72,17 @@ def init_qa_collection(_chroma_client, _embedding_function):
 
             # Load QA data
             try:
-                qa_df = pd.read_csv("Questions_and_Answers.csv")
+                qa_df = pd.read_csv("labeled_qa.csv")
                 
                 # Add data to the collection
                 qa_collection.add(
                     ids=[str(i) for i in qa_df.index.tolist()],
                     documents=qa_df['Question'].tolist(),
-                    metadatas=qa_df[['Answer']].to_dict(orient='records')
+                    metadatas=qa_df[['Answer', 'Category']].to_dict(orient='records')
                 )
                 st.success("Successfully loaded QA data")
             except Exception as e:
-                st.error(f"Error loading Questions_and_Answers.csv: {str(e)}")
+                st.error(f"Error loading file: {str(e)}")
                 raise e
 
         return qa_collection
@@ -175,12 +175,14 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         if qa_collection.count() == 0:
             return None, None, 0.0
         
-        # Preprocess the user input
-        processed_input = preprocess_query(user_input)
+        # Preprocess the user input and get category
+        processed_input, category = preprocess_query(user_input)
         
+        # Query with filter for matching category
         results = qa_collection.query(
             query_texts=[processed_input],
-            n_results=5
+            n_results=5,
+            where={"category": category} if category and category != "Other" else None
         )
         
         if not results['documents'][0]:
@@ -194,10 +196,12 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         # Debug information
         if st.session_state.get('debug_mode', False):
             st.write("Top matches:")
+            st.write(f"Category: {category}")
             for i, (doc, dist) in enumerate(zip(results['documents'][0], results['distances'][0])):
                 sim = 1 - dist
                 st.write(f"{i+1}. Question: {doc}")
                 st.write(f"   Similarity: {sim:.3f}")
+                st.write(f"   Category: {results['metadatas'][0][i].get('category', 'Unknown')}")
         
         for i, distance in enumerate(results['distances'][0]):
             similarity = 1 - distance
@@ -216,40 +220,44 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
 def preprocess_query(query):
     """Normalize and expand common variations in queries"""
     query = query.lower().strip()
+   
+    # Categorize the query using Gemini
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        prompt = f"""Categorize this question into exactly ONE of the following categories:
+        - Admissions: Questions about getting into the program, requirements, deadlines
+        - Application: Questions about the application process, documents needed
+        - Career: Questions about job prospects, career paths, industry outcomes
+        - Classes: Questions about specific courses, curriculum, class schedule, workload
+        - Faculty: Questions about professors, instructors, program directors, staff
+        - Graduation: Questions about graduation requirements, ceremonies, timelines
+        - Program: Questions about program structure, cohorts, learning outcomes
+        - Salary: Questions about expected income, salary ranges, compensation
+        - Time: Questions about program duration, time commitment, schedules
+        - Tuition: Questions about costs, financial aid, scholarships, payment plans
+        - Other: Questions that don't fit into the above categories
+        
+        Examples:
+        Question: "What GRE score do I need?" -> Admissions
+        Question: "How much is tuition per semester?" -> Tuition
+        Question: "Who teaches the machine learning course?" -> Faculty
+        Question: "How long does it take to complete the program?" -> Time
+        Question: "What programming languages will I learn?" -> Program
+        Your question: "{query}"
+        
+        Return only the category name, nothing else."""
+        
+        response = model.generate_content(prompt)
+        category = response.text.strip()
+        
+        # Add the category as metadata
+        processed_query = f"{processed_query} [category:{category}]"
+    except Exception as e:
+        # If categorization fails, continue without it
+        if st.session_state.get('debug_mode', False):
+            st.error(f"Error categorizing query: {str(e)}")
     
-    # Define common semantic equivalents
-    semantic_mappings = {
-        'earn': 'salary',
-        'earning': 'salary',
-        'earnings': 'salary',
-        'make': 'salary',
-        'pay': 'salary',
-        'income': 'salary',
-        'cost': 'tuition',
-        'price': 'tuition',
-        'expense': 'tuition',
-        'duration': 'time',
-        'length': 'time',
-        'requirements': 'required',
-        'need': 'required',
-        'prerequisites': 'required',
-        'after graduation': 'graduates',
-        'when i graduate': 'graduates',
-        'job': 'career',
-        'work': 'career',
-        'employment': 'career',
-        'courses': 'classes',
-        'subjects': 'classes',
-        'topics': 'classes',
-    }
-    
-    # Apply mappings
-    processed_query = query
-    for key, value in semantic_mappings.items():
-        if key in processed_query:
-            processed_query = processed_query.replace(key, value)
-    
-    return processed_query
+    return processed_query, category
 
 # Generate response using Gemini
 def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=None):
@@ -257,8 +265,11 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
         # Load general information
         general_info = open('general_info.txt', 'r').read()
         
+        # Process the query to get category
+        processed_query, category = preprocess_query(user_input)
+        
         # Check if the query is about faculty
-        if "faculty" in user_input.lower() or "professor" in user_input.lower() or "instructor" in user_input.lower():
+        if "faculty" in user_input.lower() or "professor" in user_input.lower() or "instructor" in user_input.lower() or category == "Faculty":
             prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
             
             A student has asked about faculty: "{user_input}"
@@ -275,34 +286,50 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
             3. Addressing their specific question directly
             4. Using clear and accessible language
             """
+        # Check if the query is about courses
+        elif "course" in user_input.lower() or "class" in user_input.lower() or "curriculum" in user_input.lower() or category == "Classes":
+            prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
+            
+            A student has asked about courses: "{user_input}"
+            
+            Please use the following course information to answer their question:
+            
+            ```
+            {open('courses.json', 'r').read()}
+            ```
+            
+            Please respond in a natural, conversational way while:
+            1. Providing accurate information about the MSDS program courses and curriculum
+            2. Being friendly and helpful
+            3. Addressing their specific question directly
+            4. Using clear and accessible language
+            """
         else:
             if retrieved_question and retrieved_answer and st.session_state.debug_similarity >= 0.3:
-                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program. 
+                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
                 
                 User question: "{user_input}"
+                Category: {category}
                 
-                I found this similar question in our database (similarity: {st.session_state.debug_similarity:.2f}):
+                Official reference:
                 Question: "{retrieved_question}"
-                Official answer: "{retrieved_answer}"
-                
-                Additional context:
-                ```
-                {general_info}
-                ```
+                Answer: "{retrieved_answer}"
                 
                 Instructions:
-                1. The matched question/answer pair has a similarity score of {st.session_state.debug_similarity:.2f}
-                2. If the similarity is high (>0.6), prioritize the official answer
-                3. If the similarity is moderate (0.45-0.6), blend the official answer with general information
-                4. Always maintain accuracy and be explicit about any uncertainty
-                5. Use a friendly, conversational tone
-                6. Address the specific aspects of the user's question
+                1. If the official answer contains specific facts, numbers, or requirements, preserve them exactly
+                2. Focus on answering the user's specific question
+                3. Use a conversational tone while maintaining accuracy
+                4. If any information is missing or unclear, acknowledge it
                 
-                Please provide a complete response that best answers the user's specific question."""
+                Additional context:
+                {general_info}
+                
+                Please provide your response:"""
             else:
                 prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
                 
                 User question: "{user_input}"
+                Category: {category}
                 
                 Please use this general information to help answer their question:
                 ```
@@ -332,6 +359,9 @@ def get_bot_response(user_input):
     if not user_input.strip():
         return "Please enter a question."
     
+    # Process the query to get category
+    processed_query, category = preprocess_query(user_input)
+    
     # First try to find a similar question
     matched_question, matched_answer, similarity = find_most_similar_question(user_input)
     
@@ -339,10 +369,12 @@ def get_bot_response(user_input):
     st.session_state.debug_similarity = similarity
     st.session_state.debug_matched_question = matched_question if matched_question else "No match found"
     st.session_state.debug_matched_answer = matched_answer if matched_answer else "No answer found"
+    st.session_state.debug_category = category if category else "No category found"
     
     # Add debug output
     if st.session_state.get('debug_mode', False):
         st.write("Debug Info:")
+        st.write(f"Category: {category}")
         st.write(f"Similarity Score: {similarity:.3f}")
         st.write(f"Matched Question: {matched_question}")
         st.write(f"Matched Answer: {matched_answer}")
@@ -355,7 +387,7 @@ def main():
     
     # Initialize session state variables
     for key in ['debug_matched_question', 'debug_matched_answer', 'debug_similarity', 
-                'chat_history', 'session_id', 'conversation_ids']:
+                'chat_history', 'session_id', 'conversation_ids', 'debug_category']:
         if key not in st.session_state:
             st.session_state[key] = "" if key not in ['chat_history', 'conversation_ids'] else []
             if key == 'debug_similarity':
@@ -450,6 +482,7 @@ def main():
         st.session_state.debug_mode = st.checkbox("Enable Debug Mode", value=False)
         if st.session_state.debug_mode:
             st.write("Last Query Debug Info:")
+            st.write(f"Category: {st.session_state.debug_category}")
             st.write(f"Similarity Score: {st.session_state.debug_similarity:.3f}")
             st.write(f"Matched Question: {st.session_state.debug_matched_question}")
             st.write(f"Matched Answer: {st.session_state.debug_matched_answer}")
