@@ -224,7 +224,8 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
 # Enhance the preprocess_query function
 def preprocess_query(query):
     """Normalize and expand common variations in queries"""
-    query = query.lower().strip()
+    # Initialize processed_query with the normalized input
+    processed_query = query.lower().strip()
    
     # Categorize the query using Gemini
     try:
@@ -258,7 +259,8 @@ def preprocess_query(query):
         # Add the category as metadata
         processed_query = f"{processed_query} [category:{category}]"
     except Exception as e:
-        # If categorization fails, continue without it
+        # If categorization fails, set category to "Other"
+        category = "Other"
         if st.session_state.get('debug_mode', False):
             st.error(f"Error categorizing query: {str(e)}")
     
