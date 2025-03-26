@@ -1,0 +1,142 @@
+{
+    "courses": [
+        {
+            "course_id": "MSDS 501",
+            "course_name": "Computation for Data Science",
+            "units": 1,
+            "description": "An intense review of Python programming and an introduction to a variety of computational problems. Topics include functions, recursion, loops, list comprehensions, elementary data structures, reading and writing files, image processing, and gradient descent optimization."
+        },
+        {
+            "course_id": "MSDS 504",
+            "course_name": "Review Probability and Stats",
+            "units": 1,
+            "description": "A review of random variables, moments, and maximum likelihood estimation; elementary hypothesis tests and con dence intervals; Kolmogorov’s axioms, independence, the Law of Total Probability, and Bayes’ Theorem; and multivariate distributions, conditional expectation, and Bayesian estimation."
+        },
+        {
+            "course_id": "MSDS 593",
+            "course_name": "EDA and Visualization",
+            "units": 1,
+            "description": "This course uses statistical computing languages to provide a thorough introduction to exploring and visualizing data using charts, graphics and interactive dashboards. Other topics include advanced statistic language functionality and using statistical measures to communicate data concepts."
+        },
+        {
+            "course_id": "MSDS 601",
+            "course_name": "Linear Regression Analysis",
+            "units": 2,
+            "description": "This course is an intensive introduction to linear models, with a focus on both principles and practice. Examples from finance, business, marketing and economics are emphasized. Large data sets are used frequently. Topics include simple and multiple linear regression; weighted, generalized, and outlier-resistant least squares regression; interaction terms; transformations; regression diagnostics and addressing violations of regression assumptions; variable selection techniques like backward elimination and forward selection, and logit/probit models. Statistical packages include R and SAS."
+        },
+        {
+            "course_id": "MSDS 603",
+            "course_name": "Data Science Entrepreneurship",
+            "units": 2,
+            "description": "In this course, students develop a minimum viable data science product. Students propose business ideas, create a full stack application, measure business performance using web analytics, and develop a pitch deck."
+        },
+        {
+            "course_id": "MSDS 604",
+            "course_name": "Time Series Analysis",
+            "units": 1,
+            "description": "This course is an intensive introduction to the existing methods for time series forecasting. The topics include decomposition, moving average smoothing, forecasting with ARIMA, exponential smoothing, model selection methods including train-test split and cross-validation, and a broad introduction to more advanced developments. The primary language used in this course will be Python."
+        },
+        {
+            "course_id": "MSDS 605",
+            "course_name": "Data Science Practicum I",
+            "units": 1,
+            "description": "The data science practicum is a data science project sponsored by a company and mentored by a faculty member, allowing students to apply skills alongside industry partners to gain experience, and reconcile mathematical or computational theory with business practice in an apprenticeship style of learning."
+        },
+        {
+            "course_id": "MSDS 625",
+            "course_name": "Data Science Practicum II",
+            "units": 1,
+            "description": "The data science practicum is a data science project sponsored by a company and mentored by a faculty member, allowing students to apply skills alongside industry partners to gain experience, and reconcile mathematical or computational theory with business practice in an apprenticeship style of learning."
+        },
+        {
+            "course_id": "MSDS 627",
+            "course_name": "Data Science Practicum III",
+            "units": 1,
+            "description": "The data science practicum is a data science project sponsored by a company and mentored by a faculty member, allowing students to apply skills alongside industry partners to gain experience, and reconcile mathematical or computational theory with business practice in an apprenticeship style of learning."
+        },
+        {
+            "course_id": "MSDS 632",
+            "course_name": "Data Science Practicum IV",
+            "units": 1,
+            "description": "The data science practicum is a data science project sponsored by a company and mentored by a faculty member, allowing students to apply skills alongside industry partners to gain experience, and reconcile mathematical or computational theory with business practice in an apprenticeship style of learning."
+        },
+        {
+            "course_id": "MSDS 610",
+            "course_name": "Communication for Data Science",
+            "units": 1,
+            "description": "In this course, students will learn essential concepts related to business communication and, in particular, the communication of technical material both spoken and written. Students will learn how to competently create, organize, and support ideas in their business presentations. They will deliver both planned and extemporaneous public presentations on topics related to data analysis and business, both individually and in groups. This course will emphasize the creation of presentation slides and other supporting materials, the correct presentation and organization of data analysis results, and listening to and critically evaluating presentations made by other students."
+        },
+        {
+            "course_id": "MSDS 621",
+            "course_name": "Intro to Machine Learning",
+            "units": 2,
+            "description": "This course focuses on the implementation and application of supervised and unsupervised machine learning algorithms using Python and related libraries. Students learn to properly select features and evaluate model accuracy. Models include at least kNN, naive Bayes, random forests, and clustering."
+        },
+        {
+            "course_id": "MSDS 629",
+            "course_name": "Experiments in Data Science",
+            "units": 2,
+            "description": "A survey of statistical methods and best practices surrounding the design and analysis of experiments in the field of data science. Topics covered include A/B tests, A/B/n tests, factorial and fractional factorial designs, response surface methodology, and multi-armed bandit experiments."
+        },
+        {
+            "course_id": "MSDS 630",
+            "course_name": "Advanced Machine Learning",
+            "units": 2,
+            "description": "Students study advanced machine learning algorithms, including boosting, collaborative filtering, support vector machines, expectation maximization for Gaussian mixture models, hidden Markov models, and deep learning neural networks. Teams of students carry out a large-scale real-world project."
+        },
+        {
+            "course_id": "MSDS 631",
+            "course_name": "Special Topics in Data Science",
+            "units": "1 to 2",
+            "description": "Topics will be selected from deep learning, natural language processing (NLP), reinforcement learning, transfer learning, advanced data engineering, etc."
+        },
+        {
+            "course_id": "MSDS 633",
+            "course_name": "Ethics in Data Science",
+            "units": 1,
+            "description": "This course introduces ethical and privacy problems in data collection, algorithms, and evaluation. Students engage with the social and ethical issues in data science, reflect on these issues, and evaluate possible solutions."
+        },
+        {
+            "course_id": "MSDS 634",
+            "course_name": "Deep Learning",
+            "units": 2,
+            "description": "This course introduces students to a range of topics and concepts in deep learning including the foundation of neural networks, most common neural network architectures such as MLP, convolutional neural networks, and recurrent neural networks. Advanced topics such as generative models, geometric deep learning, and graph neural networks are also covered. Students learn practical aspects of deep learning and using PyTorch for creation, training, and inference of various networks. Intuition, mathematical notions, and practical aspects are emphasized throughout the course to build a solid theoretical and practical foundation of deep learning."
+        },
+        {
+            "course_id": "MSDS 689",
+            "course_name": "Data Structures and Algorithms",
+            "units": 1,
+            "description": "This course gives students a comprehensive view of data structures and algorithms. While students have already examined a number of data structures, this course provides a more in-depth study. The critical data structures covered are lists, linked lists, trees, graphs, hash tables, and tries."
+        },
+        {
+            "course_id": "MSDS 691",
+            "course_name": "Relational Databases",
+            "units": 2,
+            "description": "This course aims to develop a strong understanding of relational database concepts and provide practical experience in designing, querying, and optimizing databases. The topics covered in this course include Entity-Relationship (ER) models, Structured Query Language (SQL), database and schema design, schema refinement and normalization, database performance and indexing, transactions, and relational databases on cloud computing."
+        },
+        {
+            "course_id": "MSDS 692",
+            "course_name": "Data Acquisition",
+            "units": 2,
+            "description": "This lab-heavy Python class teaches students how to collect, merge, and clean data from multiple sources and organize it into appropriate data structures. Topics include XML, JSON, HTML, REST APIs, scraping data from websites, and using Selenium to extract data from JavaScript-based pages."
+        },
+        {
+            "course_id": "MSDS 694",
+            "course_name": "Distributed Computing",
+            "units": 1,
+            "description": "Students learn the MapReduce technique of distributed computing. The fundamental principles are first learned with the Python multiprocessing library, in which students build their own concurrent MapReduce framework. Considerable time is spent exploring practical applications of mapping and reducing for various types of real-world data. Distributed statistical and machine learning approaches are explored. Finally, Hadoop streaming MapReduce jobs (in Python) are launched on AWS-EMR."
+        },
+        {
+            "course_id": "MSDS 697",
+            "course_name": "Distributed Data Systems",
+            "units": 2,
+            "description": "Students study key-value store through NoSQL with a focus on using MongoDB (including, possibly, pymongo, the Python Mongo API). Applications are used to motivate a disciplined approach to database programming with MongoDB, including the construction of indices."
+        },
+        {
+            "course_id": "MSDS 699",
+            "course_name": "Machine Learning Laboratory",
+            "units": 1,
+            "description": "This is a lab course associated with MSDS 621. MSDS 621 focuses on algorithmic development of models, whereas in this lab students learn to use pre-existing implementations of these machine learning models and focus on feature engineering, validation, testing, and assessment."
+        }
+    ]
+}
