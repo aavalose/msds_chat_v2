@@ -72,8 +72,8 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
 
         # Load QA data with more detailed error handling
         try:
-            # Change labeled_qa.csv to Questions_and_Answers.csv
-            qa_df = pd.read_csv("Questions_and_Answers.csv", on_bad_lines='warn')
+            # Change to labeled_qa.csv
+            qa_df = pd.read_csv("labeled_qa.csv", on_bad_lines='warn')
             
             # Verify required columns exist
             required_columns = ['Category', 'Question', 'Answer']  # Updated order
@@ -98,7 +98,7 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
             st.success(f"Successfully loaded {len(qa_df)} QA pairs")
         except Exception as e:
             st.error(f"Error loading file: {str(e)}")
-            st.error("Please ensure Questions_and_Answers.csv has these columns: Category, Question, Answer")
+            st.error("Please ensure labeled_qa.csv has these columns: Category, Question, Answer")
             raise e
 
         return qa_collection
