@@ -55,48 +55,51 @@ def init_chroma():
 @st.cache_resource
 def init_qa_collection(_chroma_client, _embedding_function, collection_name="msds_program_qa_labeled"):
     try:
-        # Try to get existing collection first
+        # Delete existing collection if it exists
         try:
-            qa_collection = _chroma_client.get_collection(
-                name=collection_name,
-                embedding_function=_embedding_function
-            )
-            st.success(f"Successfully connected to existing QA collection: {collection_name}")
-        except:
-            # If collection doesn't exist, create it and load data
-            qa_collection = _chroma_client.create_collection(
-                name=collection_name,
-                embedding_function=_embedding_function
-            )
-            st.info(f"Created new QA collection: {collection_name}")
+            _chroma_client.delete_collection(name=collection_name)
+            st.info(f"Deleted existing collection: {collection_name}")
+        except Exception as e:
+            # Collection might not exist, which is fine
+            pass
+            
+        # Create new collection
+        qa_collection = _chroma_client.create_collection(
+            name=collection_name,
+            embedding_function=_embedding_function
+        )
+        st.info(f"Created new QA collection: {collection_name}")
 
-            # Load QA data with more detailed error handling
-            try:
-                # Add error_bad_lines=False to skip problematic rows
-                qa_df = pd.read_csv("labeled_qa.csv", on_bad_lines='warn')
-                
-                # Verify required columns exist
-                required_columns = ['Question', 'Answer', 'Category']
-                missing_columns = [col for col in required_columns if col not in qa_df.columns]
-                if missing_columns:
-                    raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
-                
-                # Display DataFrame info for debugging
-                if st.session_state.get('debug_mode', False):
-                    st.write("CSV columns:", qa_df.columns.tolist())
-                    st.write("First few rows:", qa_df.head())
-                
-                # Add data to the collection
-                qa_collection.add(
-                    ids=[str(i) for i in qa_df.index.tolist()],
-                    documents=qa_df['Question'].tolist(),
-                    metadatas=qa_df[['Answer', 'Category']].to_dict(orient='records')
-                )
-                st.success(f"Successfully loaded {len(qa_df)} QA pairs")
-            except Exception as e:
-                st.error(f"Error loading file: {str(e)}")
-                st.error("Please ensure labeled_qa.csv has exactly these columns: Question, Answer, Category")
-                raise e
+        # Load QA data with more detailed error handling
+        try:
+            # Add error_bad_lines=False to skip problematic rows
+            qa_df = pd.read_csv("labeled_qa.csv", on_bad_lines='warn')
+            
+            # Verify required columns exist
+            required_columns = ['Category', 'Question', 'Answer']  # Updated order
+            missing_columns = [col for col in required_columns if col not in qa_df.columns]
+            if missing_columns:
+                raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
+            
+            # Display DataFrame info for debugging
+            if st.session_state.get('debug_mode', False):
+                st.write("CSV columns:", qa_df.columns.tolist())
+                st.write("First few rows:", qa_df.head())
+            
+            # Add data to the collection with correct column order
+            qa_collection.add(
+                ids=[str(i) for i in qa_df.index.tolist()],
+                documents=qa_df['Question'].tolist(),  # Question is still the document
+                metadatas=[{
+                    'Answer': row['Answer'],
+                    'Category': row['Category']
+                } for _, row in qa_df.iterrows()]
+            )
+            st.success(f"Successfully loaded {len(qa_df)} QA pairs")
+        except Exception as e:
+            st.error(f"Error loading file: {str(e)}")
+            st.error("Please ensure labeled_qa.csv has these columns: Category, Question, Answer")
+            raise e
 
         return qa_collection
     except Exception as e:
