@@ -222,7 +222,7 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
                 sim = 1 - dist
                 st.write(f"{i+1}. Question: {doc}")
                 st.write(f"   Similarity: {sim:.3f}")
-                st.write(f"   Category: {results['metadatas'][0][i].get('category', 'Unknown')}")
+                st.write(f"   Category: {results['metadatas'][0][i].get('Category', 'Unknown')}")
         
         for i, distance in enumerate(results['distances'][0]):
             similarity = 1 - distance
