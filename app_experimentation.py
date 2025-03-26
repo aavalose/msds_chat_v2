@@ -243,24 +243,30 @@ def preprocess_query(query):
     try:
         model = genai.GenerativeModel('gemini-2.0-flash')
         prompt = f"""Categorize this question into exactly ONE of the following categories:
-        - Admissions: Questions about getting into the program, requirements, deadlines
-        - Application: Questions about the application process, documents needed
-        - Career: Questions about job prospects, career paths, industry outcomes
-        - Classes: Questions about specific courses, curriculum, class schedule, workload
-        - Faculty: Questions about professors, instructors, program directors, staff
-        - Graduation: Questions about graduation requirements, ceremonies, timelines
-        - Program: Questions about program structure, cohorts, learning outcomes
-        - Salary: Questions about expected income, salary ranges, compensation
-        - Time: Questions about program duration, time commitment, schedules
-        - Tuition: Questions about costs, financial aid, scholarships, payment plans
+        - Admission Requirements: Questions about prerequisites, qualifications, and requirements for admission
+        - Admission Statistics: Questions about acceptance rates, demographics, and applicant statistics
+        - Application Process: Questions about how to apply, application components, and deadlines
+        - Career Outcomes: Questions about job placement, career paths, and employment outcomes
+        - Curriculum: Questions about courses, content, and academic requirements
+        - Enrollment Process: Questions about enrollment procedures after acceptance
+        - Faculty & Research: Questions about professors, instructors, and their research
+        - Financial Aid & Scholarships: Questions about funding options and financial assistance
+        - International Students: Questions specific to international applicant needs
+        - Practicum Experience: Questions about practical projects and industry experience
+        - Program Overview: Questions about general program information and structure
+        - Program Preparation: Questions about how to prepare for the program
+        - Program Structure: Questions about program format, timeline, and organization
+        - Student Employment: Questions about working while in the program
+        - Student Services: Questions about support services and resources for students
+        - Tuition & Costs: Questions about program costs, fees, and payment options
         - Other: Questions that don't fit into the above categories
         
         Examples:
-        Question: "What GRE score do I need?" -> Admissions
-        Question: "How much is tuition per semester?" -> Tuition
-        Question: "Who teaches the machine learning course?" -> Faculty
-        Question: "How long does it take to complete the program?" -> Time
-        Question: "What programming languages will I learn?" -> Program
+        Question: "What GRE score do I need?" -> Admission Requirements
+        Question: "How much is tuition per semester?" -> Tuition & Costs
+        Question: "Who teaches the machine learning course?" -> Faculty & Research
+        Question: "How long does it take to complete the program?" -> Program Structure
+        Question: "What programming languages will I learn?" -> Curriculum
         Your question: "{query}"
         
         Return only the category name, nothing else."""
