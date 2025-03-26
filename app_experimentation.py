@@ -391,6 +391,9 @@ def get_bot_response(user_input):
     
     # Generate response using Gemini, passing matched Q&A if found
     bot_response = get_gemini_response(user_input, matched_question, matched_answer)
+    
+    # Return the response
+    return bot_response
 
 def main():
     st.title("USF MSDS Program Chatbot")
