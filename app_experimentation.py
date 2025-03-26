@@ -241,7 +241,7 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
 def preprocess_query(query):
     processed_query = query.lower().strip()
     try:
-        model = genai.GenerativeModel('gemini-1.0-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         prompt = f"""Categorize this question into exactly ONE of the following categories:
         - Admissions: Questions about getting into the program, requirements, deadlines
         - Application: Questions about the application process, documents needed
