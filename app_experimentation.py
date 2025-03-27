@@ -313,7 +313,7 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
             4. Using clear and accessible language
             """
         # Check if the query is about courses
-        elif "course" in user_input.lower() or "class" in user_input.lower() or "curriculum" in user_input.lower() or category == "Classes":
+        elif "course" in user_input.lower() or "class" in user_input.lower() or "curriculum" in user_input.lower() or category == "Curriculum":
             prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
             
             A student has asked about courses: "{user_input}"
