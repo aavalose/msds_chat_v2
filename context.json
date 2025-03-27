@@ -110,6 +110,52 @@
       "experience": "prior data science experience beneficial but not required",
       "prerequisites": "must complete before program start"
     },
+    "Faculty & Research": {
+      "leadership": {
+        "program_director": {
+          "name": "Shan Wang",
+          "email": "swang151@usfca.edu",
+          "description": "Dr. Shan Wang is the program director and an assistant professor in the MS in Data Science program at the University of San Francisco.",
+          "research_interests": ["nonparametric statistics", "biomedical data science", "data-driven methods for social and environmental problems"],
+          "education": "PhD, Statistics, Purdue University, 2015; BS, Mathematics, Fudan University, 2009"
+        },
+        "administrative_director": {
+          "name": "Aija Tapaninen",
+          "email": "atapaninen@usfca.edu",
+          "description": "Aija Tapaninen has been with USF since 2014.",
+          "education": "MBA, University of San Francisco, 2017; MA in Organization & Leadership, University of San Francisco, 2010"
+        }
+      },
+      "full_time_faculty": [
+        {
+          "name": "David Guy Brizan",
+          "expertise": ["Speech Processing", "Applications of Machine Learning"],
+          "email": "dgbrizan@usfca.edu"
+        },
+        {
+          "name": "Yannet Interian",
+          "expertise": ["machine learning", "deep learning", "medical data"],
+          "email": "yinterian@usfca.edu"
+        },
+        {
+          "name": "James Wilson",
+          "expertise": ["computational statistics", "random graph theory", "machine learning"],
+          "email": "jdwilson4@usfca.edu"
+        }
+      ],
+      "part_time_faculty": [
+        {
+          "name": "Sundar Dorai-Raj",
+          "expertise": ["A/B testing", "statistical modeling", "machine learning"],
+          "email": "sdorairaj@usfca.edu"
+        },
+        {
+          "name": "Mark Graves",
+          "expertise": ["Artificial Intelligence", "Natural Language Processing"],
+          "email": "mgraves@usfca.edu"
+        }
+      ]
+    },
     "Student Employment": {
       "assistantships": "none available",
       "outside_work": "not recommended due to program intensity",
@@ -122,61 +168,7 @@
         "waiver": "available with proof of comparable insurance"
       }
     },
-    "Practicum Experience": {
-      "structure": {
-        "duration": "9 months",
-        "weekly_commitment": "16 hours",
-        "schedule": "two days per week",
-        "start_date": "mid-October"
-      },
-      "projects": {
-        "company_participation": "~50 companies annually",
-        "selection": "students form teams and rank preferences",
-        "compensation": "may be paid or unpaid",
-        "mentorship": [
-          "faculty advisors",
-          "company professionals"
-        ]
-      },
-      "partner_categories": {
-        "tech": ["Facebook", "Reddit", "Pocket Gems", "Metaphor Data"],
-        "financial": ["BlackRock", "First Republic Bank", "Freedom Financial Network"],
-        "healthcare": ["Stanford Medicine", "UCSF", "Propeller Health"],
-        "sports": ["Golden State Warriors", "New York Mets"],
-        "nonprofit": ["ACLU", "Environmental Defense Fund", "The Nature Conservancy"]
-      }
-    },
-    "Career Outcomes": {
-      "salaries": {
-        "median_base_california": 147500,
-        "median_base_international": 148400,
-        "average_signing_bonus": 24225
-      },
-      "job_titles": [
-        "Data Scientist",
-        "Machine Learning Engineer",
-        "Data Engineer",
-        "Software Engineer",
-        "Senior Data Scientist",
-        "AI Associate",
-        "AI/ML Specialist"
-      ]
-    },
-    "Admission Statistics": {
-      "average_gpa": 3.43,
-      "common_majors": [
-        "Computer Science",
-        "Data Science",
-        "Mathematics",
-        "Economics",
-        "Statistics"
-      ],
-      "work_experience": {
-        "average_years": 3.5,
-        "distribution": "one-third have 1 year or less"
-      }
-    },
-    "courses": {
+    "Curriculum": {
       "core_programming": [
         {
           "course_id": "MSDS 501",
@@ -304,50 +296,59 @@
         }
       ]
     },
-    "faculty": {
-      "leadership": {
-        "program_director": {
-          "name": "Shan Wang",
-          "email": "swang151@usfca.edu",
-          "description": "Dr. Shan Wang is the program director and an assistant professor in the MS in Data Science program at the University of San Francisco.",
-          "research_interests": ["nonparametric statistics", "biomedical data science", "data-driven methods for social and environmental problems"],
-          "education": "PhD, Statistics, Purdue University, 2015; BS, Mathematics, Fudan University, 2009"
-        },
-        "administrative_director": {
-          "name": "Aija Tapaninen",
-          "email": "atapaninen@usfca.edu",
-          "description": "Aija Tapaninen has been with USF since 2014.",
-          "education": "MBA, University of San Francisco, 2017; MA in Organization & Leadership, University of San Francisco, 2010"
-        }
+    "Practicum Experience": {
+      "structure": {
+        "duration": "9 months",
+        "weekly_commitment": "16 hours",
+        "schedule": "two days per week",
+        "start_date": "mid-October"
       },
-      "full_time_faculty": [
-        {
-          "name": "David Guy Brizan",
-          "expertise": ["Speech Processing", "Applications of Machine Learning"],
-          "email": "dgbrizan@usfca.edu"
-        },
-        {
-          "name": "Yannet Interian",
-          "expertise": ["machine learning", "deep learning", "medical data"],
-          "email": "yinterian@usfca.edu"
-        },
-        {
-          "name": "James Wilson",
-          "expertise": ["computational statistics", "random graph theory", "machine learning"],
-          "email": "jdwilson4@usfca.edu"
-        }
-      ],
-      "part_time_faculty": [
-        {
-          "name": "Sundar Dorai-Raj",
-          "expertise": ["A/B testing", "statistical modeling", "machine learning"],
-          "email": "sdorairaj@usfca.edu"
-        },
-        {
-          "name": "Mark Graves",
-          "expertise": ["Artificial Intelligence", "Natural Language Processing"],
-          "email": "mgraves@usfca.edu"
-        }
+      "projects": {
+        "company_participation": "~50 companies annually",
+        "selection": "students form teams and rank preferences",
+        "compensation": "may be paid or unpaid",
+        "mentorship": [
+          "faculty advisors",
+          "company professionals"
+        ]
+      },
+      "partner_categories": {
+        "tech": ["Facebook", "Reddit", "Pocket Gems", "Metaphor Data"],
+        "financial": ["BlackRock", "First Republic Bank", "Freedom Financial Network"],
+        "healthcare": ["Stanford Medicine", "UCSF", "Propeller Health"],
+        "sports": ["Golden State Warriors", "New York Mets"],
+        "nonprofit": ["ACLU", "Environmental Defense Fund", "The Nature Conservancy"]
+      }
+    },
+    "Career Outcomes": {
+      "salaries": {
+        "median_base_california": 147500,
+        "median_base_international": 148400,
+        "average_signing_bonus": 24225
+      },
+      "job_titles": [
+        "Data Scientist",
+        "Machine Learning Engineer",
+        "Data Engineer",
+        "Software Engineer",
+        "Senior Data Scientist",
+        "AI Associate",
+        "AI/ML Specialist"
       ]
-    }
+    },
+    "Admission Statistics": {
+      "average_gpa": 3.43,
+      "common_majors": [
+        "Computer Science",
+        "Data Science",
+        "Mathematics",
+        "Economics",
+        "Statistics"
+      ],
+      "work_experience": {
+        "average_years": 3.5,
+        "distribution": "one-third have 1 year or less"
+      }
+    },
+    "Other": {}
   }
