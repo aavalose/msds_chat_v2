@@ -196,14 +196,15 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         if qa_collection.count() == 0:
             return None, None, 0.0
         
-        # Preprocess the user input and get category
-        processed_input, category = preprocess_query(user_input)
+        # Update to use the new return values
+        processed_input, primary_category, all_categories = preprocess_query(user_input)
         
         # Query with filter for matching category
         results = qa_collection.query(
             query_texts=[processed_input],
             n_results=5,
-            where={"Category": category} if category and category != "Other" else None
+            # Try all relevant categories
+            where={"Category": {"$in": all_categories}} if "Other" not in all_categories else None
         )
         
         if not results['documents'][0]:
@@ -217,7 +218,7 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         # Debug information
         if st.session_state.get('debug_mode', False):
             st.write("Top matches:")
-            st.write(f"Category: {category}")
+            st.write(f"Category: {primary_category}")
             for i, (doc, dist) in enumerate(zip(results['documents'][0], results['distances'][0])):
                 sim = 1 - dist
                 st.write(f"{i+1}. Question: {doc}")
@@ -233,7 +234,7 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         
         # Add this debug logging
         if st.session_state.get('debug_mode', False):
-            st.write(f"Querying with category filter: {category}")
+            st.write(f"Querying with category filter: {primary_category}")
             st.write(f"Number of results: {len(results['documents'][0])}")
         
         return best_question, best_answer, best_similarity
@@ -373,8 +374,8 @@ def get_bot_response(user_input):
     if not user_input.strip():
         return "Please enter a question.", None
     
-    # Process the query to get category
-    processed_query, category = preprocess_query(user_input)
+    # Update to use the new return values
+    processed_query, primary_category, all_categories = preprocess_query(user_input)
     
     # First try to find a similar question
     matched_question, matched_answer, similarity = find_most_similar_question(user_input)
@@ -383,12 +384,12 @@ def get_bot_response(user_input):
     st.session_state.debug_similarity = similarity
     st.session_state.debug_matched_question = matched_question if matched_question else "No match found"
     st.session_state.debug_matched_answer = matched_answer if matched_answer else "No answer found"
-    st.session_state.debug_category = category if category else "No category found"
+    st.session_state.debug_category = f"{primary_category} (Related: {', '.join(all_categories[1:])})" if len(all_categories) > 1 else primary_category
     
     # Add debug output
     if st.session_state.get('debug_mode', False):
         st.write("Debug Info:")
-        st.write(f"Category: {category}")
+        st.write(f"Category: {primary_category}")
         st.write(f"Similarity Score: {similarity:.3f}")
         st.write(f"Matched Question: {matched_question}")
         st.write(f"Matched Answer: {matched_answer}")
