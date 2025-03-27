@@ -194,7 +194,7 @@ def update_feedback(conversation_id, feedback):
 def find_most_similar_question(user_input, similarity_threshold=0.3):
     try:
         if qa_collection.count() == 0:
-            return None, None, 0.0
+            return [], [], 0.0
         
         # Update to use the new return values
         processed_input, primary_category, all_categories = preprocess_query(user_input)
@@ -202,46 +202,41 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         # Query with filter for matching category
         results = qa_collection.query(
             query_texts=[processed_input],
-            n_results=5,
-            # Try all relevant categories
+            n_results=5,  # Get top 5 results
             where={"Category": {"$in": all_categories}} if "Other" not in all_categories else None
         )
         
         if not results['documents'][0]:
-            return None, None, 0.0
+            return [], [], 0.0
         
-        # Find the best match among the top results
+        # Collect all questions and answers that meet the threshold
+        matching_questions = []
+        matching_answers = []
         best_similarity = 0.0
-        best_question = None
-        best_answer = None
+        
+        for i, distance in enumerate(results['distances'][0]):
+            similarity = 1 - distance
+            if similarity >= similarity_threshold:
+                matching_questions.append(results['documents'][0][i])
+                matching_answers.append(results['metadatas'][0][i]['Answer'])
+                best_similarity = max(best_similarity, similarity)
         
         # Debug information
         if st.session_state.get('debug_mode', False):
             st.write("Top matches:")
-            st.write(f"Category: {primary_category}")
-            for i, (doc, dist) in enumerate(zip(results['documents'][0], results['distances'][0])):
+            st.write(f"Categories: {all_categories}")
+            st.write(f"Number of matching questions: {len(matching_questions)}")
+            for i, (q, a, dist) in enumerate(zip(matching_questions, matching_answers, results['distances'][0])):
                 sim = 1 - dist
-                st.write(f"{i+1}. Question: {doc}")
+                st.write(f"{i+1}. Question: {q}")
                 st.write(f"   Similarity: {sim:.3f}")
-                st.write(f"   Category: {results['metadatas'][0][i].get('Category', 'Unknown')}")
+                st.write(f"   Answer: {a[:100]}...")  # Show first 100 chars of answer
         
-        for i, distance in enumerate(results['distances'][0]):
-            similarity = 1 - distance
-            if similarity >= similarity_threshold and similarity > best_similarity:
-                best_similarity = similarity
-                best_question = results['documents'][0][i]
-                best_answer = results['metadatas'][0][i]['Answer']
-        
-        # Add this debug logging
-        if st.session_state.get('debug_mode', False):
-            st.write(f"Querying with category filter: {primary_category}")
-            st.write(f"Number of results: {len(results['documents'][0])}")
-        
-        return best_question, best_answer, best_similarity
+        return matching_questions, matching_answers, best_similarity
             
     except Exception as e:
         st.error(f"Error in find_most_similar_question: {str(e)}")
-        return None, None, 0.0
+        return [], [], 0.0
 
 # Enhance the preprocess_query function
 def preprocess_query(query):
@@ -291,7 +286,7 @@ def preprocess_query(query):
         return processed_query, "Other", ["Other"]
 
 # Generate response using Gemini
-def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=None):
+def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=None):
     try:
         # Load general information and context
         general_info = open('general_info.txt', 'r').read()
@@ -306,7 +301,20 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
             if category in context_data:
                 category_info[category] = context_data[category]
         
-        if retrieved_question and retrieved_answer and st.session_state.debug_similarity >= 0.3:
+        # Format all relevant QA pairs that meet the threshold
+        relevant_qa_pairs = ""
+        if retrieved_questions and retrieved_answers and st.session_state.debug_similarity >= 0.3:
+            # Ensure retrieved_questions and retrieved_answers are lists
+            if not isinstance(retrieved_questions, list):
+                retrieved_questions = [retrieved_questions]
+                retrieved_answers = [retrieved_answers]
+            
+            # Format all QA pairs
+            relevant_qa_pairs = "\n\nRelevant QA pairs from our database:\n"
+            for q, a in zip(retrieved_questions, retrieved_answers):
+                relevant_qa_pairs += f"Q: {q}\nA: {a}\n"
+        
+        if relevant_qa_pairs:
             prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
             
             User question: "{user_input}"
@@ -318,16 +326,15 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
             {json.dumps(category_info, indent=2)}
             ```
             
-            Official reference:
-            Question: "{retrieved_question}"
-            Answer: "{retrieved_answer}"
+            {relevant_qa_pairs}
             
             Instructions:
-            1. If the official answer contains specific facts, numbers, or requirements, preserve them exactly
-            2. Focus on answering the user's specific question
-            3. Consider information from all relevant categories to provide a comprehensive response
-            4. Use a conversational tone while maintaining accuracy
-            5. If any information is missing or unclear, acknowledge it
+            1. Use ALL the provided QA pairs to formulate a comprehensive response
+            2. If the QA pairs contain specific facts, numbers, or requirements, preserve them exactly
+            3. Focus on answering the user's specific question
+            4. Consider information from all relevant categories
+            5. Use a conversational tone while maintaining accuracy
+            6. If any information is missing or unclear, acknowledge it
             
             Additional context:
             {general_info}
@@ -377,27 +384,18 @@ def get_bot_response(user_input):
     # Update to use the new return values
     processed_query, primary_category, all_categories = preprocess_query(user_input)
     
-    # First try to find a similar question
-    matched_question, matched_answer, similarity = find_most_similar_question(user_input)
+    # Get all matching questions and answers
+    matched_questions, matched_answers, similarity = find_most_similar_question(user_input)
     
     # Debug information
     st.session_state.debug_similarity = similarity
-    st.session_state.debug_matched_question = matched_question if matched_question else "No match found"
-    st.session_state.debug_matched_answer = matched_answer if matched_answer else "No answer found"
+    st.session_state.debug_matched_question = "\n".join(matched_questions) if matched_questions else "No match found"
+    st.session_state.debug_matched_answer = "\n".join(matched_answers) if matched_answers else "No answer found"
     st.session_state.debug_category = f"{primary_category} (Related: {', '.join(all_categories[1:])})" if len(all_categories) > 1 else primary_category
     
-    # Add debug output
-    if st.session_state.get('debug_mode', False):
-        st.write("Debug Info:")
-        st.write(f"Category: {primary_category}")
-        st.write(f"Similarity Score: {similarity:.3f}")
-        st.write(f"Matched Question: {matched_question}")
-        st.write(f"Matched Answer: {matched_answer}")
+    # Generate response using Gemini, passing all matched Q&As
+    bot_response = get_gemini_response(user_input, matched_questions, matched_answers)
     
-    # Generate response using Gemini, passing matched Q&A if found
-    bot_response = get_gemini_response(user_input, matched_question, matched_answer)
-    
-    # Return the response
     return bot_response
 
 def main():
