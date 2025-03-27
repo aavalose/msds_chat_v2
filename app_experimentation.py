@@ -247,130 +247,118 @@ def preprocess_query(query):
     processed_query = query.lower().strip()
     try:
         model = genai.GenerativeModel('gemini-2.0-flash')
-        prompt = f"""Categorize this question into exactly ONE of the following categories:
-        - Admission Requirements: Questions about prerequisites, qualifications, and requirements for admission
-        - Admission Statistics: Questions about acceptance rates, demographics, and applicant statistics
-        - Application Process: Questions about how to apply, application components, and deadlines
-        - Career Outcomes: Questions about job placement, career paths, and employment outcomes
-        - Curriculum: Questions about courses, content, and academic requirements
-        - Enrollment Process: Questions about enrollment procedures after acceptance
-        - Faculty & Research: Questions about professors, instructors, and their research
-        - Financial Aid & Scholarships: Questions about funding options and financial assistance
-        - International Students: Questions specific to international applicant needs
-        - Practicum Experience: Questions about practical projects and industry experience
-        - Program Overview: Questions about general program information and structure
-        - Program Preparation: Questions about how to prepare for the program
-        - Program Structure: Questions about program format, timeline, and organization
-        - Student Employment: Questions about working while in the program
-        - Student Services: Questions about support services and resources for students
-        - Tuition & Costs: Questions about program costs, fees, and payment options
-        - Other: Questions that don't fit into the above categories
+        prompt = f"""Analyze this question and return up to THREE most relevant categories from the following list, ordered by relevance:
+        - Application Process: Questions about how to apply, deadlines, interviews, and application components
+        - Admission Requirements: Questions about prerequisites, qualifications, and requirements
+        - Financial Aid & Scholarships: Questions about funding, scholarships, and financial assistance
+        - International Students: Questions specific to international student needs
+        - Enrollment Process: Questions about post-acceptance procedures
+        - Program Structure: Questions about program duration, format, and class sizes
+        - Program Overview: Questions about general program information and features
+        - Tuition & Costs: Questions about program costs, fees, and expenses
+        - Program Preparation: Questions about preparing for the program
+        - Faculty & Research: Questions about professors and research opportunities
+        - Student Employment: Questions about work opportunities during the program
+        - Student Services: Questions about health insurance and student support
+        - Curriculum: Questions about courses and academic content
+        - Practicum Experience: Questions about industry projects and partnerships
+        - Career Outcomes: Questions about job placement, salaries, and career paths
+        - Admission Statistics: Questions about typical GPAs, backgrounds, and work experience
+        - Other: Questions that don't clearly fit into any of the above categories
         
         Examples:
-        Question: "What GRE score do I need?" -> Admission Requirements
-        Question: "How much is tuition per semester?" -> Tuition & Costs
-        Question: "Who teaches the machine learning course?" -> Faculty & Research
-        Question: "How long does it take to complete the program?" -> Program Structure
-        Question: "What programming languages will I learn?" -> Curriculum
+        Question: "What GRE score do I need as an international student?" -> ["Application Process", "International Students"]
+        Question: "How much is tuition and what scholarships are available?" -> ["Tuition & Costs", "Financial Aid & Scholarships"]
+        Question: "Can I work while taking classes in the program?" -> ["Student Employment", "Program Structure"]
+        Question: "Where is the nearest coffee shop?" -> ["Other"]
+        
         Your question: "{query}"
         
-        Return only the category name, nothing else."""
+        Return only the category names in a comma-separated list, nothing else."""
         
         response = model.generate_content(prompt)
-        category = response.text.strip()
+        categories = [cat.strip() for cat in response.text.split(',')]
+        primary_category = categories[0] if categories else "Other"
+        
+        if st.session_state.get('debug_mode', False):
+            st.write(f"Detected categories: {categories}")
+            
+        return processed_query, primary_category, categories
     except Exception as e:
-        category = "Other"
         if st.session_state.get('debug_mode', False):
             st.error(f"Error categorizing query: {str(e)}")
-    
-    return processed_query, category
+        return processed_query, "Other", ["Other"]
 
 # Generate response using Gemini
 def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=None):
     try:
-        # Load general information
+        # Load general information and context
         general_info = open('general_info.txt', 'r').read()
+        context_data = json.load(open('context.json', 'r'))
         
-        # Process the query to get category
-        processed_query, category = preprocess_query(user_input)
+        # Process the query to get categories
+        processed_query, primary_category, all_categories = preprocess_query(user_input)
         
-        # Check if the query is about faculty
-        if "faculty" in user_input.lower() or "professor" in user_input.lower() or "instructor" in user_input.lower() or category == "Faculty":
+        # Get category-specific information from context.json for all relevant categories
+        category_info = {}
+        for category in all_categories:
+            if category in context_data:
+                category_info[category] = context_data[category]
+        
+        if retrieved_question and retrieved_answer and st.session_state.debug_similarity >= 0.3:
             prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
             
-            A student has asked about faculty: "{user_input}"
+            User question: "{user_input}"
+            Primary Category: {primary_category}
+            Related Categories: {', '.join(all_categories[1:]) if len(all_categories) > 1 else 'None'}
             
-            Please use the following faculty information to answer their question:
-            
+            Relevant information from all categories:
             ```
-            {open('faculty.json', 'r').read()}
-            ```
-            
-            Please respond in a natural, conversational way while:
-            1. Providing accurate information about the faculty members
-            2. Being friendly and helpful
-            3. Addressing their specific question directly
-            4. Using clear and accessible language
-            """
-        # Check if the query is about courses
-        elif "course" in user_input.lower() or "class" in user_input.lower() or "curriculum" in user_input.lower() or category == "Curriculum":
-            prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
-            
-            A student has asked about courses: "{user_input}"
-            
-            Please use the following course information to answer their question:
-            
-            ```
-            {open('courses.json', 'r').read()}
+            {json.dumps(category_info, indent=2)}
             ```
             
-            Please respond in a natural, conversational way while:
-            1. Providing accurate information about the MSDS program courses and curriculum
-            2. Being friendly and helpful
-            3. Addressing their specific question directly
-            4. Using clear and accessible language
-            """
+            Official reference:
+            Question: "{retrieved_question}"
+            Answer: "{retrieved_answer}"
+            
+            Instructions:
+            1. If the official answer contains specific facts, numbers, or requirements, preserve them exactly
+            2. Focus on answering the user's specific question
+            3. Consider information from all relevant categories to provide a comprehensive response
+            4. Use a conversational tone while maintaining accuracy
+            5. If any information is missing or unclear, acknowledge it
+            
+            Additional context:
+            {general_info}
+            
+            Please provide your response:"""
         else:
-            if retrieved_question and retrieved_answer and st.session_state.debug_similarity >= 0.3:
-                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
-                
-                User question: "{user_input}"
-                Category: {category}
-                
-                Official reference:
-                Question: "{retrieved_question}"
-                Answer: "{retrieved_answer}"
-                
-                Instructions:
-                1. If the official answer contains specific facts, numbers, or requirements, preserve them exactly
-                2. Focus on answering the user's specific question
-                3. Use a conversational tone while maintaining accuracy
-                4. If any information is missing or unclear, acknowledge it
-                
-                Additional context:
-                {general_info}
-                
-                Please provide your response:"""
-            else:
-                prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
-                
-                User question: "{user_input}"
-                Category: {category}
-                
-                Please use this general information to help answer their question:
-                ```
-                {general_info}
-                ```
-                
-                Instructions:
-                1. If the answer can be found in the general information, provide a helpful and accurate response
-                2. Only respond to questions related to the USF MSDS program
-                3. If you don't have enough information:
-                   - Share what relevant information you do have
-                   - Acknowledge what you don't know
-                   - Suggest contacting the program office for those details
-                4. Use a helpful and professional tone
-                5. Be clear about what you know vs. what you're unsure about"""
+            prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
+            
+            User question: "{user_input}"
+            Primary Category: {primary_category}
+            Related Categories: {', '.join(all_categories[1:]) if len(all_categories) > 1 else 'None'}
+            
+            Relevant information from all categories:
+            ```
+            {json.dumps(category_info, indent=2)}
+            ```
+            
+            Please use this information along with the general context to help answer their question:
+            ```
+            {general_info}
+            ```
+            
+            Instructions:
+            1. Use information from all relevant categories to provide a comprehensive response
+            2. Only respond to questions related to the USF MSDS program
+            3. If you don't have enough information:
+               - Share what relevant information you do have
+               - Acknowledge what you don't know
+               - Suggest contacting the program office for those details
+            4. Use a helpful and professional tone
+            5. Be clear about what you know vs. what you're unsure about
+            6. If the question spans multiple categories, make sure to address all relevant aspects"""
 
         model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
@@ -379,9 +367,6 @@ def get_gemini_response(user_input, retrieved_question=None, retrieved_answer=No
     except Exception as e:
         st.error(f"Error generating response: {str(e)}")
         return "I apologize, but I encountered an error while generating the response."
-
-
-
 
 # Get bot response (modified to include metrics)
 def get_bot_response(user_input):
