@@ -389,10 +389,20 @@ def get_bot_response(user_input):
     
     # Debug information
     st.session_state.debug_similarity = similarity
-    st.session_state.debug_matched_question = "\n".join(matched_questions) if matched_questions else "No match found"
-    st.session_state.debug_matched_answer = "\n".join(matched_answers) if matched_answers else "No answer found"
-    st.session_state.debug_category = f"{primary_category} (Related: {', '.join(all_categories[1:])})" if len(all_categories) > 1 else primary_category
     
+    # Show all matched questions
+    if matched_questions:
+        st.session_state.debug_matched_question = "\n".join([f"{i+1}. {q}" for i, q in enumerate(matched_questions)])
+    else:
+        st.session_state.debug_matched_question = "No match found"
+    
+    # Show all matched answers
+    if matched_answers:
+        st.session_state.debug_matched_answer = "\n".join([f"{i+1}. {a}" for i, a in enumerate(matched_answers)])
+    else:
+        st.session_state.debug_matched_answer = "No answer found"
+    
+    st.session_state.debug_category = f"{primary_category} (Related: {', '.join(all_categories[1:])})" if len(all_categories) > 1 else primary_category
     # Generate response using Gemini, passing all matched Q&As
     bot_response = get_gemini_response(user_input, matched_questions, matched_answers)
     
