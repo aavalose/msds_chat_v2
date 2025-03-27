@@ -1,0 +1,353 @@
+{
+    "Application Process": {
+      "deadline": "March 1st (applies to both domestic and international students)",
+      "statement_of_purpose": "No specific formatting requirements",
+      "interview": {
+        "required": true,
+        "format": "online technical interview with faculty",
+        "topics": ["linear algebra", "statistics", "programming"]
+      },
+      "test_scores": {
+        "GRE_GMAT": "not required but can be optionally submitted"
+      }
+    },
+    "Admission Requirements": {
+      "prerequisite_courses": {
+        "required": [
+          "Inferential Statistics",
+          "Linear Algebra",
+          "Programming"
+        ],
+        "recommended": [
+          "Calculus",
+          "Data Structures"
+        ]
+      },
+      "conditions": {
+        "formal_coursework": "preferred for prerequisites",
+        "offer_contingencies": [
+          "completing in-progress prerequisites",
+          "bachelor's degree completion"
+        ],
+        "GPA_evaluation": "only at time of admission review"
+      }
+    },
+    "Financial Aid & Scholarships": {
+      "program_scholarships": {
+        "consideration": "automatic for admitted candidates",
+        "coverage": "maximum 20% of tuition",
+        "application": "no separate application required"
+      },
+      "restrictions": {
+        "double_dons": "cannot be combined with other USF scholarships",
+        "refugee_grants": "no specific grants, external funding recommended"
+      }
+    },
+    "International Students": {
+      "STEM_designation": {
+        "status": true,
+        "OPT": "24-month extension after initial 12-month OPT"
+      },
+      "language_requirements": {
+        "TOEFL": 90,
+        "IELTS": 6.5,
+        "Duolingo": 115,
+        "PTE": 61,
+        "exemptions": "bachelor's/master's degree from US or exempted countries"
+      },
+      "financial_documentation": "Can submit application without complete Certificate of Finance if applying for loans"
+    },
+    "Enrollment Process": {
+      "documentation": {
+        "enrollment": "No green card or documentation required",
+        "practicum": "Companies may require SSN/work authorization"
+      }
+    },
+    "Program Structure": {
+      "duration": {
+        "standard": "one year, full-time",
+        "extended": "18 months with Data Engineering concentration"
+      },
+      "cohort_size": "approximately 90 students",
+      "class_format": {
+        "sections": "multiple sections to keep sizes small",
+        "teaching_assistants": "none for lectures or discussions",
+        "start_date": "early July each year"
+      }
+    },
+    "Program Overview": {
+      "name": "Master of Science in Data Science (MSDS)",
+      "focus": [
+        "technical expertise",
+        "business acumen",
+        "analytics",
+        "machine learning",
+        "deep learning",
+        "cloud computing"
+      ],
+      "key_feature": "nine-month practicum with real companies"
+    },
+    "Tuition & Costs": {
+      "tuition": {
+        "cost_per_unit": 1695,
+        "total_units": 35,
+        "academic_year": "2025-2026"
+      },
+      "additional_costs": [
+        "housing",
+        "meals",
+        "books",
+        "supplies",
+        "personal expenses"
+      ]
+    },
+    "Program Preparation": {
+      "recommended_background": [
+        "mathematics",
+        "statistics",
+        "computer science"
+      ],
+      "experience": "prior data science experience beneficial but not required",
+      "prerequisites": "must complete before program start"
+    },
+    "Student Employment": {
+      "assistantships": "none available",
+      "outside_work": "not recommended due to program intensity",
+      "recommendation": "focus fully on program"
+    },
+    "Student Services": {
+      "health_insurance": {
+        "enrollment": "automatic for 6+ units",
+        "cost": 4100,
+        "waiver": "available with proof of comparable insurance"
+      }
+    },
+    "Practicum Experience": {
+      "structure": {
+        "duration": "9 months",
+        "weekly_commitment": "16 hours",
+        "schedule": "two days per week",
+        "start_date": "mid-October"
+      },
+      "projects": {
+        "company_participation": "~50 companies annually",
+        "selection": "students form teams and rank preferences",
+        "compensation": "may be paid or unpaid",
+        "mentorship": [
+          "faculty advisors",
+          "company professionals"
+        ]
+      },
+      "partner_categories": {
+        "tech": ["Facebook", "Reddit", "Pocket Gems", "Metaphor Data"],
+        "financial": ["BlackRock", "First Republic Bank", "Freedom Financial Network"],
+        "healthcare": ["Stanford Medicine", "UCSF", "Propeller Health"],
+        "sports": ["Golden State Warriors", "New York Mets"],
+        "nonprofit": ["ACLU", "Environmental Defense Fund", "The Nature Conservancy"]
+      }
+    },
+    "Career Outcomes": {
+      "salaries": {
+        "median_base_california": 147500,
+        "median_base_international": 148400,
+        "average_signing_bonus": 24225
+      },
+      "job_titles": [
+        "Data Scientist",
+        "Machine Learning Engineer",
+        "Data Engineer",
+        "Software Engineer",
+        "Senior Data Scientist",
+        "AI Associate",
+        "AI/ML Specialist"
+      ]
+    },
+    "Admission Statistics": {
+      "average_gpa": 3.43,
+      "common_majors": [
+        "Computer Science",
+        "Data Science",
+        "Mathematics",
+        "Economics",
+        "Statistics"
+      ],
+      "work_experience": {
+        "average_years": 3.5,
+        "distribution": "one-third have 1 year or less"
+      }
+    },
+    "courses": {
+      "core_programming": [
+        {
+          "course_id": "MSDS 501",
+          "course_name": "Computation for Data Science",
+          "units": 1,
+          "description": "An intense review of Python programming and an introduction to a variety of computational problems."
+        },
+        {
+          "course_id": "MSDS 689",
+          "course_name": "Data Structures and Algorithms",
+          "units": 1,
+          "description": "This course gives students a comprehensive view of data structures and algorithms."
+        },
+        {
+          "course_id": "MSDS 694",
+          "course_name": "Distributed Computing",
+          "units": 1,
+          "description": "Students learn the MapReduce technique of distributed computing."
+        }
+      ],
+      "statistics_mathematics": [
+        {
+          "course_id": "MSDS 504",
+          "course_name": "Review Probability and Stats",
+          "units": 1,
+          "description": "A review of random variables, moments, and maximum likelihood estimation."
+        },
+        {
+          "course_id": "MSDS 601",
+          "course_name": "Linear Regression Analysis",
+          "units": 2,
+          "description": "This course is an intensive introduction to linear models."
+        },
+        {
+          "course_id": "MSDS 604",
+          "course_name": "Time Series Analysis",
+          "units": 1,
+          "description": "This course is an intensive introduction to the existing methods for time series forecasting."
+        }
+      ],
+      "machine_learning": [
+        {
+          "course_id": "MSDS 621",
+          "course_name": "Intro to Machine Learning",
+          "units": 2,
+          "description": "This course focuses on the implementation and application of supervised and unsupervised machine learning algorithms."
+        },
+        {
+          "course_id": "MSDS 630",
+          "course_name": "Advanced Machine Learning",
+          "units": 2,
+          "description": "Students study advanced machine learning algorithms."
+        },
+        {
+          "course_id": "MSDS 634",
+          "course_name": "Deep Learning",
+          "units": 2,
+          "description": "This course introduces students to a range of topics and concepts in deep learning."
+        }
+      ],
+      "data_management": [
+        {
+          "course_id": "MSDS 691",
+          "course_name": "Relational Databases",
+          "units": 2,
+          "description": "This course aims to develop a strong understanding of relational database concepts."
+        },
+        {
+          "course_id": "MSDS 692",
+          "course_name": "Data Acquisition",
+          "units": 2,
+          "description": "This lab-heavy Python class teaches students how to collect, merge, and clean data from multiple sources."
+        },
+        {
+          "course_id": "MSDS 697",
+          "course_name": "Distributed Data Systems",
+          "units": 2,
+          "description": "Students study key-value store through NoSQL with a focus on using MongoDB."
+        }
+      ],
+      "professional_skills": [
+        {
+          "course_id": "MSDS 610",
+          "course_name": "Communication for Data Science",
+          "units": 1,
+          "description": "Students will learn essential concepts related to business communication."
+        },
+        {
+          "course_id": "MSDS 603",
+          "course_name": "Data Science Entrepreneurship",
+          "units": 2,
+          "description": "Students develop a minimum viable data science product."
+        },
+        {
+          "course_id": "MSDS 633",
+          "course_name": "Ethics in Data Science",
+          "units": 1,
+          "description": "This course introduces ethical and privacy problems in data collection, algorithms, and evaluation."
+        }
+      ],
+      "practicum_series": [
+        {
+          "course_id": "MSDS 605",
+          "course_name": "Data Science Practicum I",
+          "units": 1,
+          "description": "The data science practicum is a data science project sponsored by a company and mentored by a faculty member."
+        },
+        {
+          "course_id": "MSDS 625",
+          "course_name": "Data Science Practicum II",
+          "units": 1,
+          "description": "Continuation of practicum series."
+        },
+        {
+          "course_id": "MSDS 627",
+          "course_name": "Data Science Practicum III",
+          "units": 1,
+          "description": "Continuation of practicum series."
+        },
+        {
+          "course_id": "MSDS 632",
+          "course_name": "Data Science Practicum IV",
+          "units": 1,
+          "description": "Final part of practicum series."
+        }
+      ]
+    },
+    "faculty": {
+      "leadership": {
+        "program_director": {
+          "name": "Shan Wang",
+          "email": "swang151@usfca.edu",
+          "description": "Dr. Shan Wang is the program director and an assistant professor in the MS in Data Science program at the University of San Francisco.",
+          "research_interests": ["nonparametric statistics", "biomedical data science", "data-driven methods for social and environmental problems"],
+          "education": "PhD, Statistics, Purdue University, 2015; BS, Mathematics, Fudan University, 2009"
+        },
+        "administrative_director": {
+          "name": "Aija Tapaninen",
+          "email": "atapaninen@usfca.edu",
+          "description": "Aija Tapaninen has been with USF since 2014.",
+          "education": "MBA, University of San Francisco, 2017; MA in Organization & Leadership, University of San Francisco, 2010"
+        }
+      },
+      "full_time_faculty": [
+        {
+          "name": "David Guy Brizan",
+          "expertise": ["Speech Processing", "Applications of Machine Learning"],
+          "email": "dgbrizan@usfca.edu"
+        },
+        {
+          "name": "Yannet Interian",
+          "expertise": ["machine learning", "deep learning", "medical data"],
+          "email": "yinterian@usfca.edu"
+        },
+        {
+          "name": "James Wilson",
+          "expertise": ["computational statistics", "random graph theory", "machine learning"],
+          "email": "jdwilson4@usfca.edu"
+        }
+      ],
+      "part_time_faculty": [
+        {
+          "name": "Sundar Dorai-Raj",
+          "expertise": ["A/B testing", "statistical modeling", "machine learning"],
+          "email": "sdorairaj@usfca.edu"
+        },
+        {
+          "name": "Mark Graves",
+          "expertise": ["Artificial Intelligence", "Natural Language Processing"],
+          "email": "mgraves@usfca.edu"
+        }
+      ]
+    }
+  }
