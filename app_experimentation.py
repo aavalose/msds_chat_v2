@@ -58,7 +58,8 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
         # Delete existing collection if it exists
         try:
             _chroma_client.delete_collection(name=collection_name)
-            st.info(f"Deleted existing collection: {collection_name}")
+            if st.session_state.get('debug_mode', False):
+                st.info(f"Deleted existing collection: {collection_name}")
         except Exception as e:
             # Collection might not exist, which is fine
             pass
@@ -68,7 +69,6 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
             name=collection_name,
             embedding_function=_embedding_function
         )
-        # st.info(f"Created new QA collection: {collection_name}") DEBUGGING
 
         # Load QA data with more detailed error handling
         try:
@@ -76,12 +76,12 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
             qa_df = pd.read_csv("labeled_qa.csv", on_bad_lines='warn')
             
             # Verify required columns exist
-            required_columns = ['Category', 'Question', 'Answer']  # Updated order
+            required_columns = ['Category', 'Question', 'Answer']
             missing_columns = [col for col in required_columns if col not in qa_df.columns]
             if missing_columns:
                 raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
             
-            # Display DataFrame info for debugging
+            # Display DataFrame info for debugging only in debug mode
             if st.session_state.get('debug_mode', False):
                 st.write("CSV columns:", qa_df.columns.tolist())
                 st.write("First few rows:", qa_df.head())
@@ -89,13 +89,13 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
             # Add data to the collection with correct column order
             qa_collection.add(
                 ids=[str(i) for i in qa_df.index.tolist()],
-                documents=qa_df['Question'].tolist(),  # Question is still the document
+                documents=qa_df['Question'].tolist(),
                 metadatas=[{
                     'Answer': row['Answer'],
                     'Category': row['Category']
                 } for _, row in qa_df.iterrows()]
             )
-            # st.success(f"Successfully loaded {len(qa_df)} QA pairs") DEBUGGING
+
         except Exception as e:
             st.error(f"Error loading file: {str(e)}")
             st.error("Please ensure labeled_qa.csv has these columns: Category, Question, Answer")
@@ -485,12 +485,54 @@ def main():
 
         # Display newest messages first
         for i, (user_msg, bot_msg) in enumerate(reversed(chat_pairs)):
-            st.write("🧑 **You:**")
-            st.write(user_msg["content"])
-            st.write("🤖 **Assistant:**")
-            st.write(bot_msg["content"])
+            # User message - right aligned
+            user_container = st.container()
+            with user_container:
+                col1, col2 = st.columns([6, 1])
+                with col1:
+                    st.markdown(
+                        f"""
+                        <div style="
+                            background-color: #007AFF;
+                            color: white;
+                            padding: 10px 15px;
+                            border-radius: 20px;
+                            margin: 5px 0;
+                            max-width: 90%;
+                            float: right;
+                        ">
+                            {user_msg["content"]}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                with col2:
+                    st.write("🧑")
+
+            # Bot message - left aligned
+            bot_container = st.container()
+            with bot_container:
+                col1, col2 = st.columns([1, 6])
+                with col1:
+                    st.write("🤖")
+                with col2:
+                    st.markdown(
+                        f"""
+                        <div style="
+                            background-color: #E9ECEF;
+                            color: black;
+                            padding: 10px 15px;
+                            border-radius: 20px;
+                            margin: 5px 0;
+                            max-width: 90%;
+                        ">
+                            {bot_msg["content"]}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
             
-            # Add feedback buttons
+            # Feedback buttons
             col1, col2, col3 = st.columns([1, 1, 3])
             with col1:
                 if st.button("👍", key=f"thumbs_up_{i}"):
@@ -502,7 +544,6 @@ def main():
                     if i < len(st.session_state.conversation_ids):
                         update_feedback(st.session_state.conversation_ids[-(i+1)], "negative")
                         st.success("Thank you for your feedback!")
-            st.write("---")
 
     with tab3:
         st.session_state.debug_mode = st.checkbox("Enable Debug Mode", value=False)
