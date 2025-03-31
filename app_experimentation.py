@@ -285,88 +285,83 @@ def preprocess_query(query):
             st.error(f"Error categorizing query: {str(e)}")
         return processed_query, "Other", ["Other"]
 
-# Generate response using Gemini
+def get_conversation_history(max_messages=5):
+    """Get the recent conversation history formatted for the prompt"""
+    if 'chat_history' not in st.session_state:
+        return ""
+    
+    # Get last 5 message pairs (10 messages total)
+    recent_messages = st.session_state.chat_history[-max_messages*2:]
+    
+    if not recent_messages:
+        return ""
+    
+    # Format conversation history
+    history = "\nRecent conversation history:\n"
+    for msg in recent_messages:
+        role = "User" if msg["role"] == "user" else "Assistant"
+        history += f"{role}: {msg['content']}\n"
+    
+    return history
+
 def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=None):
     try:
         # Load general information and context
         general_info = open('general_info.txt', 'r').read()
         context_data = json.load(open('context.json', 'r'))
         
+        # Get conversation history
+        conversation_history = get_conversation_history()
+        
         # Process the query to get categories
         processed_query, primary_category, all_categories = preprocess_query(user_input)
         
-        # Get category-specific information from context.json for all relevant categories
+        # Get category-specific information from context.json
         category_info = {}
         for category in all_categories:
             if category in context_data:
                 category_info[category] = context_data[category]
         
-        # Format all relevant QA pairs that meet the threshold
+        # Format QA pairs
         relevant_qa_pairs = ""
         if retrieved_questions and retrieved_answers and st.session_state.debug_similarity >= 0.3:
-            # Ensure retrieved_questions and retrieved_answers are lists
             if not isinstance(retrieved_questions, list):
                 retrieved_questions = [retrieved_questions]
                 retrieved_answers = [retrieved_answers]
             
-            # Format all QA pairs
             relevant_qa_pairs = "\n\nRelevant QA pairs from our database:\n"
             for q, a in zip(retrieved_questions, retrieved_answers):
                 relevant_qa_pairs += f"Q: {q}\nA: {a}\n"
         
-        if relevant_qa_pairs:
-            prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
-            
-            User question: "{user_input}"
-            Primary Category: {primary_category}
-            Related Categories: {', '.join(all_categories[1:]) if len(all_categories) > 1 else 'None'}
-            
-            Relevant information from all categories:
-            ```
-            {json.dumps(category_info, indent=2)}
-            ```
-            
-            {relevant_qa_pairs}
-            
-            Instructions:
-            1. Use ALL the provided QA pairs to formulate a comprehensive response
-            2. If the QA pairs contain specific facts, numbers, or requirements, preserve them exactly
-            3. Focus on answering the user's specific question
-            4. Consider information from all relevant categories
-            5. Use a conversational tone while maintaining accuracy
-            6. If any information is missing or unclear, acknowledge it
-            
-            Additional context:
-            {general_info}
-            
-            Please provide your response:"""
-        else:
-            prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
-            
-            User question: "{user_input}"
-            Primary Category: {primary_category}
-            Related Categories: {', '.join(all_categories[1:]) if len(all_categories) > 1 else 'None'}
-            
-            Relevant information from all categories:
-            ```
-            {json.dumps(category_info, indent=2)}
-            ```
-            
-            Please use this information along with the general context to help answer their question:
-            ```
-            {general_info}
-            ```
-            
-            Instructions:
-            1. Use information from all relevant categories to provide a comprehensive response
-            2. Only respond to questions related to the USF MSDS program
-            3. If you don't have enough information:
-               - Share what relevant information you do have
-               - Acknowledge what you don't know
-               - Suggest contacting the program office for those details
-            4. Use a helpful and professional tone
-            5. Be clear about what you know vs. what you're unsure about
-            6. If the question spans multiple categories, make sure to address all relevant aspects"""
+        # Enhanced prompt with conversation history
+        prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
+        
+        Conversation History: {conversation_history}
+        
+        Current user question: "{user_input}"
+        Primary Category: {primary_category}
+        Related Categories: {', '.join(all_categories[1:]) if len(all_categories) > 1 else 'None'}
+        
+        Relevant information from all categories:
+        ```
+        {json.dumps(category_info, indent=2)}
+        ```
+        
+        {relevant_qa_pairs}
+        
+        Instructions:
+        1. Consider the conversation history when formulating your response
+        2. If the user refers to previous messages, use that context
+        3. Use ALL the provided QA pairs to formulate a comprehensive response
+        4. If the QA pairs contain specific facts, numbers, or requirements, preserve them exactly
+        5. Focus on answering the user's specific question
+        6. Use a conversational tone while maintaining accuracy
+        7. If any information is missing or unclear, acknowledge it
+        
+        Additional context:
+        {general_info}
+        
+        Please provide your response:"""
 
         model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
