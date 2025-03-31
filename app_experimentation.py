@@ -682,6 +682,49 @@ def main():
                 st.metric("Avg Response Similarity", f"{df['response_similarity'].mean():.3f}")
                 st.metric("Min Response Similarity", f"{df['response_similarity'].min():.3f}")
                 st.metric("Max Response Similarity", f"{df['response_similarity'].max():.3f}")
+                
+# Add after imports
+def check_required_files():
+    required_files = [
+        "labeled_qa.csv",
+        "faculty.json",
+        "general_info.txt"
+    ]
+    
+    missing_files = []
+    for file in required_files:
+        if not os.path.exists(file):
+            missing_files.append(file)
+    
+    if missing_files:
+        st.error(f"Missing required files: {', '.join(missing_files)}")
+        st.write("Please make sure all required files are in the correct location:")
+        for file in missing_files:
+            st.write(f"- {file}")
+        st.stop()
+
+# Add this after check_required_files()
+def verify_qa_data():
+    try:
+        qa_df = pd.read_csv("labeled_qa.csv")
+        required_columns = ['Category', 'Question', 'Answer']
+        
+        # Check if required columns exist
+        missing_columns = [col for col in required_columns if col not in qa_df.columns]
+        if missing_columns:
+            st.error(f"Missing required columns in labeled_qa.csv: {', '.join(missing_columns)}")
+            st.stop()
+            
+        # Check if there's data
+        if len(qa_df) == 0:
+            st.error("labeled_qa.csv is empty")
+            st.stop()
+            
+        # st.success(f"Successfully loaded {len(qa_df)} QA pairs") DEBUGGING
+        return qa_df
+    except Exception as e:
+        st.error(f"Error reading labeled_qa.csv: {str(e)}")
+        st.stop()
 
 # Add this call after check_required_files()
 qa_df = verify_qa_data()
