@@ -68,7 +68,7 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
             name=collection_name,
             embedding_function=_embedding_function
         )
-        st.info(f"Created new QA collection: {collection_name}")
+        # st.info(f"Created new QA collection: {collection_name}") DEBUGGING
 
         # Load QA data with more detailed error handling
         try:
@@ -95,7 +95,7 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
                     'Category': row['Category']
                 } for _, row in qa_df.iterrows()]
             )
-            st.success(f"Successfully loaded {len(qa_df)} QA pairs")
+            # st.success(f"Successfully loaded {len(qa_df)} QA pairs") DEBUGGING
         except Exception as e:
             st.error(f"Error loading file: {str(e)}")
             st.error("Please ensure labeled_qa.csv has these columns: Category, Question, Answer")
@@ -550,7 +550,7 @@ def verify_qa_data():
             st.error("labeled_qa.csv is empty")
             st.stop()
             
-        st.success(f"Successfully loaded {len(qa_df)} QA pairs")
+        # st.success(f"Successfully loaded {len(qa_df)} QA pairs") DEBUGGING
         return qa_df
     except Exception as e:
         st.error(f"Error reading labeled_qa.csv: {str(e)}")
