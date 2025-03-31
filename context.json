@@ -378,8 +378,7 @@
           "course_id": "MSDS 680",
           "course_name": "Machine Learning Operations",
           "units": 2,
-          "description": "The objective of this course is to learn the different stages of the end-to-end Machine Learning pipeline, from model development experiment tracking, all the way to model serving and model monitoring. For each step in the pipeline, students explore practical real world use cases and get hands-on experience with open source tools.",
-
+          "description": "The objective of this course is to learn the different stages of the end-to-end Machine Learning pipeline, from model development experiment tracking, all the way to model serving and model monitoring. For each step in the pipeline, students explore practical real world use cases and get hands-on experience with open source tools."
         },
         {
           "course_id": "MSDS 681",
@@ -449,13 +448,253 @@
         "healthcare": ["Stanford Medicine", "UCSF", "Propeller Health"],
         "sports": ["Golden State Warriors", "New York Mets"],
         "nonprofit": ["ACLU", "Environmental Defense Fund", "The Nature Conservancy"]
-      }
+      },
+      "past_projects": [
+        {
+          "company": "American Civil Liberties Union of Northern California (ACLU)",
+          "team": ["Ian Duke", "Felix Tong"],
+          "faculty_mentors": ["Robert Clements"],
+          "company_liaisons": ["Dylan Verner-Crist", "John Do", "Emi Young"],
+          "description": "Students spearheaded the development and implementation of scalable models in Python using advanced natural language processing and machine learning techniques to automate the analysis of unstructured video data from over 500 police traffic stops. They built a data pipeline that integrates open-source machine learning models, transcription techniques, and data storage methods to associate 3,500 written reports with corresponding body camera videos, efficiently organizing the stored data. The team led an initiative to conduct time series forecasting analyses and observational studies exploring the impact of facial recognition technology on crime and clearance rates in jurisdictions across California. Additionally, they regularly created data visualizations for the office's Lead Investigator and explained findings and analytical approaches to non-technical legal professionals."
+        },
+        {
+          "company": "AERO",
+          "team": ["Colin Bennie", "Yen-Hsin Fang"],
+          "faculty_mentors": ["Victor Palacios"],
+          "company_liaisons": ["Ray Yocke"],
+          "description": "Students led the design and implementation of machine-learning-focused Python modules, leveraging XGBoost and cron automations to improve prediction accuracy for sales performance across the route network, as well as increasing revenues through precise demand predictions. The team collaborated closely with executives to gain insights into organizational concerns and designed machine learning solutions to address data-level challenges, establishing data-driven decision-making processes throughout the organization. They created and maintained a pipeline to integrate over 1 million third-party records into existing data used in machine learning approaches, significantly enhancing model performance."
+        },
+        {
+          "company": "American School of Dubai",
+          "team": ["Brandon Hom"],
+          "faculty_mentors": ["Mahesh Chaudhari"],
+          "company_liaisons": ["Ken Simonds"],
+          "description": "Utilizing BigQuery and Looker Studio, the team analyzed and summarized over 60,000 data points related to academic performance and reading habits, yielding valuable insights for school leadership. They streamlined data scraping pipelines in Airflow, significantly reducing code complexity by consolidating more than 30 pipeline files into a single file and expediting the implementation of new pipelines. Additionally, they designed an Airflow data pipeline to extract raw usage logs from Looker Studio, resulting in the development of a dashboard that provides insights on dashboard usage. This innovation led to an 85% reduction in costs and saved over 50 hours annually."
+        },
+        {
+          "company": "Atlassian",
+          "team": ["Jiaxuan Ouyang", "Sissi Shen", "Laila Zaidi"],
+          "faculty_mentors": ["Robert Clements"],
+          "company_liaisons": ["Steve Shibuya"],
+          "description": "The team developed a validation package, achieving a 90% reduction in validation time and streamlining the process by reducing the codebase. They engineered and deployed a validation data pipeline in Databricks Cloud, which streamlined the assessment of models by utilizing PySpark and SQL to query large datasets containing over 20 million rows of marketing data. Leading the agile development process, the team managed project timelines using JIRA software. In their MLOps model governance efforts, they conducted performance tracking, drift detection, and time series analysis for different model versions, while organizing and managing these versions on MLFlow by logging metrics and tagging models according to their production status. Additionally, they collaborated with the data engineering team to derive new model features, resulting in a 5% increase in model performance."
+        },
+        {
+          "company": "Boston Children's Hospital",
+          "team": ["Amadeo Cabanela", "Nathan Holmes-King", "Sonal Shad"],
+          "faculty_mentors": ["William Bosl"],
+          "company_liaisons": ["William Bosl", "Andrew Kiss"],
+          "description": "The team developed feature extraction methods, including tensor factorization, to identify latent features associated with Rolandic Epilepsy in children. They employed machine learning techniques for seizure forecasting by analyzing brain activity data. This approach aimed to estimate the probability of a Rolandic seizure occurring, offering a more nuanced prediction than a simple binary outcome."
+        },
+        {
+          "company": "Buck Institute",
+          "team": ["Samuel Campione", "Zhiyuan (Freeman) Chen"],
+          "faculty_mentors": ["Daniel O'Connor"],
+          "company_liaisons": ["Kai Zhou"],
+          "description": "The team developed single and double U-Net Convolutional Neural Network (CNN) models for identifying mitochondria in Drosophila brain scans, achieving a 94% accuracy rate. They implemented parallel computing and an image segmentation pipeline across various projects, including a 60% reduction in runtime for a cell segmentation pipeline using Joblib, leading to notable improvements in performance and reliability. Additionally, they conducted a comprehensive analysis tracking 21 ribosome paralogs across species to compare their conservation and evolutionary adaptations, assessing genetic diversity and age-related changes."
+        },
+        {
+          "company": "California Academy of Sciences",
+          "team": ["Maricela Abarca", "Aryan Mistry"],
+          "faculty_mentors": ["Shan Wang"],
+          "company_liaisons": ["Joe Russack"],
+          "description": "The team guided a $50,000 investment in computing infrastructure by analyzing over 28 million server usage records with PySpark and a custom optimization algorithm. They automated a reporting system using APIs and MySQL, leading to an 88% increase in recognition for staff and their scientific publications. Additionally, they promoted the adoption of best practice identifiers to enhance the visibility of research output."
+        },
+        {
+          "company": "California Association of Food Banks",
+          "team": ["Tyler Kahn"],
+          "faculty_mentors": ["Diane Woodbridge"],
+          "company_liaisons": ["May Lynn Tan"],
+          "description": "The team developed a data pipeline to collect, pre-process, and analyze US national census data, and created food insecurity and demographic dashboards in Tableau, which are used by California food banks and the State Assembly. This effort reduced manual labor by 80%. They also designed and implemented the company's data ingestion pipeline and data warehouse using Google Cloud Platform, including Cloud Storage, Functions, Scheduler, and BigQuery. Additionally, the team worked closely with the CFO and Director of Research to identify data sources for exploration and analysis, offering guidance on tools and strategies to effectively leverage the available data."
+        },
+        {
+          "company": "California Data Collaborative",
+          "team": ["Daniel Gonzalez"],
+          "faculty_mentors": ["Stephen Devlin"],
+          "company_liaisons": ["Christopher Tull", "David Marulli", "Dan Wang"],
+          "description": "The team developed and fine-tuned a leak detection algorithm using Snowflake and Python to analyze hourly water meter readings across various California water districts. They successfully identified and categorized leak patterns, which helped in reducing wastewater. They also implemented advanced data pre- and post-processing techniques to clean and structure time series data, improving the accuracy of a machine learning model for predicting water usage anomalies. The team aims to integrate a predictive module into the leak detection system to assist districts with real-time monitoring and timely management of leaks and usage anomalies."
+        },
+        {
+          "company": "Data Knobs",
+          "team": ["Yan Ho (Mark) Lam", "Thanh Dung (Zoe) Le", "Ranjeet Nagarkar"],
+          "faculty_mentors": ["Daniel O'Connor"],
+          "company_liaisons": ["Prashant Dhingra"],
+          "description": "The team built a data pipeline for text-to-image and image-to-image semantic search using GCP, Google Vision AI, CLIP Model, and Pinecone. They deployed a RESTful API with FastAPI, achieving a high precision with an average cosine similarity score of 0.72. They also enabled seamless unstructured data extraction from PDFs and other document formats, such as PPTX and DOCX, using Langchain, Unstructured.IO, and other open-source libraries."
+        },
+        {
+          "company": "Dynetics",
+          "team": ["Sung Hyun (James) Chung", "Nithin Kuma"],
+          "faculty_mentors": ["Victor Palacios"],
+          "company_liaisons": ["Cannot disclose"],
+          "description": "Top secret government project. Details cannot be shared."
+        },
+        {
+          "company": "Environmental Defense Fund",
+          "team": ["Karthik Ayyalasomayajula"],
+          "faculty_mentors": ["Daniel Jerison"],
+          "company_liaisons": ["Dr. Chris Cusack"],
+          "description": "The team engineered robust data pipelines for processing video and image data, optimizing them for machine learning and computer vision applications. They developed sampling and annotation scripts to support machine learning model validations by human reviewers, enhancing the accuracy of computer vision algorithm assessments. Additionally, they utilized Monte Carlo simulations to predict and visualize potential boat traffic patterns, contributing to environmental impact analysis."
+        },
+        {
+          "company": "Eventbrite",
+          "team": ["Irene Garcia Montoya", "Cassandra Richter"],
+          "faculty_mentors": ["Victor Palacios"],
+          "company_liaisons": ["Jared Lauber", "Chelsea Begrowicz", "Katie Pickett"],
+          "description": "Students developed a dashboard to proactively flag users based on revenue risk, which eliminated approximately 400 hours of manual tasks annually and improved model accuracy. They also created a discrepancy detection data pipeline to identify and quantify the impact of cross-database discrepancies in financial data. In addition, they initiated an early churn detection model for key clients."
+        },
+        {
+          "company": "Federal Home Loan Bank of San Francisco",
+          "team": ["Vineeth Gupta Bodla"],
+          "faculty_mentors": ["Stephen Devlin"],
+          "company_liaisons": ["Jason Lee", "Jason Mora", "Xu Liu"],
+          "description": "The team engineered complex SQL queries, optimized data pipelines, and applied text mining and data mining techniques to monitor 150 member KPIs. They performed exploratory data analysis (EDA) and hypothesis testing to compare traditional credit scoring frameworks with the VantageScore framework, identifying the potential to expand the customer base by 33 million. They developed a climate risk framework, orchestrated ETL processes, and created Power BI dashboards for strategic decision-making on assets. Additionally, they developed an interactive large language model (LLM) based dashboard in production, integrating sentiment evaluation of articles and media agencies and mapping stock price movements to monitor the reputation of top bank members."
+        },
+        {
+          "company": "Give Us The Floor",
+          "team": ["Ireri Lisset Avila"],
+          "faculty_mentors": ["Victor Palacios"],
+          "company_liaisons": ["Dr. Tessa Capelle", "Adrian Ulsted", "Valerie Grison-Aslop"],
+          "description": "The team designed and implemented machine learning models using NLP techniques and transformers for binary classification. This reduced human intervention by 90%, saving $90K per year and benefiting over 2,000 users. They improved message retrieval through API requests by 80% with a Python script for effective date filtering across 400K messages. Additionally, they created an Apache Airflow DAG for scheduled runs of the entire pipeline, from data fetching to final classification."
+        },
+        {
+          "company": "How We Feel",
+          "team": ["Jaywook Chung", "Rashmi Panse"],
+          "faculty_mentors": ["David Guy Brizan"],
+          "company_liaisons": ["James Regan", "David Cheng"],
+          "description": "The team developed a churn prediction model and designed A/B testing to improve retention, generating actionable insights projected to save $100K in annual marketing spend. They built a recommender system using the PyTorch framework to enhance personalized user experience by recommending in-app tools, which is expected to increase user engagement by 30%. Additionally, they transformed the data infrastructure by implementing ETL pipelines from MixPanel to a Google Cloud database, managing and querying over 100,000 event records in BigQuery SQL, saving more than 100 hours annually."
+        },
+        {
+          "company": "ISAZI",
+          "team": ["Teja Davuluri", "Varsha Moturi"],
+          "faculty_mentors": ["Mustafa Hajij"],
+          "company_liaisons": ["Tanaka Chiromo", "Dr. Brian Wigdorowitz"],
+          "description": "Students developed a transformer-based forecasting model with inventory optimization algorithms to determine optimal stock levels, reorder points, and inventory allocation across a retail network of 200 stores, achieving a 15% reduction in purchasing costs. They increased forecast accuracy by 20% by fine-tuning Lag-Llama on over five years of sales data, modifying the architecture and temporal modeling."
+        },
+        {
+          "company": "San Francisco County Transportation Authority",
+          "team": ["Yazhu Jiang", "Dawei Pang"],
+          "faculty_mentors": ["Daniel Jerison"],
+          "company_liaisons": ["Drew Cooper"],
+          "description": "The team developed an automated pipeline that improved data processing efficiency by 50%, combining and cleaning approximately 250,000 rows of unstructured daily ridership predictions from various transit agencies using Python. They generated markdown and CSV files to compare observed and predicted data for model performance evaluation and validation. Additionally, they developed over 10 interactive dashboards using SimWrapper to quickly detect model errors such as ridership discrepancies."
+        },
+        {
+          "company": "Simplr, An Asurion Company",
+          "team": ["Kabir Nawani", "Arios Liang Tong"],
+          "faculty_mentors": ["Mustafa Hajij"],
+          "company_liaisons": ["Ilias Miraoui"],
+          "description": "The team designed automated pipelines to generate preference datasets from over 92,000 chat histories for fine-tuning, ensuring high data quality. They performed Parameter-Efficient Fine-Tuning (LoRA) on the Mistral-7B model using 63,000 chat histories with the DPO algorithm and RLAIF on an A100 GPU, achieving a 21% increase in the ROUGE-L score. Additionally, they conducted Few-Shot Prompting to compare fine-tuned models to current ones in reasoning and summarization, using Llama-2 as the judge, and outperformed existing models in 70% of experimental trials."
+        },
+        {
+          "company": "SnapLogic",
+          "team": ["Li En (Belinda) Ong", "Justin Yang"],
+          "faculty_mentors": ["Mahesh Chaudhari"],
+          "company_liaisons": ["Rachel Fournier", "Hong Xu", "Dr. Greg Benson"],
+          "description": "The team analyzed over 10 years of Salesforce and SnapLogic Platform data in BigQuery, revealing that pre-sales strategies increased average account annual recurring revenue (ARR) by $280k. They found insights leading to a 50% increase in purchases and reduced the time to the first add-on purchase by 30 days. They constructed predictive metrics to forecast ARR with an adjusted R² of 0.82, aiding the sales team in managing at-risk accounts and targeting growth opportunities. Additionally, they developed an upsell predictive model with an accuracy of 0.75 and an AUC of 0.82, which was deployed in a Looker Studio Dashboard."
+        },
+        {
+          "company": "Square (formerly Block Inc.)",
+          "team": ["Vidith Balasa", "Bassim Eledath"],
+          "faculty_mentors": ["Mahesh Chaudhari"],
+          "company_liaisons": ["Aditi Sharma", "Zixiao Huang", "Yue You"],
+          "description": "The team developed and trained a light gradient boosting model on a dataset over 100GB to predict local business lifetime value for advertising campaigns. They improved the lifetime revenue prediction pipeline's performance by more than 20% through the integration of Prefect 2 frameworks, which streamlined model deployment. Additionally, they secured shareholder approval for the model's production deployment by effectively presenting its financial benefits. They also co-developed an LLM RAG system that automated email campaign writing, significantly saving time for the marketing team."
+        },
+        {
+          "company": "Stanford Ophthalmic Informatics and Artificial Intelligence Group (OPTIMA)",
+          "team": ["Rithvik Donnipadu", "Maxim Sivolella"],
+          "faculty_mentors": ["Cody Carroll"],
+          "company_liaisons": ["Dr. Sophia Wang"],
+          "description": "Students led the development of a machine learning-based disease prediction model product to forecast glaucoma progression, aiming to reduce doctor workload and save approximately $600,000 annually. They analyzed 10 million rows of medical data, extracted over 500 features using BigQuery on GCP, and trained a custom multistage model. By incorporating functional PCA and a Random Forest regressor, they achieved a 34% improvement in RMSE compared to the baseline. Additionally, they designed a cohort of glaucoma patients using over 1 million data points and 1 terabyte of data, performing feature engineering to create 400+ predictors from Electronic Health Records, which enhanced model accuracy by 30%. Their work included constructing a global disease progression function using PCA and longitudinal data to forecast future vision loss, potentially saving over 700 patients from irreversible vision loss and $6 million in surgical fees annually."
+        },
+        {
+          "company": "SuperTech FT",
+          "team": ["Yepeng Li", "Kefeng Xiao"],
+          "faculty_mentors": ["Mustafa Hajij"],
+          "company_liaisons": ["Dr. Albert Hu", "Dr. Veera Nallam", "George Williams"],
+          "description": "The team developed an AI-powered educational platform that leverages machine learning to analyze student performance and generate customized training materials. They engineered an ETL pipeline connecting cloud databases with local models, implementing low-latency data processing to deliver personalized content to users. The system includes automated problem set generation capabilities integrated with recommendation algorithms that draw from processed educational content. Through standardized ETL scripts optimized for both local and cloud environments, the team achieved significant operational efficiency improvements. The platform successfully served an initial user base, demonstrating positive learning outcomes and projected performance improvements in standardized testing. Students using the system benefited from personalized feedback loops and adaptive content delivery, supported by robust data collection and processing infrastructure."
+        },
+        {
+          "company": "The Nature Conservancy",
+          "team": ["Ryan Bernstein", "Seneth Waterman"],
+          "faculty_mentors": ["Cody Carroll"],
+          "company_liaisons": ["Kirk Klausmeyer", "Nathaniel Rindlaub"],
+          "description": "Students developed an LLM pipeline to analyze over 1,000 pages of environmental policy, potentially saving The Nature Conservancy up to $400,000 in consulting fees. They fine-tuned a large language model on this data, enhancing summarization and question-answering capabilities, and documented their extensive experimentation in a research paper. Additionally, they created PyTorch-based object detection algorithms to classify species in over 30,000 wildlife images stored in AWS, and built an evaluation pipeline that improved summarization accuracy by 20%. In another project, they automated workflows with a custom ETL pipeline, achieving a 90% reduction in manual work and providing real-time groundwater depth monitoring with interactive dashboards."
+        },
+        {
+          "company": "TruckX Inc",
+          "team": ["Solomon Asiedu-Ofei", "Princewell Egbujor", "Shrey Jain", "Param Mehta", "Lance Santerre"],
+          "faculty_mentors": ["Victor Palacios"],
+          "company_liaisons": ["Clarissa Danilov"],
+          "description": "Students developed a Python-based truck stop recommendation system to help drivers plan their journeys efficiently and managed the core codebase with version control. They also created a unified battery degradation model with 70% accuracy for early failure detection in lithium-ion and solar batteries. The team spearheaded GitHub integration for version control, significantly improving the software development lifecycle by establishing a structured workflow. They engineered a predictive model with over 90% accuracy for detecting sharp turn maneuvers from extensive driving data, and are working on a geofence recommendation feature using unsupervised clustering to enhance truck geofencing. Additionally, they built and deployed an intelligent geofence recommender feature that increased client-app engagement by 200% and automated 80% of geofence implementation. An AI-powered Q/A chatbot was developed using GPT-4, RAG, Langchain, and Streamlit to improve trucking compliance and document accessibility. The team also engineered a rule-based sharp turn detection algorithm and geospatial predictive features for truck behavior analysis."
+        },
+        {
+          "company": "Manor Lab - University of California, San Diego",
+          "team": ["Jeffrey Chen", "Abhijeeth Erra"],
+          "faculty_mentors": ["Cody Carroll"],
+          "company_liaisons": ["Dr. Uri Manor"],
+          "description": "The team developed and published an open-source deep learning-based GUI that allowed researchers to visualize and conduct exploratory and quantitative analysis of auditory brainstem response (ABR) waveforms, providing essential resources for data analysis. They trained and cross-validated a Convolutional Neural Network (CNN) using PyTorch, achieving 94% accuracy in classifying ABR waves as signal or noise, which was competitive with the benchmark models for ABR thresholding. Additionally, they trained and cross-validated a two-step method for detecting the peaks and troughs of ABR waveforms using another CNN and tools from Scikit-Learn, resulting in a 0.1 ms error for Wave I Latency, surpassing industry standards."
+        },
+        {
+          "company": "UCSF - Oncology",
+          "team": ["Shreyas Anil", "Bhumika Srinivas"],
+          "faculty_mentors": ["Yannet Interian"],
+          "company_liaisons": ["Dr. Hui Lin"],
+          "description": "The team processed over 12 million words of clinical notes and unstructured EHR data for cancer patients, achieving a 25% reduction in note volumes. They enhanced early disease detection for more than 5,000 patients by developing hierarchical segmentation pipelines with encoder-driven transformer models, resulting in an 8% accuracy improvement through XGBoost. Fine-tuned embedding models like GritLM and GIST, combined with Mistral-7B and LLaMA architectures, were applied to refine glioma patient note clustering and expand vocabulary. At the AAPM Conference, the team, as first authors, demonstrated that while baseline MPT-7B and ClinicalBERT models did not inherently improve EHR notes' predictive accuracy, fine-tuning ClinicalBERT achieved F1 scores between 0.81 and 0.91, AUROC between 0.79 and 0.87, and a 6% accuracy improvement over the baseline. Additionally, they led a study to boost LLM performance for classification tasks in healthcare, developed a pipeline for identifying high-risk patients using fine-tuned open-source LLMs, and processed clinical text to create templated summaries using GPT-4. Their retrieval-augmented generation (RAG) framework, which used kNN clustering on patient embeddings, improved classification accuracy and F1 scores by 25% on a testing set of 500 samples, competing with fine-tuned ClinicalBERT metrics. They also experimented with long-context tuned versions of MPT-7B, LLaMA-2, and LLaMA-3, focusing on sequence parallelism and quantization for multi-GPU inference. The abstract was selected as \"Best in Physics\" for the AAPM conference in July 2024."
+        },
+        {
+          "company": "UCSF - Clinical Informatics",
+          "team": ["Chris Nishimura", "Yi-Fang Tsai"],
+          "faculty_mentors": ["Shan Wang"],
+          "company_liaisons": ["Dr. Xinran Liu"],
+          "description": "The team utilized SparkSQL to process 1.5 million rows of unstructured and structured data from UCSF, including medical progress and case management notes, daily vital signs, and lab results for 150,000 patient encounters. They enhanced hospital throughput planning by developing predictive models for patient length of stay, employing PyTorch and Transformer libraries to fine-tune a pre-trained UCSF BERT medical LLM with unstructured note data. By implementing a stacking technique, they combined the UCSF BERT NLP model with classical machine learning models trained on structured data, improving the predictive performance of their multimodal model outputs. They also engaged with the UCSF Director of Clinical Informatics to align research efforts with institutional needs and present their findings."
+        },
+        {
+          "company": "UCSF - Gastroenterology",
+          "team": ["Eren Bardak", "Yihan Cao"],
+          "faculty_mentors": ["Shan Wang"],
+          "company_liaisons": ["Dr. Vivek Rudrapatna"],
+          "description": "The team utilized models like Lasso/Ridge Regressions, Random Forest, and XGBoost to predict overall patient states, achieving 80% accuracy through cross-validation and hyperparameter tuning. They conducted visual analyses on drug efficacy using Python visualization packages such as Matplotlib and Seaborn, and proposed potential medication actions for reinforcement learning agents. Additionally, they developed and deployed a Python package via PyPI to facilitate enhanced clinical data interpretation. They queried and analyzed over 100 GB of confidential medical data using SQL on Azure Data Studio, adhering to data privacy standards. The team also implemented offline reinforcement learning algorithms, compared RL-identified policies with real-world decision-making, and conducted extensive data analysis and quality checks. They are currently working on models like the Decision Transformer for reinforcement learning through sequence modeling."
+        },
+        {
+          "company": "UCSF - MoonLAIT Lab",
+          "team": ["Eric Shen", "Kejia Wang", "Claire Zhou"],
+          "faculty_mentors": ["Shan Wang"],
+          "company_liaisons": ["Dr. Yue Leng"],
+          "description": "The team designed a process to handle multidimensional, multimodal polysomnography (PSG) and 676 GB of health data from over 70,000 observations in large-scale cohort studies for Parkinson's disease diagnosis. They enhanced predictive power by 50% through feature extraction and the application of machine learning models like logistic regression, random forest, and XGBoost. The team addressed imbalanced datasets using oversampling (SMOTE) and undersampling (Tomek Links), tuning hyperparameters through cross-validation and evaluating model performance with metrics such as R-squared, AUROC, and AUPRC. They developed algorithms to engineer biological features from 1,400 GB of raw PSG data and established correlations between biomarkers and neurodegenerative diseases using statistical analysis."
+        },
+        {
+          "company": "University of London, Royal Holloway",
+          "team": ["Mikkel Ovesen"],
+          "faculty_mentors": ["Yannet Interian"],
+          "company_liaisons": ["Sara Bernardini"],
+          "description": "The team developed advanced Reinforcement Learning techniques to optimize combinatorial algorithms for Boolean satisfiability problems (SAT) and multi-agent path finding (MAPF). They enhanced the learning capabilities of their RL model by implementing a modified Actor-Critic approach with eligibility tracing, resulting in approximately a 57% reduction in epochs to reach the previous best score. Additionally, they innovated the integration of Experience Replay in the REINFORCE framework, achieving around a 30% increase in computational speed by leveraging past experiences to improve algorithmic performance."
+        },
+        {
+          "company": "Upwork",
+          "team": ["Shagun Kala", "Aditya Nair"],
+          "faculty_mentors": ["Yannet Interian"],
+          "company_liaisons": ["Adam Rhuberg"],
+          "description": "The team analyzed over 200 million rows of data on Snowflake using Apache Spark in Databricks to derive insights from client and freelancer interactions. They developed a churn definition that captured 92% of diverse client behaviors and engineered predictive features through exploratory data analysis. Their innovative ML framework included Survival Analysis and Decision Tree classifiers to predict client churn, and they productionized the model. Additionally, they designed A/B tests and improved client retention by 8% through a tailored marketing strategy utilizing a fine-tuned large language model."
+        },
+        {
+          "company": "US Department of Health and Human Services",
+          "team": ["Caleb Hamblen", "Nicholas Miller"],
+          "faculty_mentors": ["Yannet Interian"],
+          "company_liaisons": ["William Kim"],
+          "description": "The team implemented a data acquisition system using Selenium to scrape thousands of podcast episode records, automating data aggregation and saving the delivery team 12 hours per week. They deployed Airflow DAGs to schedule automated scraping jobs, storing the results in AWS S3 and creating interactive Plotly graphs hosted on Domo for centralized data access. Additionally, they used the OpenAI API for sentiment analysis on news article comments, providing valuable insights into public feedback on health campaigns managed by the Office of the Surgeon General."
+        },
+        {
+          "company": "Vibrant Data Labs",
+          "team": ["Tatshini Ganesan", "Ting Pan"],
+          "faculty_mentors": ["Yannet Interian"],
+          "company_liaisons": ["Lara Reichmann", "Eric Berlow", "Rich Williams"],
+          "description": "The team improved user engagement by 5% through the implementation of Google Analytics tracking for an embedded player on the website. They developed a classification model to categorize organizations into four groups based on descriptions for updating an interactive map tool. This involved using an LLM to generate embeddings from descriptions and applying a KNN model as a baseline. By fine-tuning Flan-T5 and ClimateBert LLM models with PyTorch, they achieved a 31% increase in accuracy."
+        }
+      ]
     },
     "Career Outcomes": {
       "salaries": {
-        "median_base_california": 147500,
-        "median_base_international": 148400,
-        "average_signing_bonus": 24225
+        "median_base_california": "$147,500",
+        "median_base_international": "$148,400",
+        "average_signing_bonus": "$24,225"
       },
       "job_titles": [
         "Data Scientist",
