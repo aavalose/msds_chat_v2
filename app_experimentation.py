@@ -17,9 +17,6 @@ from pymongo import MongoClient
 from sklearn.metrics.pairwise import cosine_similarity
 import chromadb
 from chromadb.utils import embedding_functions
-from sklearn.feature_extraction.text import TfidfVectorizer
-import matplotlib.pyplot as plt
-import numpy as np
 
 
 # Handle missing API key safely
@@ -152,7 +149,11 @@ def init_mongodb():
 
 conversations_collection = init_mongodb()
 
-# Add this function to calculate cosine similarity between texts
+# 1. Add these imports at the top of your file
+import matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# 2. Add this new function for calculating cosine similarity
 def calculate_cosine_similarity(text1, text2):
     """Calculate cosine similarity between two text strings using TF-IDF"""
     if not text1 or not text2:
@@ -166,7 +167,7 @@ def calculate_cosine_similarity(text1, text2):
         st.error(f"Error calculating similarity: {str(e)}")
         return 0.0
 
-# Modify save_conversation to handle None collection and store metrics
+# 3. Update the save_conversation function to include response similarity
 def save_conversation(session_id, user_message, bot_response, response_time, metrics=None, response_similarity=None):
     if conversations_collection is None:
         st.error("MongoDB connection not available")
@@ -182,7 +183,7 @@ def save_conversation(session_id, user_message, bot_response, response_time, met
             "similarity_score": st.session_state.debug_similarity,
             "matched_question": st.session_state.debug_matched_question,
             "response_time_seconds": response_time,
-            'response_similarity': response_similarity
+            "response_similarity": response_similarity  # Add this field
         }
         
         # Add metrics if available
@@ -390,7 +391,7 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
         st.error(f"Error generating response: {str(e)}")
         return "I apologize, but I encountered an error while generating the response."
 
-# Modify get_bot_response to calculate and store response similarity
+# 4. Update get_bot_response to calculate response similarity
 def get_bot_response(user_input):
     if not user_input.strip():
         return "Please enter a question.", None
@@ -426,10 +427,22 @@ def get_bot_response(user_input):
         # Use the first (most relevant) answer for similarity calculation
         response_similarity = calculate_cosine_similarity(bot_response, matched_answers[0])
         st.session_state.debug_response_similarity = response_similarity
+        
+        # Add to similarity history
+        if 'similarity_history' not in st.session_state:
+            st.session_state.similarity_history = []
+            
+        st.session_state.similarity_history.append({
+            'query': user_input[:50] + "..." if len(user_input) > 50 else user_input,
+            'retrieval_similarity': similarity,
+            'response_similarity': response_similarity,
+            'timestamp': datetime.now()
+        })
     else:
         st.session_state.debug_response_similarity = None
     
     return bot_response
+
 
 def main():
     st.title("USF MSDS Program Chatbot")
@@ -578,8 +591,7 @@ def main():
             st.write(f"Similarity Score: {st.session_state.debug_similarity:.3f}")
             st.write(f"Matched Question: {st.session_state.debug_matched_question}")
             st.write(f"Matched Answer: {st.session_state.debug_matched_answer}")
-            
-    # Add the Similarity Analysis tab content
+     # Add the new tab4 content
     with tab4:
         st.header("Response Similarity Analysis")
         st.write("""
@@ -588,7 +600,7 @@ def main():
         """)
         
         # Display current similarity metrics if available
-        if st.session_state.debug_response_similarity is not None:
+        if hasattr(st.session_state, 'debug_response_similarity') and st.session_state.debug_response_similarity is not None:
             st.metric(
                 label="Current Response Similarity", 
                 value=f"{st.session_state.debug_response_similarity:.3f}"
@@ -624,14 +636,14 @@ def main():
                 st.write("Generated Response:")
                 st.text_area(
                     "Chatbot's response", 
-                    st.session_state.chat_history[-1]["content"], 
+                    st.session_state.chat_history[-1]["content"] if st.session_state.chat_history[-1]["role"] == "assistant" else "",
                     height=200
                 )
             with col2:
                 st.write("Most Similar Reference Answer:")
                 # Extract first matched answer
                 first_answer = st.session_state.debug_matched_answer.split("\n")[0]
-                if "1. " in first_answer:
+                if first_answer.startswith("1. "):
                     first_answer = first_answer[3:]  # Remove the "1. " prefix
                 st.text_area("Reference answer", first_answer, height=200)
         else:
@@ -640,21 +652,8 @@ def main():
         # Historical similarity data visualization
         st.subheader("Similarity Trend Analysis")
         
-        # Create a historical record of similarities
-        if 'similarity_history' not in st.session_state:
-            st.session_state.similarity_history = []
-            
-        # Note: Add this code in the appropriate location where responses are processed
-        # if st.session_state.debug_response_similarity is not None:
-        #     st.session_state.similarity_history.append({
-        #         'query': user_message[:50] + "..." if len(user_message) > 50 else user_message,
-        #         'retrieval_similarity': st.session_state.debug_similarity,
-        #         'response_similarity': st.session_state.debug_response_similarity,
-        #         'timestamp': datetime.now()
-        #     })
-            
-        # Mock some data if we don't have real data yet
-        if len(st.session_state.similarity_history) < 3:
+        # Display trend visualization if we have data
+        if 'similarity_history' not in st.session_state or len(st.session_state.similarity_history) < 3:
             st.info("More data needed for trend analysis. Send at least 3 messages to see trends.")
         else:
             # Create DataFrame for visualization
@@ -683,84 +682,6 @@ def main():
                 st.metric("Avg Response Similarity", f"{df['response_similarity'].mean():.3f}")
                 st.metric("Min Response Similarity", f"{df['response_similarity'].min():.3f}")
                 st.metric("Max Response Similarity", f"{df['response_similarity'].max():.3f}")
-                
-        # Add section for batch analysis of QA data
-        st.subheader("Batch Similarity Analysis")
-        if st.button("Run Batch Analysis on Sample Data"):
-            with st.spinner("Analyzing sample data..."):
-                # This would analyze a batch of sample questions against your QA dataset
-                # For now, show a placeholder result
-                st.success("Batch analysis complete!")
-                
-                # Create sample results
-                sample_results = pd.DataFrame({
-                    'Category': ['Application Process', 'Admission Requirements', 'Financial Aid', 'Curriculum', 'Career Outcomes'],
-                    'Avg Retrieval Similarity': [0.82, 0.78, 0.65, 0.71, 0.69],
-                    'Avg Response Similarity': [0.75, 0.72, 0.61, 0.68, 0.65]
-                })
-                
-                st.dataframe(sample_results)
-                
-                # Create a bar chart comparing the two similarity types by category
-                fig, ax = plt.subplots(figsize=(10, 6))
-                x = np.arange(len(sample_results))
-                width = 0.35
-                
-                ax.bar(x - width/2, sample_results['Avg Retrieval Similarity'], width, label='Retrieval Similarity')
-                ax.bar(x + width/2, sample_results['Avg Response Similarity'], width, label='Response Similarity')
-                
-                ax.set_xlabel('Category')
-                ax.set_ylabel('Average Similarity Score')
-                ax.set_title('Comparison of Similarity by Category')
-                ax.set_xticks(x)
-                ax.set_xticklabels(sample_results['Category'], rotation=45, ha='right')
-                ax.legend()
-                ax.set_ylim(0, 1)
-                
-                st.pyplot(fig)
-
-# Add after imports
-def check_required_files():
-    required_files = [
-        "labeled_qa.csv",
-        "faculty.json",
-        "general_info.txt"
-    ]
-    
-    missing_files = []
-    for file in required_files:
-        if not os.path.exists(file):
-            missing_files.append(file)
-    
-    if missing_files:
-        st.error(f"Missing required files: {', '.join(missing_files)}")
-        st.write("Please make sure all required files are in the correct location:")
-        for file in missing_files:
-            st.write(f"- {file}")
-        st.stop()
-
-# Add this after check_required_files()
-def verify_qa_data():
-    try:
-        qa_df = pd.read_csv("labeled_qa.csv")
-        required_columns = ['Category', 'Question', 'Answer']
-        
-        # Check if required columns exist
-        missing_columns = [col for col in required_columns if col not in qa_df.columns]
-        if missing_columns:
-            st.error(f"Missing required columns in labeled_qa.csv: {', '.join(missing_columns)}")
-            st.stop()
-            
-        # Check if there's data
-        if len(qa_df) == 0:
-            st.error("labeled_qa.csv is empty")
-            st.stop()
-            
-        # st.success(f"Successfully loaded {len(qa_df)} QA pairs") DEBUGGING
-        return qa_df
-    except Exception as e:
-        st.error(f"Error reading labeled_qa.csv: {str(e)}")
-        st.stop()
 
 # Add this call after check_required_files()
 qa_df = verify_qa_data()
