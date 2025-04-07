@@ -54,11 +54,12 @@ def init_chroma():
 
 # Add this function to handle collection creation and data loading
 @st.cache_resource
-def init_qa_collection(_chroma_client, _embedding_function, collection_name="msds_program_qa_labeled"):
+# Replace the init_qa_collection function with this new function
+def load_and_index_json_data(chroma_client, embedding_function, collection_name="msds_program_qa"):
     try:
         # Delete existing collection if it exists
         try:
-            _chroma_client.delete_collection(name=collection_name)
+            chroma_client.delete_collection(name=collection_name)
             if st.session_state.get('debug_mode', False):
                 st.info(f"Deleted existing collection: {collection_name}")
         except Exception as e:
@@ -66,51 +67,87 @@ def init_qa_collection(_chroma_client, _embedding_function, collection_name="msd
             pass
             
         # Create new collection
-        qa_collection = _chroma_client.create_collection(
+        qa_collection = chroma_client.create_collection(
             name=collection_name,
-            embedding_function=_embedding_function
+            embedding_function=embedding_function
         )
 
-        # Load QA data with more detailed error handling
+        # Load data from context.json file
         try:
-            # Change to labeled_qa.csv
-            qa_df = pd.read_csv("labeled_qa.csv", on_bad_lines='warn')
+            with open("context.json", "r") as f:
+                context_data = json.load(f)
             
-            # Verify required columns exist
-            required_columns = ['Category', 'Question', 'Answer']
-            missing_columns = [col for col in required_columns if col not in qa_df.columns]
-            if missing_columns:
-                raise ValueError(f"Missing required columns: {', '.join(missing_columns)}")
+            # Generate documents for ChromaDB from JSON data
+            documents = []
+            metadatas = []
+            ids = []
+            counter = 0
             
-            # Display DataFrame info for debugging only in debug mode
-            if st.session_state.get('debug_mode', False):
-                st.write("CSV columns:", qa_df.columns.tolist())
-                st.write("First few rows:", qa_df.head())
+            # Process each category in context.json
+            for category, data in context_data.items():
+                # If the category has QA pairs, add them to the collection
+                if "qa_pairs" in data and isinstance(data["qa_pairs"], list):
+                    for qa_pair in data["qa_pairs"]:
+                        if "question" in qa_pair and "answer" in qa_pair:
+                            documents.append(qa_pair["question"])
+                            metadatas.append({
+                                "Category": category,
+                                "Answer": qa_pair["answer"],
+                                "Type": "qa_pair"
+                            })
+                            ids.append(f"{category.lower().replace(' ', '_')}_{counter}")
+                            counter += 1
+                
+                # Also create broader category-based questions
+                category_questions = [
+                    f"Tell me about {category}",
+                    f"What is the {category} like?",
+                    f"Information about {category}"
+                ]
+                
+                # Create a summary of the category data
+                summary = json.dumps(data, ensure_ascii=False)
+                if len(summary) > 1000:  # If too long, create a shorter version
+                    # Remove qa_pairs for the summary to keep it focused on structured data
+                    summary_data = {k: v for k, v in data.items() if k != 'qa_pairs'}
+                    summary = json.dumps(summary_data, ensure_ascii=False)
+                
+                for question in category_questions:
+                    documents.append(question)
+                    metadatas.append({
+                        "Category": category,
+                        "Answer": summary,
+                        "Type": "category_summary"
+                    })
+                    ids.append(f"{category.lower().replace(' ', '_')}_summary_{counter}")
+                    counter += 1
             
-            # Add data to the collection with correct column order
-            qa_collection.add(
-                ids=[str(i) for i in qa_df.index.tolist()],
-                documents=qa_df['Question'].tolist(),
-                metadatas=[{
-                    'Answer': row['Answer'],
-                    'Category': row['Category']
-                } for _, row in qa_df.iterrows()]
-            )
+            # Now add all the data to ChromaDB
+            if documents:
+                qa_collection.add(
+                    ids=ids,
+                    documents=documents,
+                    metadatas=metadatas
+                )
+                
+                if st.session_state.get('debug_mode', False):
+                    st.success(f"Successfully indexed {len(documents)} questions from JSON data")
+            else:
+                st.warning("No documents were created from JSON data")
 
         except Exception as e:
-            st.error(f"Error loading file: {str(e)}")
-            st.error("Please ensure labeled_qa.csv has these columns: Category, Question, Answer")
+            st.error(f"Error loading JSON data: {str(e)}")
             raise e
 
         return qa_collection
     except Exception as e:
-        st.error(f"Error initializing QA collection: {str(e)}")
+        st.error(f"Error initializing QA collection from JSON: {str(e)}")
         raise e
 
 # Initialize ChromaDB and collection
 try:
     chroma_client, embedding_function = init_chroma()
-    qa_collection = init_qa_collection(chroma_client, embedding_function)
+    qa_collection = load_and_index_json_data(chroma_client, embedding_function)
 except Exception as e:
     st.error(f"Failed to initialize ChromaDB: {str(e)}")
     st.stop()
@@ -210,20 +247,23 @@ def update_feedback(conversation_id, feedback):
     except Exception as e:
         st.error(f"Error updating feedback: {str(e)}")
 
-# Find the most similar question using ChromaDB
+# Update the find_most_similar_question function
 def find_most_similar_question(user_input, similarity_threshold=0.3):
     try:
         if qa_collection.count() == 0:
             return [], [], 0.0
         
-        # Update to use the new return values
+        # Process the query to get categories
         processed_input, primary_category, all_categories = preprocess_query(user_input)
         
-        # Query with filter for matching category
+        # Query with filter for matching category if not "Other"
+        filter_condition = {"Category": {"$in": all_categories}} if "Other" not in all_categories else None
+        
+        # Query ChromaDB
         results = qa_collection.query(
             query_texts=[processed_input],
             n_results=5,  # Get top 5 results
-            where={"Category": {"$in": all_categories}} if "Other" not in all_categories else None
+            where=filter_condition
         )
         
         if not results['documents'][0]:
@@ -238,7 +278,41 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
             similarity = 1 - distance
             if similarity >= similarity_threshold:
                 matching_questions.append(results['documents'][0][i])
-                matching_answers.append(results['metadatas'][0][i]['Answer'])
+                
+                # Get the answer and handle JSON if needed
+                answer = results['metadatas'][0][i]['Answer']
+                answer_type = results['metadatas'][0][i]['Type']
+                
+                if answer_type == 'category_summary':
+                    # For category summaries that might be JSON strings, format them nicely
+                    try:
+                        answer_data = json.loads(answer)
+                        # Format based on the structure of the data
+                        if isinstance(answer_data, dict):
+                            formatted_answer = "Here's information about " + results['metadatas'][0][i]['Category'] + ":\n\n"
+                            # Exclude qa_pairs from the formatted output to avoid duplication
+                            for k, v in answer_data.items():
+                                if k != 'qa_pairs':
+                                    if isinstance(v, dict):
+                                        formatted_answer += f"{k}:\n"
+                                        for sub_k, sub_v in v.items():
+                                            formatted_answer += f"  - {sub_k}: {sub_v}\n"
+                                    elif isinstance(v, list):
+                                        formatted_answer += f"{k}:\n"
+                                        for item in v:
+                                            formatted_answer += f"  - {item}\n"
+                                    else:
+                                        formatted_answer += f"{k}: {v}\n"
+                            matching_answers.append(formatted_answer)
+                        else:
+                            matching_answers.append(str(answer_data))
+                    except json.JSONDecodeError:
+                        # If it's not valid JSON, use as is
+                        matching_answers.append(answer)
+                else:
+                    # For direct QA pairs, use the answer as is
+                    matching_answers.append(answer)
+                
                 best_similarity = max(best_similarity, similarity)
         
         # Debug information
@@ -324,23 +398,33 @@ def get_conversation_history(max_messages=5):
     
     return history
 
+# Update the get_gemini_response function
 def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=None):
     try:
-        # Load general information and context
-        general_info = open('general_info.txt', 'r').read()
-        context_data = json.load(open('context.json', 'r'))
-        
         # Get conversation history
         conversation_history = get_conversation_history()
         
         # Process the query to get categories
         processed_query, primary_category, all_categories = preprocess_query(user_input)
         
-        # Get category-specific information from context.json
-        category_info = {}
-        for category in all_categories:
-            if category in context_data:
-                category_info[category] = context_data[category]
+        # Load general information
+        general_info = open('general_info.txt', 'r').read()
+        
+        # Load relevant category information from context.json
+        try:
+            with open('context.json', 'r') as f:
+                context_data = json.load(f)
+            
+            # Get category-specific information but exclude qa_pairs to avoid redundancy
+            category_info = {}
+            for category in all_categories:
+                if category in context_data:
+                    # Create a copy without qa_pairs
+                    category_info[category] = {k: v for k, v in context_data[category].items() if k != 'qa_pairs'}
+        except Exception as e:
+            if st.session_state.get('debug_mode', False):
+                st.error(f"Error loading context data: {str(e)}")
+            category_info = {}
         
         # Format QA pairs
         relevant_qa_pairs = ""
@@ -349,11 +433,11 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
                 retrieved_questions = [retrieved_questions]
                 retrieved_answers = [retrieved_answers]
             
-            relevant_qa_pairs = "\n\nRelevant QA pairs from our database:\n"
+            relevant_qa_pairs = "\n\nRelevant information from our database:\n"
             for q, a in zip(retrieved_questions, retrieved_answers):
                 relevant_qa_pairs += f"Q: {q}\nA: {a}\n"
         
-        # Enhanced prompt with conversation history
+        # Enhanced prompt with conversation history and category information
         prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
         
         Conversation History: {conversation_history}
@@ -362,7 +446,7 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
         Primary Category: {primary_category}
         Related Categories: {', '.join(all_categories[1:]) if len(all_categories) > 1 else 'None'}
         
-        Relevant information from all categories:
+        Category-specific information:
         ```
         {json.dumps(category_info, indent=2)}
         ```
@@ -372,8 +456,8 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
         Instructions:
         1. Consider the conversation history when formulating your response
         2. If the user refers to previous messages, use that context
-        3. Use ALL the provided QA pairs to formulate a comprehensive response
-        4. If the QA pairs contain specific facts, numbers, or requirements, preserve them exactly
+        3. Use the provided information to formulate a comprehensive response
+        4. If the information contains specific facts, numbers, or requirements, preserve them exactly
         5. Focus on answering the user's specific question
         6. Use a conversational tone while maintaining accuracy
         7. If any information is missing or unclear, acknowledge it
