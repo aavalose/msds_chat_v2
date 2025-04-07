@@ -1,724 +1,597 @@
 {
-    "Application Process": {
-      "deadline": "March 1st (applies to both domestic and international students)",
-      "statement_of_purpose": "No specific formatting requirements",
-      "interview": {
-        "required": true,
-        "format": "online technical interview with faculty",
-        "topics": ["linear algebra", "statistics", "programming"]
+  "Application Process": {
+    "deadline": "March 1st (applies to both domestic and international students)",
+    "statement_of_purpose": "No specific formatting requirements",
+    "interview": {
+      "required": true,
+      "format": "online technical interview with faculty",
+      "topics": ["linear algebra", "statistics", "programming"]
+    },
+    "test_scores": {
+      "GRE_GMAT": "not required but can be optionally submitted"
+    },
+    "qa_pairs": [
+      {
+        "question": "Is the application deadline the same for international students?",
+        "answer": "Yes. This also applies to international students."
       },
-      "test_scores": {
-        "GRE_GMAT": "not required but can be optionally submitted"
+      {
+        "question": "Are there specific formatting requirements for the statement of purpose?",
+        "answer": "We don't have any specific requirements for the statement formatting."
+      },
+      {
+        "question": "Is it possible to defer admission?",
+        "answer": "Regretfully, we do not defer admissions offers. However, applicants who have been admitted once are likely to be admitted again in the subsequent year, should they need to turn down the offer and reapply."
+      },
+      {
+        "question": "How does completing prerequisite courses after applying affect admission decisions?",
+        "answer": "Completing your prerequisite courses by April will not negatively impact your application. You can proceed with your application, but it's important to note that any admission decision will be contingent upon the successful completion of these courses. I recommend submitting transcripts or proof of enrollment for these courses along with your application and ensuring all final transcripts are submitted as soon as the courses are completed."
+      },
+      {
+        "question": "Are GRE scores required for admission?",
+        "answer": "The program does not require a GRE or GMAT test. If you have already taken either of these exams and wish to include the scores in your application, you have the choice to upload them. Nevertheless, an English Language exam score (TOEFL - 90, IELTS - 6.5, Duolingo - 115, or PTE - 61) is mandatory for international applicants."
+      },
+      {
+        "question": "Can I submit my application before receiving all test scores?",
+        "answer": "The program does not require a GRE or GMAT test. If you have already taken either of these exams and wish to include the scores in your application, you have the choice to upload them. Nevertheless, an English Language exam score is mandatory for international applicants."
+      },
+      {
+        "question": "Is an interview required for admission?",
+        "answer": "Yes, all applicants must complete an online technical interview with a faculty member from the admissions committee."
+      },
+      {
+        "question": "How should I prepare for the admission interview?",
+        "answer": "The interview will cover key prerequisite subjects, including linear algebra, statistics, and programming. It is also an opportunity to ask questions about the program."
+      },
+      {
+        "question": "What courses are offered in the program?",
+        "answer": "Core Programming and Computing: Courses like MSDS 501 (Computation for Data Science), MSDS 689 (Data Structures and Algorithms), and MSDS 694 (Distributed Computing) build your technical foundation. Statistics and Mathematics: MSDS 504 (Review Probability and Stats), MSDS 601 (Linear Regression Analysis), and MSDS 604 (Time Series Analysis) cover the statistical underpinnings. Machine Learning and AI: Courses like MSDS 621 (Intro to Machine Learning), MSDS 630 (Advanced Machine Learning), and MSDS 634 (Deep Learning) provide both theoretical understanding and practical applications. Data Management: MSDS 691 (Relational Databases), MSDS 692 (Data Acquisition), and MSDS 697 (Distributed Data Systems) cover how to work with data at scale. Professional Skills: MSDS 610 (Communication for Data Science), MSDS 603 (Data Science Entrepreneurship), and MSDS 633 (Ethics in Data Science) develop critical workplace skills. Hands-on Experience: The program includes a four-part practicum series (MSDS 605, 625, 627, 632) where you will ll work on real-world projects. Specialized Topics: MSDS 631 (Special Topics) and MSDS 699 (Machine Learning Laboratory) allow for exploration of cutting-edge areas."
       }
-    },
-    "Admission Requirements": {
-      "prerequisite_courses": {
-        "required": [
-          "Inferential Statistics",
-          "Linear Algebra",
-          "Programming"
-        ],
-        "recommended": [
-          "Calculus",
-          "Data Structures"
-        ]
-      },
-      "conditions": {
-        "formal_coursework": "preferred for prerequisites",
-        "offer_contingencies": [
-          "completing in-progress prerequisites",
-          "bachelor's degree completion"
-        ],
-        "GPA_evaluation": "only at time of admission review"
-      }
-    },
-    "Financial Aid & Scholarships": {
-      "program_scholarships": {
-        "consideration": "automatic for admitted candidates",
-        "coverage": "maximum 20% of tuition",
-        "application": "no separate application required"
-      },
-      "restrictions": {
-        "double_dons": "cannot be combined with other USF scholarships",
-        "refugee_grants": "no specific grants, external funding recommended"
-      }
-    },
-    "International Students": {
-      "STEM_designation": {
-        "status": true,
-        "OPT": "24-month extension after initial 12-month OPT"
-      },
-      "language_requirements": {
-        "TOEFL": 90,
-        "IELTS": 6.5,
-        "Duolingo": 115,
-        "PTE": 61,
-        "exemptions": "bachelor's/master's degree from US or exempted countries"
-      },
-      "financial_documentation": "Can submit application without complete Certificate of Finance if applying for loans"
-    },
-    "Enrollment Process": {
-      "documentation": {
-        "enrollment": "No green card or documentation required",
-        "practicum": "Companies may require SSN/work authorization"
-      }
-    },
-    "Program Structure": {
-      "duration": {
-        "standard": "one year, full-time",
-        "extended": "18 months with Data Engineering concentration",
-        "data_engineering_details": {
-          "description": "The Data Engineering Concentration builds on the curriculum of the MSDS program, focusing on a comprehensive theoretical and technical understanding of statistical analysis, machine learning, and systems to deploy and maintain a life cycle of data and models.",
-          "timeline": "During the spring and summer, students complete the core MSDS curriculum, while the second year fall semester is dedicated to Data Engineering concentration courses.",
-          "schedule": "Courses meet twice a week in the afternoons and evenings, allowing students to focus on their post-graduation job search or work part-time.",
-          "international_students": "International students have the option to do part-time work or an internship through Pre-Completion Optional Practical Training (OPT) while enrolled in the Data Engineering concentration."
-        }
-      },
-      "cohort_size": "approximately 90 students",
-      "class_format": {
-        "sections": "multiple sections to keep sizes small",
-        "teaching_assistants": "none for lectures or discussions",
-        "start_date": "early July each year"
-      }
-    },
-    "Program Overview": {
-      "name": "Master of Science in Data Science (MSDS)",
-      "focus": [
-        "technical expertise",
-        "business acumen",
-        "analytics",
-        "machine learning",
-        "deep learning",
-        "cloud computing"
+    ]
+  },
+  "Admission Requirements": {
+    "prerequisite_courses": {
+      "required": [
+        "Inferential Statistics",
+        "Linear Algebra",
+        "Programming"
       ],
-      "key_feature": "nine-month practicum with real companies"
-    },
-    "Tuition & Costs": {
-      "tuition": {
-        "cost_per_unit": 1695,
-        "total_units": 35,
-        "academic_year": "2025-2026"
-      },
-      "additional_costs": [
-        "housing",
-        "meals",
-        "books",
-        "supplies",
-        "personal expenses"
+      "recommended": [
+        "Calculus",
+        "Data Structures"
       ]
     },
-    "Program Preparation": {
-      "recommended_background": [
-        "mathematics",
-        "statistics",
-        "computer science"
+    "conditions": {
+      "formal_coursework": "preferred for prerequisites",
+      "offer_contingencies": [
+        "completing in-progress prerequisites",
+        "bachelor's degree completion"
       ],
-      "experience": "prior data science experience beneficial but not required",
-      "prerequisites": "must complete before program start"
+      "GPA_evaluation": "only at time of admission review"
     },
-    "Faculty & Research": {
-      "leadership": {
-        "program_director": {
-          "name": "Shan Wang",
-          "email": "swang151@usfca.edu",
-          "description": "Dr. Shan Wang is the program director and an assistant professor in the MS in Data Science program at the University of San Francisco. Her research interests include nonparametric statistics, biomedical data science, and utilizing data-driven methods to address social and environmental problems.",
-          "education": "PhD, Statistics, Purdue University, 2015; BS, Mathematics, Fudan University, 2009"
-        },
-        "administrative_director": {
-          "name": "Aija Tapaninen",
-          "email": "atapaninen@usfca.edu",
-          "description": "Aija Tapaninen has been with USF since 2014. Prior to joining the MSDS program team, she has held positions in the Strategic Enrollment Management division and at the School of Management, working with the campus community on a range of topics related to graduate student education. Before USF, Aija was in graduate admissions and student affairs at UC Berkeley and UCLA.",
-          "education": "University of San Francisco, MBA, 2017; University of San Francisco, MA in Organization & Leadership, 2010; San Francisco State University, BA in Intercultural Communication, 2005"
-        }
+    "qa_pairs": [
+      {
+        "question": "What conditions are included in admission offers for current undergraduate students?",
+        "answer": "The only condition there could be is completion of an in progress prerequisite, and of course, a conferral of bachelor's degree. GPA is only evaluated at the time of admission review."
       },
-      "full_time_faculty": [
-        {
-          "name": "David Guy Brizan",
-          "email": "dgbrizan@usfca.edu",
-          "office_location": "Harney Science Center 404",
-          "description": "David is an associate professor at the University of San Francisco. His research interests are natural language processing, machine learning, and databases — specifically on the personal and cultural/demographic information transmitted during speech and typing.",
-          "education": "PhD, Computer Science, CUNY Graduate Center (candidate); MS Computer Science, San Francisco State University; BS Computer & Information Science, Brooklyn College",
-          "expertise": ["Speech Processing", "Applications of Machine Learning"]
-        },
-        {
-          "name": "Cody Carroll",
-          "email": "cjcarroll@usfca.edu",
-          "description": "Cody Carroll is an assistant professor with joint appointments in the Department of Mathematics and Statistics and the Master's in Data Science program (MSDS).",
-          "education": "UC Davis, PhD in Statistics, 2021; UC Davis, MS in Statistics, 2017; UT Austin, BS in Mathematics, 2014",
-          "expertise": ["Time warping & curve registration", "Multivariate functional data", "Statistical consulting", "Communication through statistics"]
-        },
-        {
-          "name": "Mahesh Chaudhari",
-          "email": "mchaudhari@usfca.edu",
-          "office_location": "101 Howard, Room 524",
-          "description": "Mahesh Chaudhari is an assistant professor in the MS in Data Science program at the University of San Francisco. His research interests include databases, data engineering and cloud computing.",
-          "education": "Arizona State University, PhD in Computer Science, 2011; Mississippi State University, MS in Computer Science 2003; University of Mumbai, Mumbai, India, BE in Computer Science and Engineering, 1999",
-          "expertise": ["Data engineering", "Cloud computing", "Building autonomous data processing infrastructure"]
-        },
-        {
-          "name": "Robert Clements",
-          "email": "rclements@usfca.edu",
-          "description": "Robert Clements is an assistant professor in the MS in Data Science program and the Director of the Center for AI and Data Ethics.",
-          "education": "UCLA, PhD in Statistics, 2011; UCLA, MS in Statistics, 2009; Humboldt State University, BA in Mathematics, 2006",
-          "expertise": ["Machine Learning", "MLOps", "Applied Statistics", "AI and Data Ethics"]
-        },
-        {
-          "name": "Stephen Devlin",
-          "email": "smdevlin@usfca.edu",
-          "office_location": "Harney Science Center 122C",
-          "description": "Stephen Devlin is a Professor in the Department of Mathematics and Statistics and the Master's in Data Science program (MSDS).",
-          "education": "PhD, Mathematics, University of Maryland, 2001",
-          "expertise": ["Pure and applied mathematics"]
-        },
-        {
-          "name": "Mustafa Hajij",
-          "email": "mhajij@usfca.edu",
-          "description": "Mustafa Hajij is an assistant professor at the MSDS program at University of San Francisco.",
-          "education": "Louisiana State University, PhD in Mathematics; Louisiana State University, MS in Computer Science; Jordan University for Science and Technology, MS in Mathematics; Damascus University, BS in Mathematics",
-          "expertise": ["Deep Learning", "Algorithms"]
-        },
-        {
-          "name": "Yannet Interian",
-          "email": "yinterian@usfca.edu",
-          "office_location": "101 Howard, 605",
-          "description": "Yannet is an associate professor in the Master's in Data Science program, and her research interests lie in the application of machine learning and deep learning to medical data.",
-          "education": "Cornell University, PhD in Applied Mathematics, 2006",
-          "expertise": ["machine learning", "deep learning", "medical data"]
-        },
-        {
-          "name": "Victor Palacios",
-          "email": "vpalacios@usfca.edu",
-          "description": "Victor received his master's degree in data science from the University of San Francisco and is currently working in the same field at the University of San Francisco as the Director of Data Science Partnerships.",
-          "education": "University of San Francisco, MS in Data Science, 2021; Nagoya University, MS in Information Science, 2015; UC Berkeley, BA in Japanese, 2011",
-          "expertise": ["Natural language processing", "Deception"]
-        },
-        {
-          "name": "James Wilson",
-          "email": "jdwilson4@usfca.edu",
-          "office_location": "Harney Science Center Office 121A",
-          "description": "James is a statistics and data science educator, researcher, mentor, and enthusiast. His research merges computational statistics, random graph theory, and machine learning to provide interpretable machinery to model, explore, and analyze complex interacting and imaging systems.",
-          "education": "PhD, Statistics and Operations Research, University of North Carolina, 2015; MS, Mathematical Sciences, Clemson University, 2010; BS, Mathematics and Chemistry, Campbell University, 2008",
-          "expertise": ["computational statistics", "random graph theory", "machine learning"]
-        },
-        {
-          "name": "Diane Woodbridge",
-          "email": "dwoodbridge@usfca.edu",
-          "office_location": "101 Howard 606",
-          "description": "Diane Woodbridge is an associate professor in the MS in Data Science program at the University of San Francisco. Her research interests include scalable database management systems, data fusion, and machine learning focusing on remote health monitoring (IoT in Healthcare).",
-          "education": "PhD, Computer Science, University of California, Los Angeles; MS, Computer Science, University of California, Los Angeles; BS, Computer Science and Engineering, Sogang University, South Korea",
-          "expertise": ["Scalable database systems", "Data fusion", "Machine learning for IoT in Healthcare"]
-        }
-      ],
-      "part_time_faculty": [
-        {
-          "name": "Sundar Dorai-Raj",
-          "email": "sdorairaj@usfca.edu",
-          "office_location": "101 Howard St.",
-          "description": "Sundar Dorai-Raj has been a data scientist at Google since 2009. He has spent most of his career working on Ads products, from YouTube Ads, where he helped launch YouTube's first skippable ad format, to Brand Lift and Google Analytics.",
-          "education": "Virginia Tech, PhD in Statistics, 2001; Virginia Tech, MS in Statistics, 1999; University of Alabama, MA in Applied Math, 1997; University of Alabama, BS in Applied Math, 1995",
-          "expertise": ["A/B testing", "statistical modeling", "machine learning"]
-        },
-        {
-          "name": "Mark Graves",
-          "email": "mgraves@usfca.edu",
-          "description": "Mark Graves has fifteen years experience in developing software, informatics, and data science solutions for healthcare and the pharmaceutical industry.",
-          "education": "Graduate Theological Union/Jesuit School of Theology, MA in Systematic & Philosophical Theology, 2005; University of Michigan, PhD in Computer Science, 1993; Georgia Institute of Technology, MS in Computer Science, 1989",
-          "expertise": ["Artificial Intelligence", "Natural Language Processing", "Moral psychology & well-being", "Religion, science & technology"]
-        },
-        {
-          "name": "Stephen Hsu",
-          "email": "sjhsu@dons.usfca.edu",
-          "description": "Stephen Hsu is a Solutions Architect helping companies end-to-end data projects with experience deriving insights from data to augment decisions in industries such as finance, retail, and healthcare.",
-          "education": "USF MS in Data Science, 2018; UC Berkeley, BA in Cognitive Science, 2017",
-          "expertise": ["Data Engineering", "Data Science", "Machine Learning", "Data Visualizations"]
-        },
-        {
-          "name": "Nico Thiebaut",
-          "email": "nthiebaut@usfca.edu",
-          "description": "Drawn to theoretical physics, Nico Thiebaut became an instructor at the University of Paris-Saclay, pursuing a PhD in quantum physics.",
-          "education": "University of Paris-Saclay, PhD in Theoretical Physics, 2015; Ecole Normale Superieur, MA in Condensed Matter Physics, 2011",
-          "expertise": ["Explainable machine learning", "Natural language processing", "Deep learning"]
-        }
-      ],
-      "faculty_emeritus": [
-        {
-          "name": "Terence Parr",
-          "email": "parrt@cs.usfca.edu",
-          "office_location": "101 Howard 607",
-          "description": "Terence is a professor of computer science and is the creator of the ANTLR parser generator. He herded programmers and implemented the large jGuru developers web site, during which time he developed and refined the StringTemplate engine.",
-          "education": "Purdue University, PhD in Computer Engineering, 1993; University of Minnesota, Postdoctoral Fellow at the Army High-Performance Computing Research Center",
-          "expertise": ["Software engineering", "Programming language design and implementation", "How programmers communicate with machines to build new software"]
-        }
-      ],
-      "visiting_faculty": [
-        {
-          "name": "Nathaniel Stevens",
-          "email": "ntstevens@usfca.edu",
-          "description": "Nathaniel is interested in using data to make decisions, solve problems, and improve processes. Specifically, his research interests lie in methodological development at the intersection of data science and industrial statistics.",
-          "education": "PhD, Statistics, University of Waterloo, 2015; MMATH, Statistics, University of Waterloo, 2011; BMATH, Statistics, University of Waterloo, 2010",
-          "expertise": ["Experimental design", "A/B testing", "Social network modeling", "Survival and reliability analysis"]
-        }
-      ]
+      {
+        "question": "Can I apply without formal prerequisite coursework?",
+        "answer": "We do prefer to see formal coursework in all three areas of prerequisites. It would be very unlikely for a candidate to be admitted if they lacked such courses in all three subject areas."
+      },
+      {
+        "question": "How can applicants from non-technical backgrounds succeed in this program?",
+        "answer": "We have students from a wide range of backgrounds, and welcome any major. However, given the highly accelerated pace of the program, it is important that students have a solid grasp of statistics and programming and a decent background in calculus and linear algebra in order to do well. Our website includes a list of preapproved online courses for each prerequisite. This list is not exhaustive, any course that's taken for a letter grade and includes a proctored exam will suffice."
+      },
+      {
+        "question": "What are the prerequisite requirements for the program?",
+        "answer": "We require three prerequisite courses: Inferential Statistics, Linear Algebra, and a Programming course. Additionally, we strongly recommend courses in Calculus and Data Structures. If you have questions about the eligibility of courses you have taken or plan to take, please view the list of key concepts to understand for each subject on our How to Apply page."
+      },
+      {
+        "question": "Are certificate courses accepted for prerequisite requirements?",
+        "answer": "The Date Institute courses are accepted because they are developed by our MSDS faculty, these certificate courses may be applied towards the MSDS prerequisite course requirements."
+      },
+      {
+        "question": "Can I apply without all prerequisite skills?",
+        "answer": "You must have completed all required prerequisite courses before the start of the program. This is an accelerated master's program and there is no time to take extra courses. You may apply with courses in progress provided that they will be completed by the time the program begins."
+      }
+    ]
+  },
+  "Financial Aid & Scholarships": {
+    "program_scholarships": {
+      "consideration": "automatic for admitted candidates",
+      "coverage": "maximum 20% of tuition",
+      "application": "no separate application required"
     },
-    "Student Employment": {
-      "assistantships": "none available",
-      "outside_work": "not recommended due to program intensity",
-      "recommendation": "focus fully on program"
+    "restrictions": {
+      "double_dons": "cannot be combined with other USF scholarships",
+      "refugee_grants": "no specific grants, external funding recommended"
     },
-    "Student Services": {
-      "health_insurance": {
-        "enrollment": "automatic for 6+ units",
-        "cost": 4100,
-        "waiver": "available with proof of comparable insurance"
+    "qa_pairs": [
+      {
+        "question": "What financial assistance options are available for graduate students?",
+        "answer": "All admitted candidates will be considered for program scholarships, which will be detailed in the admission letter. No separate application is required. However, please note that our scholarships cover a maximum of 20% of tuition, so students will need to secure additional funding sources for the program. You can check the Program Overview and FAQs for additional information."
+      },
+      {
+        "question": "What financial aid options are available for international students?",
+        "answer": "Unfortunately the Double Dons award cannot be stacked with another USF scholarship award, so external scholarships or private loans would be the other financing options for international students."
+      },
+      {
+        "question": "Are there specific financial grants for refugees?",
+        "answer": "While USF does not have a specific grant exclusively for refugees, you may want to explore external funding opportunities, as well as federal financial aid options, if eligible. Also, I encourage you to reach out to the Financial Aid Office at financialaid@usfca.edu for guidance other funding resources that might apply to your situation."
+      },
+      {
+        "question": "How do I apply for scholarships in the program?",
+        "answer": "All admitted candidates will be considered for program scholarships, which will be detailed in the admission letter. No separate application is required. However, please note that our scholarships cover a maximum of 20% of tuition, so students will need to secure additional funding sources for the program."
+      },
+      {
+        "question": "Are scholarships based on academic and professional achievements?",
+        "answer": "For scholarships, all admitted students are automatically considered for program scholarships, which will be detailed in the admission letter. No separate application is required. Please note that scholarships cover a maximum of 20% of tuition, so students must secure additional funding to support their studies."
+      }
+    ]
+  },
+  "International Students": {
+    "STEM_designation": {
+      "status": true,
+      "OPT": "24-month extension after initial 12-month OPT"
+    },
+    "language_requirements": {
+      "TOEFL": 90,
+      "IELTS": 6.5,
+      "Duolingo": 115,
+      "PTE": 61,
+      "exemptions": "bachelor's/master's degree from US or exempted countries"
+    },
+    "financial_documentation": "Can submit application without complete Certificate of Finance if applying for loans",
+    "qa_pairs": [
+      {
+        "question": "Is this program STEM designated for OPT extension purposes?",
+        "answer": "Yes, the program is STEM designated, with the 24 month OPT extension after the initial 12 month OPT."
+      },
+      {
+        "question": "How can international students fulfill financial documentation requirements for visa applications?",
+        "answer": "If you plan to finance your education with a loan, you will need to obtain a letter from your bank stating that they will provide a loan for the needed amount if you are admitted. Upload this letter to the certification of finances section of the application. If you are unable to provide a letter, please contact asapplication@usfca.edu for other options."
+      },
+      {
+        "question": "Can financial documentation be submitted after admission?",
+        "answer": "Yes we can move your application forward for review without the complete Certificate of Finance if you are planning to apply for a loan and require the admission letter for your loan application. Please upload any financial documents that you have into the Certificate of Finance section of the application, as well as a statement explaining that you intend to apply for a student loan but require the admission letter for your loan application."
+      }
+    ]
+  },
+  "Enrollment Process": {
+    "documentation": {
+      "enrollment": "No green card or documentation required",
+      "practicum": "Companies may require SSN/work authorization"
+    },
+    "qa_pairs": [
+      {
+        "question": "What documentation is required for enrollment after acceptance?",
+        "answer": "The university will not ask for a green card or other documentation to complete your enrollment. However, once the students are matched to their practicum company, the company's HR may require social security card and/or proof of work authorization as part of their onboarding."
+      }
+    ]
+  },
+  "Program Structure": {
+    "duration": {
+      "standard": "one year, full-time",
+      "extended": "18 months with Data Engineering concentration",
+      "data_engineering_details": {
+        "description": "The Data Engineering Concentration builds on the curriculum of the MSDS program, focusing on a comprehensive theoretical and technical understanding of statistical analysis, machine learning, and systems to deploy and maintain a life cycle of data and models.",
+        "timeline": "During the spring and summer, students complete the core MSDS curriculum, while the second year fall semester is dedicated to Data Engineering concentration courses.",
+        "schedule": "Courses meet twice a week in the afternoons and evenings, allowing students to focus on their post-graduation job search or work part-time.",
+        "international_students": "International students have the option to do part-time work or an internship through Pre-Completion Optional Practical Training (OPT) while enrolled in the Data Engineering concentration."
       }
     },
-    "Curriculum": {
-      "core_programming": [
-        {
-          "course_id": "MSDS 501",
-          "course_name": "Computation for Data Science",
-          "units": 1,
-          "description": "An intense review of Python programming and an introduction to a variety of computational problems."
-        },
-        {
-          "course_id": "MSDS 689",
-          "course_name": "Data Structures and Algorithms",
-          "units": 1,
-          "description": "This course gives students a comprehensive view of data structures and algorithms."
-        },
-        {
-          "course_id": "MSDS 694",
-          "course_name": "Distributed Computing",
-          "units": 1,
-          "description": "Students learn the MapReduce technique of distributed computing."
-        }
-      ],
-      "statistics_mathematics": [
-        {
-          "course_id": "MSDS 504",
-          "course_name": "Review Probability and Stats",
-          "units": 1,
-          "description": "A review of random variables, moments, and maximum likelihood estimation."
-        },
-        {
-          "course_id": "MSDS 601",
-          "course_name": "Linear Regression Analysis",
-          "units": 2,
-          "description": "This course is an intensive introduction to linear models."
-        },
-        {
-          "course_id": "MSDS 604",
-          "course_name": "Time Series Analysis",
-          "units": 1,
-          "description": "This course is an intensive introduction to the existing methods for time series forecasting."
-        }
-      ],
-      "machine_learning": [
-        {
-          "course_id": "MSDS 621",
-          "course_name": "Intro to Machine Learning",
-          "units": 2,
-          "description": "This course focuses on the implementation and application of supervised and unsupervised machine learning algorithms."
-        },
-        {
-          "course_id": "MSDS 630",
-          "course_name": "Advanced Machine Learning",
-          "units": 2,
-          "description": "Students study advanced machine learning algorithms."
-        },
-        {
-          "course_id": "MSDS 634",
-          "course_name": "Deep Learning",
-          "units": 2,
-          "description": "This course introduces students to a range of topics and concepts in deep learning."
-        }
-      ],
-      "data_management": [
-        {
-          "course_id": "MSDS 691",
-          "course_name": "Relational Databases",
-          "units": 2,
-          "description": "This course aims to develop a strong understanding of relational database concepts."
-        },
-        {
-          "course_id": "MSDS 692",
-          "course_name": "Data Acquisition",
-          "units": 2,
-          "description": "This lab-heavy Python class teaches students how to collect, merge, and clean data from multiple sources."
-        },
-        {
-          "course_id": "MSDS 697",
-          "course_name": "Distributed Data Systems",
-          "units": 2,
-          "description": "Students study key-value store through NoSQL with a focus on using MongoDB."
-        }
-      ],
-      "professional_skills": [
-        {
-          "course_id": "MSDS 610",
-          "course_name": "Communication for Data Science",
-          "units": 1,
-          "description": "Students will learn essential concepts related to business communication."
-        },
-        {
-          "course_id": "MSDS 603",
-          "course_name": "Data Science Entrepreneurship",
-          "units": 2,
-          "description": "Students develop a minimum viable data science product."
-        },
-        {
-          "course_id": "MSDS 633",
-          "course_name": "Ethics in Data Science",
-          "units": 1,
-          "description": "This course introduces ethical and privacy problems in data collection, algorithms, and evaluation."
-        }
-      ],
-      "data_engineering": [
-        {
-          "course_id": "MSDS 680",
-          "course_name": "Machine Learning Operations",
-          "units": 2,
-          "description": "The objective of this course is to learn the different stages of the end-to-end Machine Learning pipeline, from model development experiment tracking, all the way to model serving and model monitoring. For each step in the pipeline, students explore practical real world use cases and get hands-on experience with open source tools."
-        },
-        {
-          "course_id": "MSDS 681",
-          "course_name": "Data Lakehouse",
-          "units": 2,
-          "description": "This course helps students understand the data lakehouse architecture, which enables the storage of raw, structured, and unstructured data for business analytics and machine learning."
-        },
-        {
-          "course_id": "MSDS 682",
-          "course_name": "Data Stream Processing",
-          "units": 2,
-          "description": "This class equips students with the skills necessary to process continuous data streams at scale and in real-time."
-        },
-        {
-          "course_id": "MSDS 683",
-          "course_name": "Data Architecture",
-          "units": 2,
-          "description": "In this course, the students will earn the skill sets to understand the business applications, problems, and needs and design and organize data assets using data structures, storage, processing platforms, etc., accordingly to provide desirable efficiency, reliability, and security."
-        }
-      ],
-      "practicum_series": [
-        {
-          "course_id": "MSDS 605",
-          "course_name": "Data Science Practicum I",
-          "units": 1,
-          "description": "The data science practicum is a data science project sponsored by a company and mentored by a faculty member."
-        },
-        {
-          "course_id": "MSDS 625",
-          "course_name": "Data Science Practicum II",
-          "units": 1,
-          "description": "Continuation of practicum series."
-        },
-        {
-          "course_id": "MSDS 627",
-          "course_name": "Data Science Practicum III",
-          "units": 1,
-          "description": "Continuation of practicum series."
-        },
-        {
-          "course_id": "MSDS 632",
-          "course_name": "Data Science Practicum IV",
-          "units": 1,
-          "description": "Final part of practicum series."
-        }
-      ]
+    "cohort_size": "approximately 90 students",
+    "class_format": {
+      "sections": "multiple sections to keep sizes small",
+      "teaching_assistants": "none for lectures or discussions",
+      "start_date": "early July each year"
     },
-    "Practicum Experience": {
-      "structure": {
-        "duration": "9 months",
-        "weekly_commitment": "16 hours",
-        "schedule": "two days per week",
-        "start_date": "mid-October"
+    "qa_pairs": [
+      {
+        "question": "When does the program start and what is the application deadline?",
+        "answer": "Thank you for your interest in our program. The Master of Science in Data Science (MSDS) is a full-time, one-year program. The 35-unit program starts in early July each year, and it's important to note that admissions are only available in the summer."
       },
-      "projects": {
-        "company_participation": "~50 companies annually",
-        "selection": "students form teams and rank preferences",
-        "compensation": "may be paid or unpaid",
-        "mentorship": [
-          "faculty advisors",
-          "company professionals"
-        ]
+      {
+        "question": "How long does the program take to complete?",
+        "answer": "The MSDS program is designed to be completed in 12 months of full-time study. Additionally, there is an option to extend the program by one semester (totaling 18 months) to concentrate on Data Engineering."
       },
-      "partner_categories": {
-        "tech": ["Facebook", "Reddit", "Pocket Gems", "Metaphor Data"],
-        "financial": ["BlackRock", "First Republic Bank", "Freedom Financial Network"],
-        "healthcare": ["Stanford Medicine", "UCSF", "Propeller Health"],
-        "sports": ["Golden State Warriors", "New York Mets"],
-        "nonprofit": ["ACLU", "Environmental Defense Fund", "The Nature Conservancy"]
+      {
+        "question": "What is the class size and teaching structure?",
+        "answer": "Our 2024–2025 cohort will be approximately 90 students in size. In most classes, we run lectures in two or more sections to keep class sizes small. There are no teaching assistants leading class lectures or class discussions in our program."
+      }
+    ]
+  },
+  "Program Overview": {
+    "name": "Master of Science in Data Science (MSDS)",
+    "focus": [
+      "technical expertise",
+      "business acumen",
+      "analytics",
+      "machine learning",
+      "deep learning",
+      "cloud computing"
+    ],
+    "key_feature": "nine-month practicum with real companies",
+    "qa_pairs": [
+      {
+        "question": "What is the MSDS program?",
+        "answer": "The Master of Science in Data Science (MSDS) program at the University of San Francisco (USF) is a full-time, one-year program designed to equip students with the technical expertise and business acumen necessary for successful careers in data science."
       },
-      "past_projects": [
-        {
-          "company": "American Civil Liberties Union of Northern California (ACLU)",
-          "team": ["Ian Duke", "Felix Tong"],
-          "faculty_mentors": ["Robert Clements"],
-          "company_liaisons": ["Dylan Verner-Crist", "John Do", "Emi Young"],
-          "description": "Students spearheaded the development and implementation of scalable models in Python using advanced natural language processing and machine learning techniques to automate the analysis of unstructured video data from over 500 police traffic stops. They built a data pipeline that integrates open-source machine learning models, transcription techniques, and data storage methods to associate 3,500 written reports with corresponding body camera videos, efficiently organizing the stored data. The team led an initiative to conduct time series forecasting analyses and observational studies exploring the impact of facial recognition technology on crime and clearance rates in jurisdictions across California. Additionally, they regularly created data visualizations for the office's Lead Investigator and explained findings and analytical approaches to non-technical legal professionals."
-        },
-        {
-          "company": "AERO",
-          "team": ["Colin Bennie", "Yen-Hsin Fang"],
-          "faculty_mentors": ["Victor Palacios"],
-          "company_liaisons": ["Ray Yocke"],
-          "description": "Students led the design and implementation of machine-learning-focused Python modules, leveraging XGBoost and cron automations to improve prediction accuracy for sales performance across the route network, as well as increasing revenues through precise demand predictions. The team collaborated closely with executives to gain insights into organizational concerns and designed machine learning solutions to address data-level challenges, establishing data-driven decision-making processes throughout the organization. They created and maintained a pipeline to integrate over 1 million third-party records into existing data used in machine learning approaches, significantly enhancing model performance."
-        },
-        {
-          "company": "American School of Dubai",
-          "team": ["Brandon Hom"],
-          "faculty_mentors": ["Mahesh Chaudhari"],
-          "company_liaisons": ["Ken Simonds"],
-          "description": "Utilizing BigQuery and Looker Studio, the team analyzed and summarized over 60,000 data points related to academic performance and reading habits, yielding valuable insights for school leadership. They streamlined data scraping pipelines in Airflow, significantly reducing code complexity by consolidating more than 30 pipeline files into a single file and expediting the implementation of new pipelines. Additionally, they designed an Airflow data pipeline to extract raw usage logs from Looker Studio, resulting in the development of a dashboard that provides insights on dashboard usage. This innovation led to an 85% reduction in costs and saved over 50 hours annually."
-        },
-        {
-          "company": "Atlassian",
-          "team": ["Jiaxuan Ouyang", "Sissi Shen", "Laila Zaidi"],
-          "faculty_mentors": ["Robert Clements"],
-          "company_liaisons": ["Steve Shibuya"],
-          "description": "The team developed a validation package, achieving a 90% reduction in validation time and streamlining the process by reducing the codebase. They engineered and deployed a validation data pipeline in Databricks Cloud, which streamlined the assessment of models by utilizing PySpark and SQL to query large datasets containing over 20 million rows of marketing data. Leading the agile development process, the team managed project timelines using JIRA software. In their MLOps model governance efforts, they conducted performance tracking, drift detection, and time series analysis for different model versions, while organizing and managing these versions on MLFlow by logging metrics and tagging models according to their production status. Additionally, they collaborated with the data engineering team to derive new model features, resulting in a 5% increase in model performance."
-        },
-        {
-          "company": "Boston Children's Hospital",
-          "team": ["Amadeo Cabanela", "Nathan Holmes-King", "Sonal Shad"],
-          "faculty_mentors": ["William Bosl"],
-          "company_liaisons": ["William Bosl", "Andrew Kiss"],
-          "description": "The team developed feature extraction methods, including tensor factorization, to identify latent features associated with Rolandic Epilepsy in children. They employed machine learning techniques for seizure forecasting by analyzing brain activity data. This approach aimed to estimate the probability of a Rolandic seizure occurring, offering a more nuanced prediction than a simple binary outcome."
-        },
-        {
-          "company": "Buck Institute",
-          "team": ["Samuel Campione", "Zhiyuan (Freeman) Chen"],
-          "faculty_mentors": ["Daniel O'Connor"],
-          "company_liaisons": ["Kai Zhou"],
-          "description": "The team developed single and double U-Net Convolutional Neural Network (CNN) models for identifying mitochondria in Drosophila brain scans, achieving a 94% accuracy rate. They implemented parallel computing and an image segmentation pipeline across various projects, including a 60% reduction in runtime for a cell segmentation pipeline using Joblib, leading to notable improvements in performance and reliability. Additionally, they conducted a comprehensive analysis tracking 21 ribosome paralogs across species to compare their conservation and evolutionary adaptations, assessing genetic diversity and age-related changes."
-        },
-        {
-          "company": "California Academy of Sciences",
-          "team": ["Maricela Abarca", "Aryan Mistry"],
-          "faculty_mentors": ["Shan Wang"],
-          "company_liaisons": ["Joe Russack"],
-          "description": "The team guided a $50,000 investment in computing infrastructure by analyzing over 28 million server usage records with PySpark and a custom optimization algorithm. They automated a reporting system using APIs and MySQL, leading to an 88% increase in recognition for staff and their scientific publications. Additionally, they promoted the adoption of best practice identifiers to enhance the visibility of research output."
-        },
-        {
-          "company": "California Association of Food Banks",
-          "team": ["Tyler Kahn"],
-          "faculty_mentors": ["Diane Woodbridge"],
-          "company_liaisons": ["May Lynn Tan"],
-          "description": "The team developed a data pipeline to collect, pre-process, and analyze US national census data, and created food insecurity and demographic dashboards in Tableau, which are used by California food banks and the State Assembly. This effort reduced manual labor by 80%. They also designed and implemented the company's data ingestion pipeline and data warehouse using Google Cloud Platform, including Cloud Storage, Functions, Scheduler, and BigQuery. Additionally, the team worked closely with the CFO and Director of Research to identify data sources for exploration and analysis, offering guidance on tools and strategies to effectively leverage the available data."
-        },
-        {
-          "company": "California Data Collaborative",
-          "team": ["Daniel Gonzalez"],
-          "faculty_mentors": ["Stephen Devlin"],
-          "company_liaisons": ["Christopher Tull", "David Marulli", "Dan Wang"],
-          "description": "The team developed and fine-tuned a leak detection algorithm using Snowflake and Python to analyze hourly water meter readings across various California water districts. They successfully identified and categorized leak patterns, which helped in reducing wastewater. They also implemented advanced data pre- and post-processing techniques to clean and structure time series data, improving the accuracy of a machine learning model for predicting water usage anomalies. The team aims to integrate a predictive module into the leak detection system to assist districts with real-time monitoring and timely management of leaks and usage anomalies."
-        },
-        {
-          "company": "Data Knobs",
-          "team": ["Yan Ho (Mark) Lam", "Thanh Dung (Zoe) Le", "Ranjeet Nagarkar"],
-          "faculty_mentors": ["Daniel O'Connor"],
-          "company_liaisons": ["Prashant Dhingra"],
-          "description": "The team built a data pipeline for text-to-image and image-to-image semantic search using GCP, Google Vision AI, CLIP Model, and Pinecone. They deployed a RESTful API with FastAPI, achieving a high precision with an average cosine similarity score of 0.72. They also enabled seamless unstructured data extraction from PDFs and other document formats, such as PPTX and DOCX, using Langchain, Unstructured.IO, and other open-source libraries."
-        },
-        {
-          "company": "Dynetics",
-          "team": ["Sung Hyun (James) Chung", "Nithin Kuma"],
-          "faculty_mentors": ["Victor Palacios"],
-          "company_liaisons": ["Cannot disclose"],
-          "description": "Top secret government project. Details cannot be shared."
-        },
-        {
-          "company": "Environmental Defense Fund",
-          "team": ["Karthik Ayyalasomayajula"],
-          "faculty_mentors": ["Daniel Jerison"],
-          "company_liaisons": ["Dr. Chris Cusack"],
-          "description": "The team engineered robust data pipelines for processing video and image data, optimizing them for machine learning and computer vision applications. They developed sampling and annotation scripts to support machine learning model validations by human reviewers, enhancing the accuracy of computer vision algorithm assessments. Additionally, they utilized Monte Carlo simulations to predict and visualize potential boat traffic patterns, contributing to environmental impact analysis."
-        },
-        {
-          "company": "Eventbrite",
-          "team": ["Irene Garcia Montoya", "Cassandra Richter"],
-          "faculty_mentors": ["Victor Palacios"],
-          "company_liaisons": ["Jared Lauber", "Chelsea Begrowicz", "Katie Pickett"],
-          "description": "Students developed a dashboard to proactively flag users based on revenue risk, which eliminated approximately 400 hours of manual tasks annually and improved model accuracy. They also created a discrepancy detection data pipeline to identify and quantify the impact of cross-database discrepancies in financial data. In addition, they initiated an early churn detection model for key clients."
-        },
-        {
-          "company": "Federal Home Loan Bank of San Francisco",
-          "team": ["Vineeth Gupta Bodla"],
-          "faculty_mentors": ["Stephen Devlin"],
-          "company_liaisons": ["Jason Lee", "Jason Mora", "Xu Liu"],
-          "description": "The team engineered complex SQL queries, optimized data pipelines, and applied text mining and data mining techniques to monitor 150 member KPIs. They performed exploratory data analysis (EDA) and hypothesis testing to compare traditional credit scoring frameworks with the VantageScore framework, identifying the potential to expand the customer base by 33 million. They developed a climate risk framework, orchestrated ETL processes, and created Power BI dashboards for strategic decision-making on assets. Additionally, they developed an interactive large language model (LLM) based dashboard in production, integrating sentiment evaluation of articles and media agencies and mapping stock price movements to monitor the reputation of top bank members."
-        },
-        {
-          "company": "Give Us The Floor",
-          "team": ["Ireri Lisset Avila"],
-          "faculty_mentors": ["Victor Palacios"],
-          "company_liaisons": ["Dr. Tessa Capelle", "Adrian Ulsted", "Valerie Grison-Aslop"],
-          "description": "The team designed and implemented machine learning models using NLP techniques and transformers for binary classification. This reduced human intervention by 90%, saving $90K per year and benefiting over 2,000 users. They improved message retrieval through API requests by 80% with a Python script for effective date filtering across 400K messages. Additionally, they created an Apache Airflow DAG for scheduled runs of the entire pipeline, from data fetching to final classification."
-        },
-        {
-          "company": "How We Feel",
-          "team": ["Jaywook Chung", "Rashmi Panse"],
-          "faculty_mentors": ["David Guy Brizan"],
-          "company_liaisons": ["James Regan", "David Cheng"],
-          "description": "The team developed a churn prediction model and designed A/B testing to improve retention, generating actionable insights projected to save $100K in annual marketing spend. They built a recommender system using the PyTorch framework to enhance personalized user experience by recommending in-app tools, which is expected to increase user engagement by 30%. Additionally, they transformed the data infrastructure by implementing ETL pipelines from MixPanel to a Google Cloud database, managing and querying over 100,000 event records in BigQuery SQL, saving more than 100 hours annually."
-        },
-        {
-          "company": "ISAZI",
-          "team": ["Teja Davuluri", "Varsha Moturi"],
-          "faculty_mentors": ["Mustafa Hajij"],
-          "company_liaisons": ["Tanaka Chiromo", "Dr. Brian Wigdorowitz"],
-          "description": "Students developed a transformer-based forecasting model with inventory optimization algorithms to determine optimal stock levels, reorder points, and inventory allocation across a retail network of 200 stores, achieving a 15% reduction in purchasing costs. They increased forecast accuracy by 20% by fine-tuning Lag-Llama on over five years of sales data, modifying the architecture and temporal modeling."
-        },
-        {
-          "company": "San Francisco County Transportation Authority",
-          "team": ["Yazhu Jiang", "Dawei Pang"],
-          "faculty_mentors": ["Daniel Jerison"],
-          "company_liaisons": ["Drew Cooper"],
-          "description": "The team developed an automated pipeline that improved data processing efficiency by 50%, combining and cleaning approximately 250,000 rows of unstructured daily ridership predictions from various transit agencies using Python. They generated markdown and CSV files to compare observed and predicted data for model performance evaluation and validation. Additionally, they developed over 10 interactive dashboards using SimWrapper to quickly detect model errors such as ridership discrepancies."
-        },
-        {
-          "company": "Simplr, An Asurion Company",
-          "team": ["Kabir Nawani", "Arios Liang Tong"],
-          "faculty_mentors": ["Mustafa Hajij"],
-          "company_liaisons": ["Ilias Miraoui"],
-          "description": "The team designed automated pipelines to generate preference datasets from over 92,000 chat histories for fine-tuning, ensuring high data quality. They performed Parameter-Efficient Fine-Tuning (LoRA) on the Mistral-7B model using 63,000 chat histories with the DPO algorithm and RLAIF on an A100 GPU, achieving a 21% increase in the ROUGE-L score. Additionally, they conducted Few-Shot Prompting to compare fine-tuned models to current ones in reasoning and summarization, using Llama-2 as the judge, and outperformed existing models in 70% of experimental trials."
-        },
-        {
-          "company": "SnapLogic",
-          "team": ["Li En (Belinda) Ong", "Justin Yang"],
-          "faculty_mentors": ["Mahesh Chaudhari"],
-          "company_liaisons": ["Rachel Fournier", "Hong Xu", "Dr. Greg Benson"],
-          "description": "The team analyzed over 10 years of Salesforce and SnapLogic Platform data in BigQuery, revealing that pre-sales strategies increased average account annual recurring revenue (ARR) by $280k. They found insights leading to a 50% increase in purchases and reduced the time to the first add-on purchase by 30 days. They constructed predictive metrics to forecast ARR with an adjusted R² of 0.82, aiding the sales team in managing at-risk accounts and targeting growth opportunities. Additionally, they developed an upsell predictive model with an accuracy of 0.75 and an AUC of 0.82, which was deployed in a Looker Studio Dashboard."
-        },
-        {
-          "company": "Square (formerly Block Inc.)",
-          "team": ["Vidith Balasa", "Bassim Eledath"],
-          "faculty_mentors": ["Mahesh Chaudhari"],
-          "company_liaisons": ["Aditi Sharma", "Zixiao Huang", "Yue You"],
-          "description": "The team developed and trained a light gradient boosting model on a dataset over 100GB to predict local business lifetime value for advertising campaigns. They improved the lifetime revenue prediction pipeline's performance by more than 20% through the integration of Prefect 2 frameworks, which streamlined model deployment. Additionally, they secured shareholder approval for the model's production deployment by effectively presenting its financial benefits. They also co-developed an LLM RAG system that automated email campaign writing, significantly saving time for the marketing team."
-        },
-        {
-          "company": "Stanford Ophthalmic Informatics and Artificial Intelligence Group (OPTIMA)",
-          "team": ["Rithvik Donnipadu", "Maxim Sivolella"],
-          "faculty_mentors": ["Cody Carroll"],
-          "company_liaisons": ["Dr. Sophia Wang"],
-          "description": "Students led the development of a machine learning-based disease prediction model product to forecast glaucoma progression, aiming to reduce doctor workload and save approximately $600,000 annually. They analyzed 10 million rows of medical data, extracted over 500 features using BigQuery on GCP, and trained a custom multistage model. By incorporating functional PCA and a Random Forest regressor, they achieved a 34% improvement in RMSE compared to the baseline. Additionally, they designed a cohort of glaucoma patients using over 1 million data points and 1 terabyte of data, performing feature engineering to create 400+ predictors from Electronic Health Records, which enhanced model accuracy by 30%. Their work included constructing a global disease progression function using PCA and longitudinal data to forecast future vision loss, potentially saving over 700 patients from irreversible vision loss and $6 million in surgical fees annually."
-        },
-        {
-          "company": "SuperTech FT",
-          "team": ["Yepeng Li", "Kefeng Xiao"],
-          "faculty_mentors": ["Mustafa Hajij"],
-          "company_liaisons": ["Dr. Albert Hu", "Dr. Veera Nallam", "George Williams"],
-          "description": "The team developed an AI-powered educational platform that leverages machine learning to analyze student performance and generate customized training materials. They engineered an ETL pipeline connecting cloud databases with local models, implementing low-latency data processing to deliver personalized content to users. The system includes automated problem set generation capabilities integrated with recommendation algorithms that draw from processed educational content. Through standardized ETL scripts optimized for both local and cloud environments, the team achieved significant operational efficiency improvements. The platform successfully served an initial user base, demonstrating positive learning outcomes and projected performance improvements in standardized testing. Students using the system benefited from personalized feedback loops and adaptive content delivery, supported by robust data collection and processing infrastructure."
-        },
-        {
-          "company": "The Nature Conservancy",
-          "team": ["Ryan Bernstein", "Seneth Waterman"],
-          "faculty_mentors": ["Cody Carroll"],
-          "company_liaisons": ["Kirk Klausmeyer", "Nathaniel Rindlaub"],
-          "description": "Students developed an LLM pipeline to analyze over 1,000 pages of environmental policy, potentially saving The Nature Conservancy up to $400,000 in consulting fees. They fine-tuned a large language model on this data, enhancing summarization and question-answering capabilities, and documented their extensive experimentation in a research paper. Additionally, they created PyTorch-based object detection algorithms to classify species in over 30,000 wildlife images stored in AWS, and built an evaluation pipeline that improved summarization accuracy by 20%. In another project, they automated workflows with a custom ETL pipeline, achieving a 90% reduction in manual work and providing real-time groundwater depth monitoring with interactive dashboards."
-        },
-        {
-          "company": "TruckX Inc",
-          "team": ["Solomon Asiedu-Ofei", "Princewell Egbujor", "Shrey Jain", "Param Mehta", "Lance Santerre"],
-          "faculty_mentors": ["Victor Palacios"],
-          "company_liaisons": ["Clarissa Danilov"],
-          "description": "Students developed a Python-based truck stop recommendation system to help drivers plan their journeys efficiently and managed the core codebase with version control. They also created a unified battery degradation model with 70% accuracy for early failure detection in lithium-ion and solar batteries. The team spearheaded GitHub integration for version control, significantly improving the software development lifecycle by establishing a structured workflow. They engineered a predictive model with over 90% accuracy for detecting sharp turn maneuvers from extensive driving data, and are working on a geofence recommendation feature using unsupervised clustering to enhance truck geofencing. Additionally, they built and deployed an intelligent geofence recommender feature that increased client-app engagement by 200% and automated 80% of geofence implementation. An AI-powered Q/A chatbot was developed using GPT-4, RAG, Langchain, and Streamlit to improve trucking compliance and document accessibility. The team also engineered a rule-based sharp turn detection algorithm and geospatial predictive features for truck behavior analysis."
-        },
-        {
-          "company": "Manor Lab - University of California, San Diego",
-          "team": ["Jeffrey Chen", "Abhijeeth Erra"],
-          "faculty_mentors": ["Cody Carroll"],
-          "company_liaisons": ["Dr. Uri Manor"],
-          "description": "The team developed and published an open-source deep learning-based GUI that allowed researchers to visualize and conduct exploratory and quantitative analysis of auditory brainstem response (ABR) waveforms, providing essential resources for data analysis. They trained and cross-validated a Convolutional Neural Network (CNN) using PyTorch, achieving 94% accuracy in classifying ABR waves as signal or noise, which was competitive with the benchmark models for ABR thresholding. Additionally, they trained and cross-validated a two-step method for detecting the peaks and troughs of ABR waveforms using another CNN and tools from Scikit-Learn, resulting in a 0.1 ms error for Wave I Latency, surpassing industry standards."
-        },
-        {
-          "company": "UCSF - Oncology",
-          "team": ["Shreyas Anil", "Bhumika Srinivas"],
-          "faculty_mentors": ["Yannet Interian"],
-          "company_liaisons": ["Dr. Hui Lin"],
-          "description": "The team processed over 12 million words of clinical notes and unstructured EHR data for cancer patients, achieving a 25% reduction in note volumes. They enhanced early disease detection for more than 5,000 patients by developing hierarchical segmentation pipelines with encoder-driven transformer models, resulting in an 8% accuracy improvement through XGBoost. Fine-tuned embedding models like GritLM and GIST, combined with Mistral-7B and LLaMA architectures, were applied to refine glioma patient note clustering and expand vocabulary. At the AAPM Conference, the team, as first authors, demonstrated that while baseline MPT-7B and ClinicalBERT models did not inherently improve EHR notes' predictive accuracy, fine-tuning ClinicalBERT achieved F1 scores between 0.81 and 0.91, AUROC between 0.79 and 0.87, and a 6% accuracy improvement over the baseline. Additionally, they led a study to boost LLM performance for classification tasks in healthcare, developed a pipeline for identifying high-risk patients using fine-tuned open-source LLMs, and processed clinical text to create templated summaries using GPT-4. Their retrieval-augmented generation (RAG) framework, which used kNN clustering on patient embeddings, improved classification accuracy and F1 scores by 25% on a testing set of 500 samples, competing with fine-tuned ClinicalBERT metrics. They also experimented with long-context tuned versions of MPT-7B, LLaMA-2, and LLaMA-3, focusing on sequence parallelism and quantization for multi-GPU inference. The abstract was selected as \"Best in Physics\" for the AAPM conference in July 2024."
-        },
-        {
-          "company": "UCSF - Clinical Informatics",
-          "team": ["Chris Nishimura", "Yi-Fang Tsai"],
-          "faculty_mentors": ["Shan Wang"],
-          "company_liaisons": ["Dr. Xinran Liu"],
-          "description": "The team utilized SparkSQL to process 1.5 million rows of unstructured and structured data from UCSF, including medical progress and case management notes, daily vital signs, and lab results for 150,000 patient encounters. They enhanced hospital throughput planning by developing predictive models for patient length of stay, employing PyTorch and Transformer libraries to fine-tune a pre-trained UCSF BERT medical LLM with unstructured note data. By implementing a stacking technique, they combined the UCSF BERT NLP model with classical machine learning models trained on structured data, improving the predictive performance of their multimodal model outputs. They also engaged with the UCSF Director of Clinical Informatics to align research efforts with institutional needs and present their findings."
-        },
-        {
-          "company": "UCSF - Gastroenterology",
-          "team": ["Eren Bardak", "Yihan Cao"],
-          "faculty_mentors": ["Shan Wang"],
-          "company_liaisons": ["Dr. Vivek Rudrapatna"],
-          "description": "The team utilized models like Lasso/Ridge Regressions, Random Forest, and XGBoost to predict overall patient states, achieving 80% accuracy through cross-validation and hyperparameter tuning. They conducted visual analyses on drug efficacy using Python visualization packages such as Matplotlib and Seaborn, and proposed potential medication actions for reinforcement learning agents. Additionally, they developed and deployed a Python package via PyPI to facilitate enhanced clinical data interpretation. They queried and analyzed over 100 GB of confidential medical data using SQL on Azure Data Studio, adhering to data privacy standards. The team also implemented offline reinforcement learning algorithms, compared RL-identified policies with real-world decision-making, and conducted extensive data analysis and quality checks. They are currently working on models like the Decision Transformer for reinforcement learning through sequence modeling."
-        },
-        {
-          "company": "UCSF - MoonLAIT Lab",
-          "team": ["Eric Shen", "Kejia Wang", "Claire Zhou"],
-          "faculty_mentors": ["Shan Wang"],
-          "company_liaisons": ["Dr. Yue Leng"],
-          "description": "The team designed a process to handle multidimensional, multimodal polysomnography (PSG) and 676 GB of health data from over 70,000 observations in large-scale cohort studies for Parkinson's disease diagnosis. They enhanced predictive power by 50% through feature extraction and the application of machine learning models like logistic regression, random forest, and XGBoost. The team addressed imbalanced datasets using oversampling (SMOTE) and undersampling (Tomek Links), tuning hyperparameters through cross-validation and evaluating model performance with metrics such as R-squared, AUROC, and AUPRC. They developed algorithms to engineer biological features from 1,400 GB of raw PSG data and established correlations between biomarkers and neurodegenerative diseases using statistical analysis."
-        },
-        {
-          "company": "University of London, Royal Holloway",
-          "team": ["Mikkel Ovesen"],
-          "faculty_mentors": ["Yannet Interian"],
-          "company_liaisons": ["Sara Bernardini"],
-          "description": "The team developed advanced Reinforcement Learning techniques to optimize combinatorial algorithms for Boolean satisfiability problems (SAT) and multi-agent path finding (MAPF). They enhanced the learning capabilities of their RL model by implementing a modified Actor-Critic approach with eligibility tracing, resulting in approximately a 57% reduction in epochs to reach the previous best score. Additionally, they innovated the integration of Experience Replay in the REINFORCE framework, achieving around a 30% increase in computational speed by leveraging past experiences to improve algorithmic performance."
-        },
-        {
-          "company": "Upwork",
-          "team": ["Shagun Kala", "Aditya Nair"],
-          "faculty_mentors": ["Yannet Interian"],
-          "company_liaisons": ["Adam Rhuberg"],
-          "description": "The team analyzed over 200 million rows of data on Snowflake using Apache Spark in Databricks to derive insights from client and freelancer interactions. They developed a churn definition that captured 92% of diverse client behaviors and engineered predictive features through exploratory data analysis. Their innovative ML framework included Survival Analysis and Decision Tree classifiers to predict client churn, and they productionized the model. Additionally, they designed A/B tests and improved client retention by 8% through a tailored marketing strategy utilizing a fine-tuned large language model."
-        },
-        {
-          "company": "US Department of Health and Human Services",
-          "team": ["Caleb Hamblen", "Nicholas Miller"],
-          "faculty_mentors": ["Yannet Interian"],
-          "company_liaisons": ["William Kim"],
-          "description": "The team implemented a data acquisition system using Selenium to scrape thousands of podcast episode records, automating data aggregation and saving the delivery team 12 hours per week. They deployed Airflow DAGs to schedule automated scraping jobs, storing the results in AWS S3 and creating interactive Plotly graphs hosted on Domo for centralized data access. Additionally, they used the OpenAI API for sentiment analysis on news article comments, providing valuable insights into public feedback on health campaigns managed by the Office of the Surgeon General."
-        },
-        {
-          "company": "Vibrant Data Labs",
-          "team": ["Tatshini Ganesan", "Ting Pan"],
-          "faculty_mentors": ["Yannet Interian"],
-          "company_liaisons": ["Lara Reichmann", "Eric Berlow", "Rich Williams"],
-          "description": "The team improved user engagement by 5% through the implementation of Google Analytics tracking for an embedded player on the website. They developed a classification model to categorize organizations into four groups based on descriptions for updating an interactive map tool. This involved using an LLM to generate embeddings from descriptions and applying a KNN model as a baseline. By fine-tuning Flan-T5 and ClimateBert LLM models with PyTorch, they achieved a 31% increase in accuracy."
-        }
-      ]
+      {
+        "question": "What are the benefits of the MSDS program?",
+        "answer": "The Master of Science in Data Science (MSDS) program at the University of San Francisco (USF) is a full-time, one-year program designed to equip students with the technical expertise and business acumen necessary for successful careers in data science. USF's MSDS program offers a rigorous curriculum that integrates courses in analytics, machine learning, deep learning, cloud computing, and more. A distinctive feature is the nine-month practicum, where students collaborate with real companies on data science projects, providing hands-on experience that is highly valued by employers."
+      }
+    ]
+  },
+  "Tuition & Costs": {
+    "tuition": {
+      "cost_per_unit": 1695,
+      "total_units": 35,
+      "academic_year": "2025-2026"
     },
-    "Career Outcomes": {
-      "salaries": {
-        "median_base_california": "$147,500",
-        "median_base_international": "$148,400",
-        "average_signing_bonus": "$24,225"
+    "additional_costs": [
+      "housing",
+      "meals",
+      "books",
+      "supplies",
+      "personal expenses"
+    ],
+    "qa_pairs": [
+      {
+        "question": "What is the cost of the program?",
+        "answer": "The estimated cost of the MS in Data Science is $1,695 per unit for the 2025-2026 academic year, with a minimum of 35 units required to be completed each academic year. Students typically take an average of 35 units each academic year. A total of 35 units are required for the degree. Program fees are subject to adjustment annually."
       },
-      "job_titles": [
-        "Data Scientist",
-        "Machine Learning Engineer",
-        "Data Engineer",
-        "Software Engineer",
-        "Senior Data Scientist",
-        "AI Associate",
-        "AI/ML Specialist"
-      ]
-    },
-    "Admission Statistics": {
-      "average_gpa": 3.43,
-      "common_majors": [
-        "Computer Science",
-        "Data Science",
-        "Mathematics",
-        "Economics",
-        "Statistics"
-      ],
-      "work_experience": {
-        "average_years": 3.5,
-        "distribution": "one-third have 1 year or less"
+      {
+        "question": "What additional expenses should students budget for beyond tuition?",
+        "answer": "Beyond tuition, students should budget for housing, meals, books, supplies, and other personal expenses. Costs for housing and meals can vary, and students should consult the university's estimated cost of attendance for detailed information."
+      }
+    ]
+  },
+  "Program Preparation": {
+    "recommended_background": [
+      "mathematics",
+      "statistics",
+      "computer science"
+    ],
+    "experience": "prior data science experience beneficial but not required",
+    "prerequisites": "must complete before program start",
+    "qa_pairs": [
+      {
+        "question": "How can I succeed in the program without prior data science experience?",
+        "answer": "While prior experience in data science is beneficial, the MSDS program provides a comprehensive curriculum that covers foundational to advanced topics. Prospective students need to have  are encouraged to have a strong background in mathematics, statistics, or computer science to facilitate their success in the program."
+      }
+    ]
+  },
+  "Faculty & Research": {
+    "leadership": {
+      "program_director": {
+        "name": "Shan Wang",
+        "email": "swang151@usfca.edu",
+        "description": "Dr. Shan Wang is the program director and an assistant professor in the MS in Data Science program at the University of San Francisco. Her research interests include nonparametric statistics, biomedical data science, and utilizing data-driven methods to address social and environmental problems.",
+        "education": "PhD, Statistics, Purdue University, 2015; BS, Mathematics, Fudan University, 2009"
+      },
+      "administrative_director": {
+        "name": "Aija Tapaninen",
+        "email": "atapaninen@usfca.edu",
+        "description": "Aija Tapaninen has been with USF since 2014. Prior to joining the MSDS program team, she has held positions in the Strategic Enrollment Management division and at the School of Management, working with the campus community on a range of topics related to graduate student education. Before USF, Aija was in graduate admissions and student affairs at UC Berkeley and UCLA.",
+        "education": "University of San Francisco, MBA, 2017; University of San Francisco, MA in Organization & Leadership, 2010; San Francisco State University, BA in Intercultural Communication, 2005"
       }
     },
-    "Other": {}
+    "full_time_faculty": [
+      {
+        "name": "David Guy Brizan",
+        "email": "dgbrizan@usfca.edu",
+        "office_location": "Harney Science Center 404",
+        "description": "David is an associate professor at the University of San Francisco. His research interests are natural language processing, machine learning, and databases — specifically on the personal and cultural/demographic information transmitted during speech and typing.",
+        "education": "PhD, Computer Science, CUNY Graduate Center (candidate); MS Computer Science, San Francisco State University; BS Computer & Information Science, Brooklyn College",
+        "expertise": ["Speech Processing", "Applications of Machine Learning"]
+      },
+      {
+        "name": "Cody Carroll",
+        "email": "cjcarroll@usfca.edu",
+        "description": "Cody Carroll is an assistant professor with joint appointments in the Department of Mathematics and Statistics and the Master's in Data Science program (MSDS).",
+        "education": "UC Davis, PhD in Statistics, 2021; UC Davis, MS in Statistics, 2017; UT Austin, BS in Mathematics, 2014",
+        "expertise": ["Time warping & curve registration", "Multivariate functional data", "Statistical consulting", "Communication through statistics"]
+      },
+      {
+        "name": "Mahesh Chaudhari",
+        "email": "mchaudhari@usfca.edu",
+        "office_location": "101 Howard, Room 524",
+        "description": "Mahesh Chaudhari is an assistant professor in the MS in Data Science program at the University of San Francisco. His research interests include databases, data engineering and cloud computing.",
+        "education": "Arizona State University, PhD in Computer Science, 2011; Mississippi State University, MS in Computer Science 2003; University of Mumbai, Mumbai, India, BE in Computer Science and Engineering, 1999",
+        "expertise": ["Data engineering", "Cloud computing", "Building autonomous data processing infrastructure"]
+      },
+      {
+        "name": "Robert Clements",
+        "email": "rclements@usfca.edu",
+        "description": "Robert Clements is an assistant professor in the MS in Data Science program and the Director of the Center for AI and Data Ethics.",
+        "education": "UCLA, PhD in Statistics, 2011; UCLA, MS in Statistics, 2009; Humboldt State University, BA in Mathematics, 2006",
+        "expertise": ["Machine Learning", "MLOps", "Applied Statistics", "AI and Data Ethics"]
+      },
+      {
+        "name": "Stephen Devlin",
+        "email": "smdevlin@usfca.edu",
+        "office_location": "Harney Science Center 122C",
+        "description": "Stephen Devlin is a Professor in the Department of Mathematics and Statistics and the Master's in Data Science program (MSDS).",
+        "education": "PhD, Mathematics, University of Maryland, 2001",
+        "expertise": ["Pure and applied mathematics"]
+      },
+      {
+        "name": "Mustafa Hajij",
+        "email": "mhajij@usfca.edu",
+        "description": "Mustafa Hajij is an assistant professor at the MSDS program at University of San Francisco.",
+        "education": "Louisiana State University, PhD in Mathematics; Louisiana State University, MS in Computer Science; Jordan University for Science and Technology, MS in Mathematics; Damascus University, BS in Mathematics",
+        "expertise": ["Deep Learning", "Algorithms"]
+      },
+      {
+        "name": "Yannet Interian",
+        "email": "yinterian@usfca.edu",
+        "office_location": "101 Howard, 605",
+        "description": "Yannet is an associate professor in the Master's in Data Science program, and her research interests lie in the application of machine learning and deep learning to medical data.",
+        "education": "Cornell University, PhD in Applied Mathematics, 2006",
+        "expertise": ["machine learning", "deep learning", "medical data"]
+      },
+      {
+        "name": "Victor Palacios",
+        "email": "vpalacios@usfca.edu",
+        "description": "Victor received his master's degree in data science from the University of San Francisco and is currently working in the same field at the University of San Francisco as the Director of Data Science Partnerships.",
+        "education": "University of San Francisco, MS in Data Science, 2021; Nagoya University, MS in Information Science, 2015; UC Berkeley, BA in Japanese, 2011",
+        "expertise": ["Natural language processing", "Deception"]
+      },
+      {
+        "name": "James Wilson",
+        "email": "jdwilson4@usfca.edu",
+        "office_location": "Harney Science Center Office 121A",
+        "description": "James is a statistics and data science educator, researcher, mentor, and enthusiast. His research merges computational statistics, random graph theory, and machine learning to provide interpretable machinery to model, explore, and analyze complex interacting and imaging systems.",
+        "education": "PhD, Statistics and Operations Research, University of North Carolina, 2015; MS, Mathematical Sciences, Clemson University, 2010; BS, Mathematics and Chemistry, Campbell University, 2008",
+        "expertise": ["computational statistics", "random graph theory", "machine learning"]
+      },
+      {
+        "name": "Diane Woodbridge",
+        "email": "dwoodbridge@usfca.edu",
+        "office_location": "101 Howard 606",
+        "description": "Diane Woodbridge is an associate professor in the MS in Data Science program at the University of San Francisco. Her research interests include scalable database management systems, data fusion, and machine learning focusing on remote health monitoring (IoT in Healthcare).",
+        "education": "PhD, Computer Science, University of California, Los Angeles; MS, Computer Science, University of California, Los Angeles; BS, Computer Science and Engineering, Sogang University, South Korea",
+        "expertise": ["Scalable database systems", "Data fusion", "Machine learning for IoT in Healthcare"]
+      }
+    ],
+    "part_time_faculty": [
+      {
+        "name": "Sundar Dorai-Raj",
+        "email": "sdorairaj@usfca.edu",
+        "office_location": "101 Howard St.",
+        "description": "Sundar Dorai-Raj has been a data scientist at Google since 2009. He has spent most of his career working on Ads products, from YouTube Ads, where he helped launch YouTube's first skippable ad format, to Brand Lift and Google Analytics.",
+        "education": "Virginia Tech, PhD in Statistics, 2001; Virginia Tech, MS in Statistics, 1999; University of Alabama, MA in Applied Math, 1997; University of Alabama, BS in Applied Math, 1995",
+        "expertise": ["A/B testing", "statistical modeling", "machine learning"]
+      },
+      {
+        "name": "Mark Graves",
+        "email": "mgraves@usfca.edu",
+        "description": "Mark Graves has fifteen years experience in developing software, informatics, and data science solutions for healthcare and the pharmaceutical industry.",
+        "education": "Graduate Theological Union/Jesuit School of Theology, MA in Systematic & Philosophical Theology, 2005; University of Michigan, PhD in Computer Science, 1993; Georgia Institute of Technology, MS in Computer Science, 1989",
+        "expertise": ["Artificial Intelligence", "Natural Language Processing", "Moral psychology & well-being", "Religion, science & technology"]
+      },
+      {
+        "name": "Stephen Hsu",
+        "email": "sjhsu@dons.usfca.edu",
+        "description": "Stephen Hsu is a Solutions Architect helping companies end-to-end data projects with experience deriving insights from data to augment decisions in industries such as finance, retail, and healthcare.",
+        "education": "USF MS in Data Science, 2018; UC Berkeley, BA in Cognitive Science, 2017",
+        "expertise": ["Data Engineering", "Data Science", "Machine Learning", "Data Visualizations"]
+      },
+      {
+        "name": "Nico Thiebaut",
+        "email": "nthiebaut@usfca.edu",
+        "description": "Drawn to theoretical physics, Nico Thiebaut became an instructor at the University of Paris-Saclay, pursuing a PhD in quantum physics.",
+        "education": "University of Paris-Saclay, PhD in Theoretical Physics, 2015; Ecole Normale Superieur, MA in Condensed Matter Physics, 2011",
+        "expertise": ["Explainable machine learning", "Natural language processing", "Deep learning"]
+      }
+    ],
+    "faculty_emeritus": [
+      {
+        "name": "Terence Parr",
+        "email": "parrt@cs.usfca.edu",
+        "office_location": "101 Howard 607",
+        "description": "Terence is a professor of computer science and is the creator of the ANTLR parser generator. He herded programmers and implemented the large jGuru developers web site, during which time he developed and refined the StringTemplate engine.",
+        "education": "Purdue University, PhD in Computer Engineering, 1993; University of Minnesota, Postdoctoral Fellow at the Army High-Performance Computing Research Center",
+        "expertise": ["Software engineering", "Programming language design and implementation", "How programmers communicate with machines to build new software"]
+      }
+    ],
+    "visiting_faculty": [
+      {
+        "name": "Nathaniel Stevens",
+        "email": "ntstevens@usfca.edu",
+        "description": "Nathaniel is interested in using data to make decisions, solve problems, and improve processes. Specifically, his research interests lie in methodological development at the intersection of data science and industrial statistics.",
+        "education": "PhD, Statistics, University of Waterloo, 2015; MMATH, Statistics, University of Waterloo, 2011; BMATH, Statistics, University of Waterloo, 2010",
+        "expertise": ["Experimental design", "A/B testing", "Social network modeling", "Survival and reliability analysis"]
+      }
+    ],
+    "qa_pairs": [
+      {
+        "question": "Can students participate in research with faculty members?",
+        "answer": "Dr. Yannet Interian is an associate professor in the MSDS program with research interests in applying machine learning and deep learning to medical data. Students interested in collaborating on research projects with Dr. Interian are encouraged to reach out to her directly to discuss potential opportunities."
+      }
+    ]
+  },
+  "Student Employment": {
+    "assistantships": "none available",
+    "outside_work": "not recommended due to program intensity",
+    "recommendation": "focus fully on program",
+    "qa_pairs": [
+      {
+        "question": "Are there teaching or research assistantships available?",
+        "answer": "No, the MSDS program does not offer teaching or research assistantships."
+      },
+      {
+        "question": "Can students work while in the program?",
+        "answer": "The MSDS is an accelerated one-year program with a required practical training component, leaving little to no time for outside employment. Students are advised to focus fully on the program during their enrollment."
+      }
+    ]
+  },
+  "Student Services": {
+    "health_insurance": {
+      "enrollment": "automatic for 6+ units",
+      "cost": 4100,
+      "waiver": "available with proof of comparable insurance"
+    },
+    "qa_pairs": [
+      {
+        "question": "What health insurance requirements apply to students?",
+        "answer": "Graduate students registered for 6 or more units are automatically enrolled in the USF-sponsored health insurance plan, costing approximately $4,100. Students with existing health coverage may waive this fee by providing proof of comparable insurance."
+      }
+    ]
+  },
+  "Curriculum": {
+    "core_programming": [
+      {
+        "course_id": "MSDS 501",
+        "course_name": "Computation for Data Science",
+        "units": 1,
+        "description": "An intense review of Python programming and an introduction to a variety of computational problems."
+      },
+      {
+        "course_id": "MSDS 689",
+        "course_name": "Data Structures and Algorithms",
+        "units": 1,
+        "description": "This course gives students a comprehensive view of data structures and algorithms."
+      },
+      {
+        "course_id": "MSDS 694",
+        "course_name": "Distributed Computing",
+        "units": 1,
+        "description": "Students learn the MapReduce technique of distributed computing."
+      }
+    ],
+    "statistics_mathematics": [
+      {
+        "course_id": "MSDS 504",
+        "course_name": "Review Probability and Stats",
+        "units": 1,
+        "description": "A review of random variables, moments, and maximum likelihood estimation."
+      },
+      {
+        "course_id": "MSDS 601",
+        "course_name": "Linear Regression Analysis",
+        "units": 2,
+        "description": "This course is an intensive introduction to linear models."
+      },
+      {
+        "course_id": "MSDS 604",
+        "course_name": "Time Series Analysis",
+        "units": 1,
+        "description": "This course is an intensive introduction to the existing methods for time series forecasting."
+      }
+    ],
+    "machine_learning": [
+      {
+        "course_id": "MSDS 621",
+        "course_name": "Intro to Machine Learning",
+        "units": 2,
+        "description": "This course focuses on the implementation and application of supervised and unsupervised machine learning algorithms."
+      },
+      {
+        "course_id": "MSDS 630",
+        "course_name": "Advanced Machine Learning",
+        "units": 2,
+        "description": "Students study advanced machine learning algorithms."
+      },
+      {
+        "course_id": "MSDS 634",
+        "course_name": "Deep Learning",
+        "units": 2,
+        "description": "This course introduces students to a range of topics and concepts in deep learning."
+      }
+    ],
+    "data_management": [
+      {
+        "course_id": "MSDS 691",
+        "course_name": "Relational Databases",
+        "units": 2,
+        "description": "This course aims to develop a strong understanding of relational database concepts."
+      },
+      {
+        "course_id": "MSDS 692",
+        "course_name": "Data Acquisition",
+        "units": 2,
+        "description": "This lab-heavy Python class teaches students how to collect, merge, and clean data from multiple sources."
+      },
+      {
+        "course_id": "MSDS 697",
+        "course_name": "Distributed Data Systems",
+        "units": 2,
+        "description": "Students study key-value store through NoSQL with a focus on using MongoDB."
+      }
+    ],
+    "professional_skills": [
+      {
+        "course_id": "MSDS 610",
+        "course_name": "Communication for Data Science",
+        "units": 1,
+        "description": "Students will learn essential concepts related to business communication."
+      },
+      {
+        "course_id": "MSDS 603",
+        "course_name": "Data Science Entrepreneurship",
+        "units": 2,
+        "description": "Students develop a minimum viable data science product."
+      },
+      {
+        "course_id": "MSDS 633",
+        "course_name": "Ethics in Data Science",
+        "units": 1,
+        "description": "This course introduces ethical and privacy problems in data collection, algorithms, and evaluation."
+      }
+    ],
+    "practicum_series": [
+      {
+        "course_id": "MSDS 605",
+        "course_name": "Data Science Practicum I",
+        "units": 1,
+        "description": "The data science practicum is a data science project sponsored by a company and mentored by a faculty member."
+      },
+      {
+        "course_id": "MSDS 625",
+        "course_name": "Data Science Practicum II",
+        "units": 1,
+        "description": "Continuation of practicum series."
+      },
+      {
+        "course_id": "MSDS 627",
+        "course_name": "Data Science Practicum III",
+        "units": 1,
+        "description": "Continuation of practicum series."
+      },
+      {
+        "course_id": "MSDS 632",
+        "course_name": "Data Science Practicum IV",
+        "units": 1,
+        "description": "Final part of practicum series."
+      }
+    ],
+    "data_engineering": [
+      {
+        "course_id": "MSDS 680",
+        "course_name": "Machine Learning Operations",
+        "units": 2,
+        "description": "The objective of this course is to learn the different stages of the end-to-end Machine Learning pipeline, from model development experiment tracking, all the way to model serving and model monitoring. For each step in the pipeline, students explore practical real world use cases and get hands-on experience with open source tools."
+      },
+      {
+        "course_id": "MSDS 681",
+        "course_name": "Data Lakehouse",
+        "units": 2,
+        "description": "This course helps students understand the data lakehouse architecture, which enables the storage of raw, structured, and unstructured data for business analytics and machine learning."
+      },
+      {
+        "course_id": "MSDS 682",
+        "course_name": "Data Stream Processing",
+        "units": 2,
+        "description": "This class equips students with the skills necessary to process continuous data streams at scale and in real-time."
+      },
+      {
+        "course_id": "MSDS 683",
+        "course_name": "Data Architecture",
+        "units": 2,
+        "description": "In this course, the students will earn the skill sets to understand the business applications, problems, and needs and design and organize data assets using data structures, storage, processing platforms, etc., accordingly to provide desirable efficiency, reliability, and security."
+      }
+    ]
   }
+}
