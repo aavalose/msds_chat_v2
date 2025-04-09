@@ -3,7 +3,6 @@ import os
 import json
 import chromadb
 from chromadb.utils import embedding_functions
-import shutil
 import logging
 
 # Set up logging
@@ -13,22 +12,11 @@ logger = logging.getLogger(__name__)
 @st.cache_resource
 def init_chroma():
     try:
-        # Define the ChromaDB directory path
-        chroma_dir = os.path.join(os.getcwd(), "chroma_db")
-        logger.info(f"Initializing ChromaDB in directory: {chroma_dir}")
+        logger.info("Initializing ChromaDB in in-memory mode")
         
-        # Clear existing ChromaDB directory to start fresh
-        if os.path.exists(chroma_dir):
-            logger.info("Clearing existing ChromaDB directory")
-            shutil.rmtree(chroma_dir)
-        
-        # Create a persistent directory for ChromaDB
-        os.makedirs(chroma_dir, exist_ok=True)
-        logger.info("Created ChromaDB directory")
-        
-        # Initialize the client with persistence only
+        # Initialize the client in in-memory mode
         try:
-            chroma_client = chromadb.PersistentClient(path=chroma_dir)
+            chroma_client = chromadb.Client()
             logger.info("Successfully initialized ChromaDB client")
         except Exception as e:
             logger.error(f"Failed to initialize ChromaDB client: {str(e)}")
