@@ -623,6 +623,13 @@ def main():
                 with col1:
                     st.write("🤖")
                 with col2:
+                    # Sanitize any HTML tags in the response that should be displayed as text
+                    sanitized_content = bot_msg["content"]
+                    # Escape HTML tags that appear at the end of responses
+                    problematic_tags = ['</div>', '<div>', '</span>', '<span>']
+                    for tag in problematic_tags:
+                        sanitized_content = sanitized_content.replace(tag, tag.replace('<', '&lt;').replace('>', '&gt;'))
+                    
                     st.markdown(
                         f"""
                         <div style="
@@ -633,7 +640,7 @@ def main():
                             margin: 5px 0;
                             max-width: 90%;
                         ">
-                            {bot_msg["content"]}
+                            {sanitized_content}
                         </div>
                         """,
                         unsafe_allow_html=True
