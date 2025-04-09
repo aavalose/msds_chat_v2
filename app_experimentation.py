@@ -18,7 +18,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import chromadb
 from chromadb.utils import embedding_functions
 
-
+#Meaningul chan
 # Handle missing API key safely
 GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY")
 if not GOOGLE_API_KEY:
