@@ -156,3 +156,23 @@ def get_conversation(conversation_id):
     except Exception as e:
         st.error(f"Error retrieving conversation: {str(e)}")
         return None
+
+def save_metrics(metrics):
+    """Save similarity analysis metrics to MongoDB"""
+    client = get_mongo_client()
+    if client is None:
+        return None
+        
+    try:
+        db = client.MSDSchatbot
+        metrics_collection = db.metrics
+        
+        # Add timestamp if not present
+        if 'timestamp' not in metrics:
+            metrics['timestamp'] = datetime.now()
+            
+        result = metrics_collection.insert_one(metrics)
+        return str(result.inserted_id)
+    except Exception as e:
+        st.error(f"Error saving metrics to MongoDB: {str(e)}")
+        return None

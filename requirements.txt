@@ -8,3 +8,8 @@ numpy==1.26.4
 pandas==2.2.1
 pysqlite3==0.5.2
 matplotlib==3.8.3
+sentence-transformers==2.5.1
+torch==2.2.1
+rouge-score==0.1.2
+nltk==3.8.1
+spacy==3.8.5

@@ -1,11 +1,13 @@
 import streamlit as st
 from datetime import datetime
-from src.database.mongodb import init_mongodb, save_conversation, update_feedback
+from src.database.mongodb import init_mongodb, save_conversation, update_feedback, save_metrics
 from src.database.chromadb import init_chroma, load_and_index_json_data
 from src.llm.gemini import load_gemini_model, get_gemini_response
 from src.retrieval.qa_retrieval import find_most_similar_question
 from src.utils.preprocessing import preprocess_query
 from src.utils.similarity import calculate_cosine_similarity
+from src.utils.similarity_analysis import analyze_conversation
+import pandas as pd
 
 def initialize_session_state():
     """Initialize session state variables"""
@@ -49,6 +51,13 @@ def main():
     # Initialize Gemini model
     gemini_model = load_gemini_model()
 
+    # Load labeled QA data for similarity analysis
+    try:
+        labeled_qa = pd.read_csv("data/Questions_and_Answers.csv")
+    except Exception as e:
+        st.error(f"Failed to load labeled QA data: {str(e)}")
+        labeled_qa = None
+
     # Create tabs
     tab1, tab2 = st.tabs(["Chat", "About"])
 
@@ -82,6 +91,22 @@ def main():
                     bot_response = get_gemini_response(q, matched_question, matched_answer)
                     st.session_state.messages.append({"role": "user", "content": q})
                     st.session_state.messages.append({"role": "assistant", "content": bot_response})
+                    
+                    # Calculate similarity metrics if labeled QA data is available
+                    if labeled_qa is not None:
+                        # Find the most similar question in labeled QA data
+                        qa_similarity = labeled_qa['Question'].apply(
+                            lambda x: calculate_cosine_similarity(q, x)
+                        )
+                        most_similar_idx = qa_similarity.idxmax()
+                        expert_response = labeled_qa.loc[most_similar_idx, 'Answer']
+                        
+                        # Calculate metrics
+                        metrics = analyze_conversation(bot_response, q, expert_response)
+                        
+                        # Save metrics to separate collection
+                        save_metrics(metrics)
+                    
                     save_conversation(st.session_state.session_id, q, bot_response, 0.0)
         
         # Chat input at the bottom
@@ -127,6 +152,21 @@ def main():
                 
                 # Add assistant response to chat history
                 st.session_state.messages.append({"role": "assistant", "content": response})
+                
+                # Calculate similarity metrics if labeled QA data is available
+                if labeled_qa is not None:
+                    # Find the most similar question in labeled QA data
+                    qa_similarity = labeled_qa['Question'].apply(
+                        lambda x: calculate_cosine_similarity(prompt, x)
+                    )
+                    most_similar_idx = qa_similarity.idxmax()
+                    expert_response = labeled_qa.loc[most_similar_idx, 'Answer']
+                    
+                    # Calculate metrics
+                    metrics = analyze_conversation(response, prompt, expert_response)
+                    
+                    # Save metrics to separate collection
+                    save_metrics(metrics)
                 
                 # Save conversation to MongoDB
                 conversation_id = save_conversation(
