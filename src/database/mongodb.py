@@ -6,6 +6,7 @@ from pymongo import MongoClient
 from datetime import datetime
 from dotenv import load_dotenv
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
+from bson.objectid import ObjectId
 
 load_dotenv()
 
@@ -57,35 +58,18 @@ def init_mongodb():
             st.error("Failed to initialize MongoDB: Could not establish connection")
             return None
             
-        db = client.msds_chatbot
+        db = client.MSDSchatbot
+        conversations_collection = db.conversations
         
-        # Initialize collections
-        collections = {
-            "courses": "data/courses.json",
-            "faculty": "data/faculty.json",
-            "qa_pairs": "data/labeled_qa.csv",
-            "test_questions": "data/test_questions.csv"
-        }
+        # Test the collection by inserting and removing a test document
+        try:
+            test_result = conversations_collection.insert_one({"test": "connection"})
+            conversations_collection.delete_one({"_id": test_result.inserted_id})
+        except Exception as e:
+            st.error(f"Failed to test MongoDB collection access: {str(e)}")
+            return None
         
-        for collection_name, file_path in collections.items():
-            try:
-                collection = db[collection_name]
-                collection.delete_many({})  # Clear existing data
-                
-                if file_path.endswith('.json'):
-                    with open(file_path, 'r') as f:
-                        data = json.load(f)
-                        if isinstance(data, list):
-                            collection.insert_many(data)
-                        else:
-                            collection.insert_one(data)
-                elif file_path.endswith('.csv'):
-                    df = pd.read_csv(file_path)
-                    collection.insert_many(df.to_dict('records'))
-            except Exception as e:
-                st.error(f"Error initializing collection {collection_name}: {str(e)}")
-        
-        return db
+        return conversations_collection
     except Exception as e:
         st.error(f"Failed to initialize MongoDB: {str(e)}")
         return None
@@ -96,7 +80,7 @@ def save_conversation(session_id, user_message, bot_response, response_time, met
         return None
         
     try:
-        db = client.msds_chatbot
+        db = client.MSDSchatbot
         conversations_collection = db.conversations
         
         conversation = {
@@ -127,12 +111,48 @@ def update_feedback(conversation_id, feedback):
         return
         
     try:
-        db = client.msds_chatbot
+        db = client.MSDSchatbot
         conversations_collection = db.conversations
         
-        conversations_collection.update_one(
-            {"_id": conversation_id},
+        # Convert string ID to ObjectId
+        try:
+            obj_id = ObjectId(conversation_id)
+        except Exception as e:
+            st.error(f"Invalid conversation ID format: {str(e)}")
+            return
+        
+        result = conversations_collection.update_one(
+            {"_id": obj_id},
             {"$set": {"feedback": feedback}}
         )
+        
+        if result.modified_count > 0:
+            st.success("Successfully updated feedback")
+        else:
+            st.warning("No conversation found with the given ID")
+            
     except Exception as e:
         st.error(f"Error updating feedback: {str(e)}")
+
+def get_conversation(conversation_id):
+    """Utility function to retrieve a conversation by ID for debugging."""
+    client = get_mongo_client()
+    if client is None:
+        return None
+        
+    try:
+        db = client.MSDSchatbot
+        conversations_collection = db.conversations
+        
+        # Convert string ID to ObjectId
+        try:
+            obj_id = ObjectId(conversation_id)
+        except Exception as e:
+            st.error(f"Invalid conversation ID format: {str(e)}")
+            return None
+        
+        conversation = conversations_collection.find_one({"_id": obj_id})
+        return conversation
+    except Exception as e:
+        st.error(f"Error retrieving conversation: {str(e)}")
+        return None

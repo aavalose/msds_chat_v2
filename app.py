@@ -7,20 +7,31 @@ from src.retrieval.qa_retrieval import find_most_similar_question
 from src.utils.preprocessing import preprocess_query
 from src.utils.similarity import calculate_cosine_similarity
 
+def initialize_session_state():
+    """Initialize session state variables"""
+    if 'messages' not in st.session_state:
+        st.session_state.messages = []
+    if 'session_id' not in st.session_state:
+        st.session_state.session_id = datetime.now().strftime("%Y%m%d-%H%M%S")
+    if 'conversation_ids' not in st.session_state:
+        st.session_state.conversation_ids = []
+    if 'debug_similarity' not in st.session_state:
+        st.session_state.debug_similarity = 0.0
+    if 'debug_response_similarity' not in st.session_state:
+        st.session_state.debug_response_similarity = 0.0
+    if 'debug_matched_question' not in st.session_state:
+        st.session_state.debug_matched_question = ""
+    if 'debug_matched_answer' not in st.session_state:
+        st.session_state.debug_matched_answer = ""
+    if 'debug_category' not in st.session_state:
+        st.session_state.debug_category = ""
+
 def main():
     st.title("USF MSDS Program Chatbot")
     
-    # Initialize session state variables
-    for key in ['debug_matched_question', 'debug_matched_answer', 'debug_similarity', 
-                'chat_history', 'session_id', 'conversation_ids', 'debug_category',
-                'debug_response_similarity', 'similarity_history']:
-        if key not in st.session_state:
-            st.session_state[key] = "" if key not in ['chat_history', 'conversation_ids', 'similarity_history'] else []
-            if key in ['debug_similarity', 'debug_response_similarity']:
-                st.session_state[key] = 0.0
-            elif key == 'session_id':
-                st.session_state[key] = datetime.now().strftime("%Y%m%d-%H%M%S")
-
+    # Initialize session state
+    initialize_session_state()
+    
     # Initialize ChromaDB and collection
     try:
         chroma_client, embedding_function = init_chroma()
@@ -42,13 +53,17 @@ def main():
     tab1, tab2 = st.tabs(["Chat", "About"])
 
     with tab1:
+        # Create a container for the chat interface
+        chat_container = st.container()
+        
+        # Sidebar with session management and example questions
         with st.sidebar:
             st.subheader("Session Management")
             st.write(f"Current Session ID: {st.session_state.session_id}")
 
             if st.button("Start New Session"):
+                st.session_state.messages = []
                 st.session_state.session_id = datetime.now().strftime("%Y%m%d-%H%M%S")
-                st.session_state.chat_history = []
                 st.rerun()
             
             st.subheader("Example Questions:")
@@ -65,108 +80,67 @@ def main():
                 if st.button(q, key=f"btn_{q[:20]}"):
                     matched_question, matched_answer, similarity = find_most_similar_question(q)
                     bot_response = get_gemini_response(q, matched_question, matched_answer)
-                    st.session_state.chat_history.append({"role": "user", "content": q})
-                    st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
+                    st.session_state.messages.append({"role": "user", "content": q})
+                    st.session_state.messages.append({"role": "assistant", "content": bot_response})
                     save_conversation(st.session_state.session_id, q, bot_response, 0.0)
         
-        st.subheader("Ask me about USF's MSDS program")
-        user_message = st.text_input("Type your question here:", key="user_input")
+        # Chat input at the bottom
+        prompt = st.chat_input("Ask me anything about the MSDS program...")
         
-        if st.button("Send", key="send_button") and user_message:
+        # Display chat messages in the container
+        with chat_container:
+            for message in st.session_state.messages:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+                    
+                    # Add feedback buttons and text input for the last bot response
+                    if message["role"] == "assistant" and message == st.session_state.messages[-1]:
+                        col1, col2, col3 = st.columns([1, 1, 3])
+                        with col1:
+                            if st.button("👍", key=f"thumbs_up_{len(st.session_state.messages)}"):
+                                if st.session_state.conversation_ids:
+                                    update_feedback(st.session_state.conversation_ids[-1], "positive")
+                                    st.success("Thank you for your feedback!")
+                        with col2:
+                            if st.button("👎", key=f"thumbs_down_{len(st.session_state.messages)}"):
+                                if st.session_state.conversation_ids:
+                                    update_feedback(st.session_state.conversation_ids[-1], "negative")
+                                    st.success("Thank you for your feedback!")
+                        with col3:
+                            feedback_text = st.text_input("Additional feedback (optional)", key=f"feedback_text_{len(st.session_state.messages)}")
+                            if feedback_text:
+                                if st.session_state.conversation_ids:
+                                    update_feedback(st.session_state.conversation_ids[-1], feedback_text)
+                                    st.success("Thank you for your detailed feedback!")
+        
+        # Handle new messages
+        if prompt:
+            # Add user message to chat history
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            
+            # Get bot response
             with st.spinner("Thinking..."):
                 start_time = datetime.now()
-                matched_question, matched_answer, similarity = find_most_similar_question(user_message)
-                bot_response = get_gemini_response(user_message, matched_question, matched_answer)
+                matched_question, matched_answer, similarity = find_most_similar_question(prompt)
+                response = get_gemini_response(prompt, matched_question, matched_answer)
                 response_time = (datetime.now() - start_time).total_seconds()
                 
-                st.session_state.chat_history.append({"role": "user", "content": user_message})
-                st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
+                # Add assistant response to chat history
+                st.session_state.messages.append({"role": "assistant", "content": response})
                 
+                # Save conversation to MongoDB
                 conversation_id = save_conversation(
-                    st.session_state.session_id, 
-                    user_message, 
-                    bot_response,
+                    st.session_state.session_id,
+                    prompt,
+                    response,
                     response_time,
                     response_similarity=st.session_state.debug_response_similarity
                 )
                 if conversation_id:
-                    if 'conversation_ids' not in st.session_state:
-                        st.session_state.conversation_ids = []
                     st.session_state.conversation_ids.append(conversation_id)
-        
-        # Display chat history
-        chat_pairs = []
-        for i in range(0, len(st.session_state.chat_history), 2):
-            if i + 1 < len(st.session_state.chat_history):
-                user_msg = st.session_state.chat_history[i]
-                bot_msg = st.session_state.chat_history[i + 1]
-                chat_pairs.append((user_msg, bot_msg))
-
-        for i, (user_msg, bot_msg) in enumerate(reversed(chat_pairs)):
-            # User message
-            user_container = st.container()
-            with user_container:
-                col1, col2 = st.columns([6, 1])
-                with col1:
-                    st.markdown(
-                        f"""
-                        <div style="
-                            background-color: #007AFF;
-                            color: white;
-                            padding: 10px 15px;
-                            border-radius: 20px;
-                            margin: 5px 0;
-                            max-width: 90%;
-                            float: right;
-                        ">
-                            {user_msg["content"]}
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-                with col2:
-                    st.write("🧑")
-
-            # Bot message
-            bot_container = st.container()
-            with bot_container:
-                col1, col2 = st.columns([1, 6])
-                with col1:
-                    st.write("🤖")
-                with col2:
-                    sanitized_content = bot_msg["content"]
-                    problematic_tags = ['</div>', '<div>', '</span>', '<span>']
-                    for tag in problematic_tags:
-                        sanitized_content = sanitized_content.replace(tag, tag.replace('<', '&lt;').replace('>', '&gt;'))
-                    
-                    st.markdown(
-                        f"""
-                        <div style="
-                            background-color: #E9ECEF;
-                            color: black;
-                            padding: 10px 15px;
-                            border-radius: 20px;
-                            margin: 5px 0;
-                            max-width: 90%;
-                        ">
-                            {sanitized_content}
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
             
-            # Feedback buttons
-            col1, col2, col3 = st.columns([1, 1, 3])
-            with col1:
-                if st.button("👍", key=f"thumbs_up_{i}"):
-                    if i < len(st.session_state.conversation_ids):
-                        update_feedback(st.session_state.conversation_ids[-(i+1)], "positive")
-                        st.success("Thank you for your feedback!")
-            with col2:
-                if st.button("👎", key=f"thumbs_down_{i}"):
-                    if i < len(st.session_state.conversation_ids):
-                        update_feedback(st.session_state.conversation_ids[-(i+1)], "negative")
-                        st.success("Thank you for your feedback!")
+            # Rerun to update the chat display
+            st.rerun()
     
     # About tab
     with tab2:
