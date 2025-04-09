@@ -60,8 +60,6 @@ def load_and_index_json_data(_chroma_client, _embedding_function, collection_nam
         # Delete existing collection if it exists
         try:
             _chroma_client.delete_collection(name=collection_name)
-            if st.session_state.get('debug_mode', False):
-                st.info(f"Deleted existing collection: {collection_name}")
         except Exception as e:
             # Collection might not exist, which is fine
             pass
@@ -129,9 +127,6 @@ def load_and_index_json_data(_chroma_client, _embedding_function, collection_nam
                     documents=documents,
                     metadatas=metadatas
                 )
-                
-                if st.session_state.get('debug_mode', False):
-                    st.success(f"Successfully indexed {len(documents)} questions from JSON data")
             else:
                 st.warning("No documents were created from JSON data")
 
@@ -201,7 +196,6 @@ def calculate_cosine_similarity(text1, text2):
         vectors = vectorizer.toarray()
         return cosine_similarity([vectors[0]], [vectors[1]])[0][0]
     except Exception as e:
-        st.error(f"Error calculating similarity: {str(e)}")
         return 0.0
 
 # 3. Update the save_conversation function to include response similarity
@@ -315,17 +309,6 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
                 
                 best_similarity = max(best_similarity, similarity)
         
-        # Debug information
-        if st.session_state.get('debug_mode', False):
-            st.write("Top matches:")
-            st.write(f"Categories: {all_categories}")
-            st.write(f"Number of matching questions: {len(matching_questions)}")
-            for i, (q, a, dist) in enumerate(zip(matching_questions, matching_answers, results['distances'][0])):
-                sim = 1 - dist
-                st.write(f"{i+1}. Question: {q}")
-                st.write(f"   Similarity: {sim:.3f}")
-                st.write(f"   Answer: {a[:100]}...")  # Show first 100 chars of answer
-        
         return matching_questions, matching_answers, best_similarity
             
     except Exception as e:
@@ -369,14 +352,9 @@ def preprocess_query(query):
         response = model.generate_content(prompt)
         categories = [cat.strip() for cat in response.text.split(',')]
         primary_category = categories[0] if categories else "Other"
-        
-        if st.session_state.get('debug_mode', False):
-            st.write(f"Detected categories: {categories}")
             
         return processed_query, primary_category, categories
     except Exception as e:
-        if st.session_state.get('debug_mode', False):
-            st.error(f"Error categorizing query: {str(e)}")
         return processed_query, "Other", ["Other"]
 
 def get_conversation_history(max_messages=5):
@@ -422,8 +400,6 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
                     # Create a copy without qa_pairs
                     category_info[category] = {k: v for k, v in context_data[category].items() if k != 'qa_pairs'}
         except Exception as e:
-            if st.session_state.get('debug_mode', False):
-                st.error(f"Error loading context data: {str(e)}")
             category_info = {}
         
         # Format QA pairs
@@ -486,16 +462,16 @@ def get_bot_response(user_input):
     # Get all matching questions and answers
     matched_questions, matched_answers, similarity = find_most_similar_question(user_input)
     
-    # Debug information
+    # Debug information stored but not displayed
     st.session_state.debug_similarity = similarity
     
-    # Show all matched questions
+    # Store matched questions
     if matched_questions:
         st.session_state.debug_matched_question = "\n".join([f"{i+1}. {q}" for i, q in enumerate(matched_questions)])
     else:
         st.session_state.debug_matched_question = "No match found"
     
-    # Show all matched answers
+    # Store matched answers
     if matched_answers:
         st.session_state.debug_matched_answer = "\n".join([f"{i+1}. {a}" for i, a in enumerate(matched_answers)])
     else:
@@ -512,7 +488,7 @@ def get_bot_response(user_input):
         response_similarity = calculate_cosine_similarity(bot_response, matched_answers[0])
         st.session_state.debug_response_similarity = response_similarity
         
-        # Add to similarity history
+        # Add to similarity history (hidden but still tracked)
         if 'similarity_history' not in st.session_state:
             st.session_state.similarity_history = []
             
@@ -546,13 +522,12 @@ def main():
     try:
         chroma_client, embedding_function = init_chroma()
         qa_collection = load_and_index_json_data(chroma_client, embedding_function)
-        if st.session_state.get('debug_mode', False):
-            st.success("Using JSON-based approach")
     except Exception as e:
         st.error(f"Failed to initialize ChromaDB: {str(e)}")
         st.stop()
 
-    tab1, tab2, tab3, tab4 = st.tabs(["Chat", "About", "Debug", "Similarity Analysis"])
+    # Changed to only two tabs
+    tab1, tab2 = st.tabs(["Chat", "About"])
 
     with tab1:
         
@@ -676,107 +651,50 @@ def main():
                     if i < len(st.session_state.conversation_ids):
                         update_feedback(st.session_state.conversation_ids[-(i+1)], "negative")
                         st.success("Thank you for your feedback!")
-
-    with tab3:
-        st.session_state.debug_mode = st.checkbox("Enable Debug Mode", value=False)
-        if st.session_state.debug_mode:
-            st.write("Last Query Debug Info:")
-            st.write(f"Category: {st.session_state.debug_category}")
-            st.write(f"Similarity Score: {st.session_state.debug_similarity:.3f}")
-            st.write(f"Matched Question: {st.session_state.debug_matched_question}")
-            st.write(f"Matched Answer: {st.session_state.debug_matched_answer}")
-     # Add the new tab4 content
-    with tab4:
-        st.header("Response Similarity Analysis")
-        st.write("""
-        This tab analyzes how closely the chatbot's generated responses match 
-        the reference answers it was provided during the retrieval-augmented generation (RAG) process.
+    
+    # About tab content
+    with tab2:
+        st.header("About this Chatbot")
+        
+        st.markdown("""
+        ### USF MSDS Program Chatbot
+        
+        Welcome to the University of San Francisco's Master of Science in Data Science (MSDS) Program Chatbot. This intelligent assistant is designed to provide prospective and current students with accurate information about the MSDS program.
+        
+        ### Features
+        
+        - **Instant Answers**: Get immediate responses to your questions about admissions, curriculum, faculty, and more
+        - **Smart Retrieval**: The chatbot uses advanced retrieval-augmented generation (RAG) to provide accurate program information
+        - **Conversation Memory**: The bot remembers your previous questions in the current session for more natural conversations
+        
+        ### About the Developers
+        
+        This chatbot was developed by [Your Name] and [Your Partner's Name], graduate students in the USF MSDS program. We created this tool to help prospective students get quick and accurate answers to their questions about the program.
+        
+        **[Your Name]** specializes in natural language processing and conversational AI. With experience in [your background/experience], [your name] focused on the retrieval system and response generation for the chatbot.
+        
+        **[Your Partner's Name]** has expertise in [their specialization] and [their background/experience]. [Partner's name] developed the user interface and integration with the university's information systems.
+        
+        ### Technology
+        
+        This chatbot utilizes several advanced technologies:
+        
+        - **Google Gemini AI** for natural language understanding and generation
+        - **ChromaDB** for vector storage and semantic search
+        - **MongoDB** for conversation logging and analytics
+        - **Streamlit** for the web interface
+        
+        ### Feedback
+        
+        We value your feedback! Please use the thumbs up/down buttons after each response to help us improve the chatbot.
+        
+        For more information about the USF MSDS program, visit [https://www.usfca.edu/arts-sciences/graduate-programs/data-science](https://www.usfca.edu/arts-sciences/graduate-programs/data-science)
         """)
         
-        # Display current similarity metrics if available
-        if hasattr(st.session_state, 'debug_response_similarity') and st.session_state.debug_response_similarity is not None:
-            st.metric(
-                label="Current Response Similarity", 
-                value=f"{st.session_state.debug_response_similarity:.3f}"
-            )
-            
-            # Visualization of similarity threshold
-            st.subheader("Similarity Interpretation")
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.write("Low Similarity (< 0.3)")
-                st.progress(min(max(st.session_state.debug_response_similarity, 0) / 0.3, 1.0))
-            with col2:
-                st.write("Medium Similarity (0.3-0.7)")
-                similarity_val = st.session_state.debug_response_similarity
-                if similarity_val < 0.3:
-                    st.progress(0.0)
-                elif similarity_val > 0.7:
-                    st.progress(1.0)
-                else:
-                    st.progress((similarity_val - 0.3) / 0.4)
-            with col3:
-                st.write("High Similarity (> 0.7)")
-                st.progress(max(min((st.session_state.debug_response_similarity - 0.7) / 0.3, 1.0), 0.0))
-                
-        # Show comparison between latest response and matched answer
-        st.subheader("Latest Response Comparison")
-        
-        if (st.session_state.chat_history and len(st.session_state.chat_history) >= 2 and 
-            st.session_state.debug_matched_answer):
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write("Generated Response:")
-                st.text_area(
-                    "Chatbot's response", 
-                    st.session_state.chat_history[-1]["content"] if st.session_state.chat_history[-1]["role"] == "assistant" else "",
-                    height=200
-                )
-            with col2:
-                st.write("Most Similar Reference Answer:")
-                # Extract first matched answer
-                first_answer = st.session_state.debug_matched_answer.split("\n")[0]
-                if first_answer.startswith("1. "):
-                    first_answer = first_answer[3:]  # Remove the "1. " prefix
-                st.text_area("Reference answer", first_answer, height=200)
-        else:
-            st.info("Send a message in the chat to see the comparison")
-            
-        # Historical similarity data visualization
-        st.subheader("Similarity Trend Analysis")
-        
-        # Display trend visualization if we have data
-        if 'similarity_history' not in st.session_state or len(st.session_state.similarity_history) < 3:
-            st.info("More data needed for trend analysis. Send at least 3 messages to see trends.")
-        else:
-            # Create DataFrame for visualization
-            df = pd.DataFrame(st.session_state.similarity_history)
-            
-            # Create a simple line chart
-            fig, ax = plt.subplots(figsize=(10, 6))
-            ax.plot(range(len(df)), df['retrieval_similarity'], 'b-', label='Retrieval Similarity')
-            ax.plot(range(len(df)), df['response_similarity'], 'g-', label='Response Similarity')
-            ax.set_xlabel('Query Number')
-            ax.set_ylabel('Similarity Score')
-            ax.set_title('Similarity Scores Over Time')
-            ax.legend()
-            ax.set_ylim(0, 1)
-            ax.grid(True)
-            st.pyplot(fig)
-            
-            # Show aggregated statistics
-            st.subheader("Summary Statistics")
-            stats_col1, stats_col2 = st.columns(2)
-            with stats_col1:
-                st.metric("Avg Retrieval Similarity", f"{df['retrieval_similarity'].mean():.3f}")
-                st.metric("Min Retrieval Similarity", f"{df['retrieval_similarity'].min():.3f}")
-                st.metric("Max Retrieval Similarity", f"{df['retrieval_similarity'].max():.3f}")
-            with stats_col2:
-                st.metric("Avg Response Similarity", f"{df['response_similarity'].mean():.3f}")
-                st.metric("Min Response Similarity", f"{df['response_similarity'].min():.3f}")
-                st.metric("Max Response Similarity", f"{df['response_similarity'].max():.3f}")
-                
+        # Add USF logo
+        st.image("https://www.usfca.edu/themes/custom/usf_main/favicon.ico", width=100)
+        st.write("© University of San Francisco, 2025")
+
 # Add after imports
 def check_required_files():
     required_files = [
@@ -814,7 +732,6 @@ def verify_qa_data():
             st.error("labeled_qa.csv is empty")
             st.stop()
             
-        # st.success(f"Successfully loaded {len(qa_df)} QA pairs") DEBUGGING
         return qa_df
     except Exception as e:
         st.error(f"Error reading labeled_qa.csv: {str(e)}")
