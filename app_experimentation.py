@@ -53,13 +53,13 @@ def init_chroma():
         raise e
 
 # Add this function to handle collection creation and data loading
+# Update the function signature with leading underscores
 @st.cache_resource
-# Replace the init_qa_collection function with this new function
-def load_and_index_json_data(chroma_client, embedding_function, collection_name="msds_program_qa"):
+def load_and_index_json_data(_chroma_client, _embedding_function, collection_name="msds_program_qa"):
     try:
         # Delete existing collection if it exists
         try:
-            chroma_client.delete_collection(name=collection_name)
+            _chroma_client.delete_collection(name=collection_name)
             if st.session_state.get('debug_mode', False):
                 st.info(f"Deleted existing collection: {collection_name}")
         except Exception as e:
@@ -67,9 +67,9 @@ def load_and_index_json_data(chroma_client, embedding_function, collection_name=
             pass
             
         # Create new collection
-        qa_collection = chroma_client.create_collection(
+        qa_collection = _chroma_client.create_collection(
             name=collection_name,
-            embedding_function=embedding_function
+            embedding_function=_embedding_function
         )
 
         # Load data from context.json file
@@ -541,6 +541,16 @@ def main():
                 st.session_state[key] = 0.0
             elif key == 'session_id':
                 st.session_state[key] = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+    # Initialize ChromaDB and collection with the JSON-based approach only
+    try:
+        chroma_client, embedding_function = init_chroma()
+        qa_collection = load_and_index_json_data(chroma_client, embedding_function)
+        if st.session_state.get('debug_mode', False):
+            st.success("Using JSON-based approach")
+    except Exception as e:
+        st.error(f"Failed to initialize ChromaDB: {str(e)}")
+        st.stop()
 
     tab1, tab2, tab3, tab4 = st.tabs(["Chat", "About", "Debug", "Similarity Analysis"])
 
