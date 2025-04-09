@@ -15,14 +15,10 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         # Process the query to get categories
         processed_input, primary_category, all_categories = preprocess_query(user_input)
         
-        # Query with filter for matching category if not "Other"
-        filter_condition = {"Category": {"$in": all_categories}} if "Other" not in all_categories else None
-        
-        # Query ChromaDB
+        # Query ChromaDB without filter condition
         results = qa_collection.query(
             query_texts=[processed_input],
-            n_results=5,  # Get top 5 results
-            where=filter_condition
+            n_results=5  # Get top 5 results
         )
         
         if not results['documents'][0]:
@@ -34,13 +30,14 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
         best_similarity = 0.0
         
         for i, distance in enumerate(results['distances'][0]):
-            similarity = 1 - distance
+            similarity = 1 - distance  # Convert distance back to similarity
             if similarity >= similarity_threshold:
                 matching_questions.append(results['documents'][0][i])
                 
                 # Get the answer and handle JSON if needed
-                answer = results['metadatas'][0][i]['Answer']
-                answer_type = results['metadatas'][0][i]['Type']
+                metadata = results['metadatas'][0][i]
+                answer = metadata.get('answer', '')
+                answer_type = metadata.get('type', '')
                 
                 if answer_type == 'category_summary':
                     # For category summaries that might be JSON strings, format them nicely
@@ -48,7 +45,7 @@ def find_most_similar_question(user_input, similarity_threshold=0.3):
                         answer_data = json.loads(answer)
                         # Format based on the structure of the data
                         if isinstance(answer_data, dict):
-                            formatted_answer = "Here's information about " + results['metadatas'][0][i]['Category'] + ":\n\n"
+                            formatted_answer = f"Here's information about {metadata.get('category', 'this topic')}:\n\n"
                             # Exclude qa_pairs from the formatted output to avoid duplication
                             for k, v in answer_data.items():
                                 if k != 'qa_pairs':

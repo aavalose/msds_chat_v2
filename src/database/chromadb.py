@@ -1,65 +1,84 @@
 import streamlit as st
 import os
 import json
-import chromadb
-from chromadb.utils import embedding_functions
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 import logging
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+class InMemoryVectorStore:
+    def __init__(self):
+        self.vectorizer = TfidfVectorizer()
+        self.documents = []
+        self.metadatas = []
+        self.ids = []
+        self.vectors = None
+
+    def add(self, ids, documents, metadatas):
+        self.ids.extend(ids)
+        self.documents.extend(documents)
+        self.metadatas.extend(metadatas)
+        self.vectors = self.vectorizer.fit_transform(self.documents)
+
+    def count(self):
+        """Return the number of documents in the store"""
+        return len(self.documents)
+
+    def query(self, query_texts, n_results=1):
+        if self.vectors is None:
+            return {
+                'ids': [[]],
+                'documents': [[]],
+                'metadatas': [[]],
+                'distances': [[]]
+            }
+        
+        # Handle single query text or list of query texts
+        if isinstance(query_texts, str):
+            query_texts = [query_texts]
+        
+        results = {
+            'ids': [],
+            'documents': [],
+            'metadatas': [],
+            'distances': []
+        }
+        
+        for query_text in query_texts:
+            query_vector = self.vectorizer.transform([query_text])
+            similarities = cosine_similarity(query_vector, self.vectors)[0]
+            
+            # Get top n_results indices
+            top_indices = np.argsort(similarities)[-n_results:][::-1]
+            
+            # Format results to match ChromaDB's return format
+            results['ids'].append([self.ids[i] for i in top_indices])
+            results['documents'].append([self.documents[i] for i in top_indices])
+            results['metadatas'].append([self.metadatas[i] for i in top_indices])
+            results['distances'].append([1 - similarities[i] for i in top_indices])  # Convert similarity to distance
+        
+        return results
+
 @st.cache_resource
 def init_chroma():
     try:
-        logger.info("Initializing ChromaDB")
-        
-        # Initialize the client
-        try:
-            # For ChromaDB 0.3.29, we use a simpler initialization
-            chroma_client = chromadb.Client()
-            logger.info("Successfully initialized ChromaDB client")
-        except Exception as e:
-            logger.error(f"Failed to initialize ChromaDB client: {str(e)}")
-            raise
-        
-        # Use ChromaDB's default embedding function
-        try:
-            embedding_function = embedding_functions.DefaultEmbeddingFunction()
-            logger.info("Successfully initialized embedding function")
-        except Exception as e:
-            logger.error(f"Failed to initialize embedding function: {str(e)}")
-            raise
-        
-        return chroma_client, embedding_function
+        logger.info("Initializing in-memory vector store")
+        vector_store = InMemoryVectorStore()
+        return vector_store, None  # Return None for embedding_function to maintain compatibility
     except Exception as e:
-        logger.error(f"Error in ChromaDB initialization: {str(e)}")
-        st.error(f"Error initializing ChromaDB: {str(e)}")
+        logger.error(f"Error initializing vector store: {str(e)}")
+        st.error(f"Error initializing vector store: {str(e)}")
         raise
 
 @st.cache_resource
-def load_and_index_json_data(_chroma_client, _embedding_function, collection_name="msds_program_qa"):
+def load_and_index_json_data(_vector_store, _embedding_function, collection_name="msds_program_qa"):
     try:
         logger.info(f"Loading and indexing data for collection: {collection_name}")
         
-        # Delete existing collection if it exists
-        try:
-            _chroma_client.delete_collection(name=collection_name)
-            logger.info(f"Deleted existing collection: {collection_name}")
-        except Exception as e:
-            logger.info(f"No existing collection to delete: {str(e)}")
-            
-        # Create new collection
-        try:
-            qa_collection = _chroma_client.create_collection(
-                name=collection_name,
-                embedding_function=_embedding_function
-            )
-            logger.info(f"Created new collection: {collection_name}")
-        except Exception as e:
-            logger.error(f"Failed to create collection: {str(e)}")
-            raise
-
         # Load data from context.json file
         try:
             context_path = os.path.join(os.getcwd(), "data", "context.json")
@@ -68,7 +87,7 @@ def load_and_index_json_data(_chroma_client, _embedding_function, collection_nam
             with open(context_path, "r") as f:
                 context_data = json.load(f)
             
-            # Generate documents for ChromaDB from JSON data
+            # Generate documents for vector store from JSON data
             documents = []
             metadatas = []
             ids = []
@@ -113,17 +132,13 @@ def load_and_index_json_data(_chroma_client, _embedding_function, collection_nam
                     ids.append(f"{category.lower().replace(' ', '_')}_summary_{counter}")
                     counter += 1
             
-            # Now add all the data to ChromaDB
+            # Now add all the data to the vector store
             if documents:
                 try:
-                    qa_collection.add(
-                        ids=ids,
-                        documents=documents,
-                        metadatas=metadatas
-                    )
-                    logger.info(f"Successfully added {len(documents)} documents to collection")
+                    _vector_store.add(ids, documents, metadatas)
+                    logger.info(f"Successfully added {len(documents)} documents to vector store")
                 except Exception as e:
-                    logger.error(f"Failed to add documents to collection: {str(e)}")
+                    logger.error(f"Failed to add documents to vector store: {str(e)}")
                     raise
             else:
                 logger.warning("No documents were created from JSON data")
@@ -134,7 +149,7 @@ def load_and_index_json_data(_chroma_client, _embedding_function, collection_nam
             st.error(f"Error loading JSON data: {str(e)}")
             raise
 
-        return qa_collection
+        return _vector_store
     except Exception as e:
         logger.error(f"Error in load_and_index_json_data: {str(e)}")
         st.error(f"Error initializing QA collection from JSON: {str(e)}")
