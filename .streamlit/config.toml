@@ -1,5 +1,0 @@
-[server]
-enableXsrfProtection = false
-
-[browser]
-gatherUsageStats = false 
