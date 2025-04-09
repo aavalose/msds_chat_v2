@@ -669,11 +669,9 @@ def main():
         
         ### About the Developers
         
-        This chatbot was developed by [Your Name] and [Your Partner's Name], graduate students in the USF MSDS program. We created this tool to help prospective students get quick and accurate answers to their questions about the program.
+        This chatbot was developed by Sehej Singh and Arturo Avalos, graduate students in the USF MSDS program. We created this tool to help prospective students get quick and accurate answers to their questions about the program.
         
-        **[Your Name]** specializes in natural language processing and conversational AI. With experience in [your background/experience], [your name] focused on the retrieval system and response generation for the chatbot.
-        
-        **[Your Partner's Name]** has expertise in [their specialization] and [their background/experience]. [Partner's name] developed the user interface and integration with the university's information systems.
+        Sehej and Arturo worked collaboratively on all aspects of this project, combining their expertise as machine learning engineer interns with years of experience in data science. Their joint efforts covered everything from designing the retrieval system and response generation to developing the user interface and backend integration.
         
         ### Technology
         
@@ -691,9 +689,32 @@ def main():
         For more information about the USF MSDS program, visit [https://www.usfca.edu/arts-sciences/graduate-programs/data-science](https://www.usfca.edu/arts-sciences/graduate-programs/data-science)
         """)
         
-        # Add USF logo
-        st.image("https://www.usfca.edu/themes/custom/usf_main/favicon.ico", width=100)
-        st.write("© University of San Francisco, 2025")
+        # Add images
+        col1, col2, col3 = st.columns([1, 1, 1])
+        
+        with col1:
+            # USF logo
+            try:
+                st.image("images/usf.png", width=100)
+                st.write("© University of San Francisco, 2025")
+            except Exception:
+                st.write("USF logo not found. Add it to your images folder.")
+        
+        with col2:
+            # Sehej's headshot
+            try:
+                st.image("images/sehej.jpeg", width=150)
+                st.markdown("**Sehej Singh**")
+            except Exception:
+                st.write("Sehej's image not found. Add it to your images folder.")
+                
+        with col3:
+            # Arturo's headshot
+            try:
+                st.image("images/arturo.jpeg", width=150)
+                st.markdown("**Arturo Avalos**")
+            except Exception:
+                st.write("Arturo's image not found. Add it to your images folder.")
 
 # Add after imports
 def check_required_files():
