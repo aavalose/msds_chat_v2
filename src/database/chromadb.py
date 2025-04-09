@@ -12,10 +12,11 @@ logger = logging.getLogger(__name__)
 @st.cache_resource
 def init_chroma():
     try:
-        logger.info("Initializing ChromaDB in in-memory mode")
+        logger.info("Initializing ChromaDB")
         
-        # Initialize the client in in-memory mode
+        # Initialize the client
         try:
+            # For ChromaDB 0.3.29, we use a simpler initialization
             chroma_client = chromadb.Client()
             logger.info("Successfully initialized ChromaDB client")
         except Exception as e:
@@ -48,12 +49,11 @@ def load_and_index_json_data(_chroma_client, _embedding_function, collection_nam
         except Exception as e:
             logger.info(f"No existing collection to delete: {str(e)}")
             
-        # Create new collection with explicit metadata schema
+        # Create new collection
         try:
             qa_collection = _chroma_client.create_collection(
                 name=collection_name,
-                embedding_function=_embedding_function,
-                metadata={"hnsw:space": "cosine"}  # Use cosine similarity
+                embedding_function=_embedding_function
             )
             logger.info(f"Created new collection: {collection_name}")
         except Exception as e:
