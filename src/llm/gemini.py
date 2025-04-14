@@ -32,36 +32,27 @@ def get_conversation_history(max_messages=5):
 
 def clean_response(text):
     """Clean and normalize the response text"""
+    # First, fix common merging issues with specific phrases
+    text = text.replace("whileinternationallyis", "while internationally is")
+    text = text.replace("whileinternationally", "while internationally")
+    
     # Replace Unicode characters with ASCII equivalents
     text = text.replace('′', "'")
     text = text.replace('"', '"')
     text = text.replace('"', '"')
     
-    # Remove any excessive spacing
-    text = ' '.join(text.split())
+    # Fix spacing around specific words
+    text = re.sub(r'while\s*internationally', 'while internationally', text, flags=re.IGNORECASE)
+    text = re.sub(r'(\d+)\s*,\s*(\d+)', r'\1,\2', text)  # Fix number formatting
     
-    # Add space after numbers when followed by letters
-    text = re.sub(r'(\d+)([a-zA-Z])', r'\1 \2', text)
-    
-    # Add space before "in" when it follows a number
-    text = re.sub(r'(\d+)(in)', r'\1 \2', text)
-    
-    # Add space after "and" when it's connected to numbers
-    text = re.sub(r'(and)(\d+)', r'\1 \2', text)
-    
-    # Ensure proper spacing around punctuation
-    text = text.replace(' ,', ',')
-    text = text.replace(' .', '.')
-    text = text.replace(' !', '!')
-    text = text.replace(' ?', '?')
+    # Add spaces around comparison words
+    for word in ['while', 'and', 'in', 'is']:
+        text = re.sub(f'([a-zA-Z0-9])({word})([a-zA-Z0-9])', f'\\1 {word} \\3', text, flags=re.IGNORECASE)
     
     # Ensure proper currency formatting
-    text = text.replace('$', ' $').replace('  $', ' $')
+    text = re.sub(r'(\$\s*\d+)', lambda m: m.group(1).replace(' ', ''), text)
     
-    # Add space between number and location names
-    text = re.sub(r'(\d+)([A-Z][a-z]+)', r'\1 \2', text)
-    
-    # Clean up any double spaces that might have been created
+    # Clean up any double spaces
     text = ' '.join(text.split())
     
     return text
@@ -118,10 +109,14 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
         # Enhanced prompt with conversation history and category information
         prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
         
-        When mentioning salary information, always use this exact format:
-        - "median base salary in California is [amount]"
-        - "median base salary internationally is [amount]"
-        - "average signing bonus is [amount]"
+        When discussing salaries, you MUST use this EXACT template:
+        "After graduating from the MSDS program, you can expect a competitive salary. Specifically, the median base salary in California is [amount], while internationally it is [amount]. The average signing bonus is [amount]."
+        
+        Always maintain proper spacing between words, especially:
+        - Between numbers and words
+        - Around the word "while"
+        - Around the word "internationally"
+        - Around the word "is"
         
         Conversation History: {conversation_history}
         
