@@ -90,6 +90,9 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
         5. Focus on answering the user's specific question
         6. Use a conversational tone while maintaining accuracy
         7. If any information is missing or unclear, acknowledge it
+        8. Ensure proper spacing between words and around punctuation
+        9. Format currency values with the $ symbol and proper spacing
+        10. When comparing values (e.g., "while internationally"), ensure proper word spacing
         
         Additional context:
         {general_info}
