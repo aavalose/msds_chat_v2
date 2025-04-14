@@ -29,6 +29,27 @@ def get_conversation_history(max_messages=5):
     
     return history
 
+def clean_response(text):
+    """Clean and normalize the response text"""
+    # Replace Unicode characters with ASCII equivalents
+    text = text.replace('′', "'")
+    text = text.replace('"', '"')
+    text = text.replace('"', '"')
+    
+    # Remove any excessive spacing
+    text = ' '.join(text.split())
+    
+    # Ensure proper spacing around punctuation
+    text = text.replace(' ,', ',')
+    text = text.replace(' .', '.')
+    text = text.replace(' !', '!')
+    text = text.replace(' ?', '?')
+    
+    # Ensure proper currency formatting
+    text = text.replace('$', ' $').replace('  $', ' $')
+    
+    return text
+
 def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=None):
     try:
         # Get conversation history
@@ -101,7 +122,10 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
 
         model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(prompt)
-        return response.text
+        
+        # Clean the response before returning
+        cleaned_response = clean_response(response.text)
+        return cleaned_response
 
     except Exception as e:
         st.error(f"Error generating response: {str(e)}")

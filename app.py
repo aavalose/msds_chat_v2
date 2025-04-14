@@ -116,7 +116,12 @@ def main():
         with chat_container:
             for message in st.session_state.messages:
                 with st.chat_message(message["role"]):
-                    st.markdown(message["content"])
+                    # Ensure proper markdown formatting
+                    content = message["content"]
+                    if message["role"] == "assistant":
+                        # Additional safety cleaning for display
+                        content = content.replace('\n\n', '\n').strip()
+                    st.markdown(content)
                     
                     # Add feedback buttons and text input for the last bot response
                     if message["role"] == "assistant" and message == st.session_state.messages[-1]:
