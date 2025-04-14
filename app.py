@@ -8,6 +8,7 @@ from src.utils.preprocessing import preprocess_query
 from src.utils.similarity import calculate_cosine_similarity
 from src.utils.similarity_analysis import analyze_conversation
 import pandas as pd
+import re
 
 def initialize_session_state():
     """Initialize session state variables"""
@@ -121,7 +122,13 @@ def main():
                     if message["role"] == "assistant":
                         # Additional safety cleaning for display
                         content = content.replace('\n\n', '\n').strip()
-                    st.markdown(content)
+                        # Force proper spacing in markdown rendering
+                        content = re.sub(r'(\$\d{3}),(\d{3})', r'\1,\2', content)  # Fix number formatting
+                        content = re.sub(r'(\d)(while|in|is)', r'\1 \2', content)  # Add space between numbers and words
+                        content = re.sub(r'(while|in|is)(\d)', r'\1 \2', content)  # Add space between words and numbers
+                        # Ensure proper markdown escaping for currency
+                        content = content.replace('$', '\\$')
+                    st.markdown(content, unsafe_allow_html=False)
                     
                     # Add feedback buttons and text input for the last bot response
                     if message["role"] == "assistant" and message == st.session_state.messages[-1]:
