@@ -92,6 +92,18 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
         except Exception as e:
             category_info = {}
         
+        # Format salary information specifically
+        if "Career Outcomes" in category_info:
+            salaries = category_info["Career Outcomes"].get("salaries", {})
+            if salaries:
+                # Create a formatted version of salary information
+                salary_info = {
+                    "median_base_salary_california": f"${salaries.get('median base salary in California', '').replace('$', '')}",
+                    "median_base_salary_international": f"${salaries.get('median base salary internationally', '').replace('$', '')}",
+                    "average_signing_bonus": f"${salaries.get('average signing bonus', '').replace('$', '')}"
+                }
+                category_info["Career Outcomes"]["salaries"] = salary_info
+        
         # Format QA pairs
         relevant_qa_pairs = ""
         if retrieved_questions and retrieved_answers and st.session_state.debug_similarity >= 0.3:
@@ -105,6 +117,11 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
         
         # Enhanced prompt with conversation history and category information
         prompt = f"""You are a helpful and friendly assistant for the University of San Francisco's MSDS program.
+        
+        When mentioning salary information, always use this exact format:
+        - "median base salary in California is [amount]"
+        - "median base salary internationally is [amount]"
+        - "average signing bonus is [amount]"
         
         Conversation History: {conversation_history}
         
