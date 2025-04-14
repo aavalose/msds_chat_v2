@@ -131,6 +131,33 @@ def load_and_index_json_data(_vector_store, _embedding_function, collection_name
                     })
                     ids.append(f"{category.lower().replace(' ', '_')}_summary_{counter}")
                     counter += 1
+                
+                # Special handling for Career Outcomes category
+                if category == "Career Outcomes" and "salaries" in data:
+                    # Create specific salary-related questions and answers
+                    salary_questions = [
+                        "What is the salary for MSDS graduates?",
+                        "What compensation can I expect after graduating?",
+                        "What are the salary expectations for graduates?"
+                    ]
+                    
+                    # Format salary information with explicit spacing
+                    salary_info = (
+                        f"After graduating from the MSDS program, you can expect a competitive salary. "
+                        f"Specifically, the median base salary in California is {data['salaries']['median base salary in California']}, "
+                        f"while internationally it is {data['salaries']['median base salary internationally']}. "
+                        f"The average signing bonus is {data['salaries']['average signing bonus']}."
+                    )
+                    
+                    for question in salary_questions:
+                        documents.append(question)
+                        metadatas.append({
+                            "category": category,
+                            "answer": salary_info,
+                            "type": "salary_info"
+                        })
+                        ids.append(f"salary_info_{counter}")
+                        counter += 1
             
             # Now add all the data to the vector store
             if documents:
