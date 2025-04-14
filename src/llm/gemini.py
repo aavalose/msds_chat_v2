@@ -152,25 +152,12 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
             "candidate_count": 1,
         }
 
-        # Create the safety settings
-        safety_settings = [
-            {
-                "category": "HARM_CATEGORY_DEROGATORY",
-                "threshold": "BLOCK_NONE",
-            },
-            {
-                "category": "HARM_CATEGORY_TOXICITY",
-                "threshold": "BLOCK_NONE",
-            },
-        ]
-
         model = genai.GenerativeModel('gemini-2.0-flash')
         
         # Generate response with specific configuration
         response = model.generate_content(
             prompt,
-            generation_config=generation_config,
-            safety_settings=safety_settings
+            generation_config=generation_config
         )
 
         # Get the text and clean it
