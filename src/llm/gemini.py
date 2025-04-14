@@ -32,21 +32,19 @@ def get_conversation_history(max_messages=5):
 
 def clean_response(text):
     """Clean and normalize the response text"""
-    # First, remove any single-character spacing
-    text = re.sub(r'\b(\w)\s+', r'\1', text)  # Remove spaces between single characters
-    text = re.sub(r'\s+(\w)\b', r'\1', text)  # Remove spaces before single characters
+    # First, fix specific salary-related patterns
+    text = re.sub(r'(\$?\d{3}),(\d{3})(while|in|is)', r'\1,\2 \3', text)  # Add space after numbers before words
+    text = re.sub(r'(\d)(while|in|is)', r'\1 \2', text)  # Ensure space between numbers and words
+    text = re.sub(r'(while|in|is)(\d)', r'\1 \2', text)  # Ensure space between words and numbers
     
-    # Fix common salary formatting issues
-    text = re.sub(r'(\d{3})\s*,\s*(\d{3})', r'\1,\2', text)  # Fix number formatting like "147 , 500"
-    text = re.sub(r'([0-9]),([0-9])', r'\1,\2', text)  # Ensure proper comma formatting in numbers
-    
-    # Fix specific word merging issues
+    # Fix merged words
     text = re.sub(r'while\s*internationally\s*it\s*is', 'while internationally it is', text, flags=re.IGNORECASE)
-    text = re.sub(r'sign\s*in\s*g', 'signing', text)  # Fix "sign in g" -> "signing"
-    text = re.sub(r'graduat\s*in\s*g', 'graduating', text)  # Fix "graduat in g" -> "graduating"
+    text = re.sub(r'whileinternationallyitis', 'while internationally it is', text, flags=re.IGNORECASE)
+    text = re.sub(r'whileinternationally', 'while internationally', text, flags=re.IGNORECASE)
     
-    # Ensure proper spacing around currency
+    # Fix currency formatting
     text = re.sub(r'\$\s+', '$', text)  # Remove space after $
+    text = re.sub(r'(\$\d{3}),(\d{3})', r'\1,\2', text)  # Fix currency number formatting
     
     # Clean up any double spaces and normalize spacing
     text = ' '.join(text.split())
@@ -168,23 +166,29 @@ def get_gemini_response(user_input, retrieved_questions=None, retrieved_answers=
             # Extract salary information from category_info
             if "Career Outcomes" in category_info and "salaries" in category_info["Career Outcomes"]:
                 salaries = category_info["Career Outcomes"]["salaries"]
-                # Force the exact format we want
+                # Force the exact format we want with explicit spacing
                 response_text = (
-                    f"After graduating from the MSDS program, you can expect a competitive salary. "
+                    "After graduating from the MSDS program, you can expect a competitive salary. "
                     f"Specifically, the median base salary in California is {salaries['median_base_salary_california']}, "
                     f"while internationally it is {salaries['median_base_salary_international']}. "
                     f"The average signing bonus is {salaries['average_signing_bonus']}."
                 )
+                
+                # Additional safety cleaning for the forced template
+                response_text = re.sub(r'(\$\d{3}),(\d{3})(while|in|is)', r'\1,\2 \3', response_text)
+                response_text = re.sub(r'(\d)(while|in|is)', r'\1 \2', response_text)
+                response_text = re.sub(r'(while|in|is)(\d)', r'\1 \2', response_text)
         
         # Clean the response
         cleaned_response = clean_response(response_text)
         
-        # Final verification of formatting
+        # Final verification of formatting for salary responses
         if "salary" in cleaned_response.lower():
             # Ensure proper spacing in final output
             cleaned_response = re.sub(r'(\d),(\d)', r'\1,\2', cleaned_response)
             cleaned_response = re.sub(r'(\d)(while)', r'\1 \2', cleaned_response)
             cleaned_response = re.sub(r'(is)(\d)', r'\1 \2', cleaned_response)
+            cleaned_response = re.sub(r'while\s+internationally\s+it\s+is', 'while internationally it is', cleaned_response)
         
         return cleaned_response
 
