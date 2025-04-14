@@ -3,6 +3,7 @@ import json
 import streamlit as st
 import google.generativeai as genai
 from src.utils.preprocessing import preprocess_query
+import re
 
 # Configure Gemini model
 @st.cache_resource
@@ -39,6 +40,15 @@ def clean_response(text):
     # Remove any excessive spacing
     text = ' '.join(text.split())
     
+    # Add space after numbers when followed by letters
+    text = re.sub(r'(\d+)([a-zA-Z])', r'\1 \2', text)
+    
+    # Add space before "in" when it follows a number
+    text = re.sub(r'(\d+)(in)', r'\1 \2', text)
+    
+    # Add space after "and" when it's connected to numbers
+    text = re.sub(r'(and)(\d+)', r'\1 \2', text)
+    
     # Ensure proper spacing around punctuation
     text = text.replace(' ,', ',')
     text = text.replace(' .', '.')
@@ -47,6 +57,12 @@ def clean_response(text):
     
     # Ensure proper currency formatting
     text = text.replace('$', ' $').replace('  $', ' $')
+    
+    # Add space between number and location names
+    text = re.sub(r'(\d+)([A-Z][a-z]+)', r'\1 \2', text)
+    
+    # Clean up any double spaces that might have been created
+    text = ' '.join(text.split())
     
     return text
 
