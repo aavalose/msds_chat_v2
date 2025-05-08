@@ -7,8 +7,28 @@ from src.utils.preprocessing import preprocess_query
 # Configure Gemini model
 @st.cache_resource
 def load_gemini_model():
-    model = genai.GenerativeModel('gemini-2.0-flash')
-    return model
+    print("DEBUG_LOG: Entered load_gemini_model() - configuring with st.secrets.")
+    st.write("DEBUG_UI: Entered load_gemini_model() - configuring with st.secrets.")
+    try:
+        google_api_key = st.secrets.get("GOOGLE_API_KEY")
+        if not google_api_key:
+            print("DEBUG_LOG: GOOGLE_API_KEY not found in st.secrets.")
+            st.write("DEBUG_UI: GOOGLE_API_KEY not found in st.secrets.")
+            st.error("GOOGLE_API_KEY not found in st.secrets. Please ensure it is in secrets.toml.")
+            return None # Or raise an exception
+        
+        print(f"DEBUG_LOG: Configuring genai with GOOGLE_API_KEY from st.secrets.")
+        st.write(f"DEBUG_UI: Configuring genai with GOOGLE_API_KEY from st.secrets.")
+        genai.configure(api_key=google_api_key)
+        model = genai.GenerativeModel('gemini-1.5-flash') # Corrected model name if needed, or use your previous one
+        print("DEBUG_LOG: Gemini model loaded successfully.")
+        st.write("DEBUG_UI: Gemini model loaded successfully.")
+        return model
+    except Exception as e:
+        print(f"DEBUG_LOG: Error loading Gemini model: {str(e)}")
+        st.write(f"DEBUG_UI: Error loading Gemini model: {str(e)}")
+        st.error(f"Error loading Gemini model: {str(e)}")
+        return None
 
 def get_conversation_history(max_messages=5):
     """Get the recent conversation history formatted for the prompt"""

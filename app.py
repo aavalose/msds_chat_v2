@@ -30,6 +30,8 @@ def initialize_session_state():
         st.session_state.debug_category = ""
 
 def main():
+    st.write("DEBUG_UI: Entered app.py main()")
+    print("DEBUG_LOG: Entered app.py main()")
     st.title("USF MSDS Program Chatbot")
     
     # Initialize session state
@@ -44,7 +46,12 @@ def main():
         st.stop()
 
     # Initialize MongoDB
+    st.write("DEBUG_UI: About to call init_mongodb()")
+    print("DEBUG_LOG: About to call init_mongodb()")
     conversations_collection = init_mongodb()
+    st.write(f"DEBUG_UI: init_mongodb() returned: {type(conversations_collection)}")
+    print(f"DEBUG_LOG: init_mongodb() returned: {type(conversations_collection)}")
+
     if conversations_collection is None:
         st.error("Failed to initialize MongoDB")
         st.stop()
@@ -54,7 +61,7 @@ def main():
 
     # Load labeled QA data for similarity analysis
     try:
-        labeled_qa = pd.read_csv("data/Questions_and_Answers.csv")
+        labeled_qa = pd.read_csv("/home/appuser/data/Questions_and_Answers.csv")
     except Exception as e:
         st.error(f"Failed to load labeled QA data: {str(e)}")
         labeled_qa = None

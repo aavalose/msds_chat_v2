@@ -4,73 +4,75 @@ import pandas as pd
 import streamlit as st
 from pymongo import MongoClient
 from datetime import datetime
-from dotenv import load_dotenv
+# from dotenv import load_dotenv # No longer needed
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from bson.objectid import ObjectId
 
-load_dotenv()
+# load_dotenv() # No longer needed
 
 def get_mongo_client():
-    """Get MongoDB client using connection string from Streamlit secrets or environment variables."""
-    # Try to get connection string from Streamlit secrets first
+    print("DEBUG_LOG: Entered get_mongo_client() - using st.secrets exclusively.")
+    st.write("DEBUG_UI: Entered get_mongo_client() - using st.secrets exclusively.")
     connection_string = st.secrets.get("MONGO_CONNECTION_STRING")
     
-    # If not found in Streamlit secrets, try environment variables
+    print(f"DEBUG_LOG: st.secrets.get('MONGO_CONNECTION_STRING') returned: '{connection_string}'")
+    st.write(f"DEBUG_UI: st.secrets.get('MONGO_CONNECTION_STRING') returned: '{connection_string}'")
+
     if not connection_string:
-        connection_string = os.getenv("MONGODB_URI")
-    
-    if not connection_string:
-        st.error("MongoDB connection string not found. Please set MONGO_CONNECTION_STRING in Streamlit secrets or MONGODB_URI in .env file.")
+        print("DEBUG_LOG: MONGO_CONNECTION_STRING not found in st.secrets.")
+        st.write("DEBUG_UI: MONGO_CONNECTION_STRING not found in st.secrets.")
+        st.error("MongoDB connection string not found in st.secrets. Please ensure MONGO_CONNECTION_STRING is in secrets.toml.")
         return None
-        
+    
+    print(f"DEBUG_LOG: Attempting to connect with connection_string from st.secrets: '{connection_string}'")
+    st.write(f"DEBUG_UI: Attempting to connect with connection_string from st.secrets: '{connection_string}'")
     try:
         client = MongoClient(
             connection_string,
             tls=True,
-            tlsAllowInvalidCertificates=True,  # Allow invalid certificates for development
-            serverSelectionTimeoutMS=30000,    # Increased from 5000 to 30000
-            connectTimeoutMS=30000,            # Increased from 10000 to 30000
-            socketTimeoutMS=45000,             # Added socket timeout
+            tlsAllowInvalidCertificates=True,
+            serverSelectionTimeoutMS=30000,
+            connectTimeoutMS=30000,
+            socketTimeoutMS=45000,
             retryWrites=True,
             maxPoolSize=50,
-            waitQueueTimeoutMS=30000,          # Added wait queue timeout
-            retryReads=True                    # Added retry reads
+            waitQueueTimeoutMS=30000,
+            retryReads=True
         )
-        
-        # Test the connection with a longer timeout
         client.admin.command('ping', serverSelectionTimeoutMS=30000)
+        print("DEBUG_LOG: MongoDB client ping successful.")
+        st.write("DEBUG_UI: MongoDB client ping successful.")
         return client
-    except ServerSelectionTimeoutError as e:
-        st.error(f"Failed to connect to MongoDB: Server selection timeout. Please check your internet connection and MongoDB server status.")
-        return None
-    except ConnectionFailure as e:
-        st.error(f"Failed to connect to MongoDB: Connection failure. Please verify your connection string and network settings.")
-        return None
     except Exception as e:
+        print(f"DEBUG_LOG: Failed to connect to MongoDB: {str(e)}")
+        st.write(f"DEBUG_UI: Failed to connect to MongoDB: {str(e)}")
         st.error(f"Failed to connect to MongoDB: {str(e)}")
         return None
 
 def init_mongodb():
-    """Initialize MongoDB collections with data from files."""
+    print("DEBUG_LOG: Entered init_mongodb() - using st.secrets exclusively.")
+    st.write("DEBUG_UI: Entered init_mongodb() - using st.secrets exclusively.")
     try:
         client = get_mongo_client()
         if client is None:
-            st.error("Failed to initialize MongoDB: Could not establish connection")
+            # Error already shown by get_mongo_client or this function's st.write
             return None
-            
         db = client.MSDSchatbot
         conversations_collection = db.conversations
-        
-        # Test the collection by inserting and removing a test document
         try:
             test_result = conversations_collection.insert_one({"test": "connection"})
             conversations_collection.delete_one({"_id": test_result.inserted_id})
+            print("DEBUG_LOG: MongoDB collection access test successful.")
+            st.write("DEBUG_UI: MongoDB collection access test successful.")
         except Exception as e:
+            print(f"DEBUG_LOG: Failed to test MongoDB collection access: {str(e)}")
+            st.write(f"DEBUG_UI: Failed to test MongoDB collection access: {str(e)}")
             st.error(f"Failed to test MongoDB collection access: {str(e)}")
             return None
-        
         return conversations_collection
     except Exception as e:
+        print(f"DEBUG_LOG: Failed to initialize MongoDB in init_mongodb: {str(e)}")
+        st.write(f"DEBUG_UI: Failed to initialize MongoDB in init_mongodb: {str(e)}")
         st.error(f"Failed to initialize MongoDB: {str(e)}")
         return None
 

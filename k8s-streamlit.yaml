@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: streamlit-app-secrets
+type: Opaque
+data:
+  secrets.toml: TU9OR09fQ09OTkVDVElPTl9TVFJJTkcgPSAibW9uZ29kYitzcnY6Ly9hcnNsYWI6NzFRRnE1OXB0d2FJWHB1aEBtc2RzY2hhdGJvdC5nYnZiaS5tb25nb2RiLm5ldC9NU0RTY2hhdGJvdD9yZXRyeVdyaXRlcz10cnVlJnc9bWFqb3JpdHkiCkdPT0dMRV9BUElfS0VZID0gIkFJemFTeURzeFlFWlk3VFFmM29rVmxReFBJRURKN2UwRU9LQWNrdyI=
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit-deployment
+  labels:
+    app: streamlit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit
+  template:
+    metadata:
+      labels:
+        app: streamlit
+    spec:
+      containers:
+      - name: streamlit
+        image: gcr.io/chatwithdon/k8s-streamlit:test
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8501
+        volumeMounts:
+        - name: secrets-volume
+          mountPath: /home/appuser/.streamlit
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /_stcore/health
+            port: 8501
+            scheme: HTTP
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /_stcore/health
+            port: 8501
+            scheme: HTTP
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 745Mi
+      volumes:
+      - name: secrets-volume
+        secret:
+          secretName: streamlit-app-secrets
+          items:
+          - key: secrets.toml
+            path: secrets.toml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streamlit-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: streamlit
+  ports:
+  - name: streamlit-port
+    protocol: TCP
+    port: 80
+    targetPort: 8501 
