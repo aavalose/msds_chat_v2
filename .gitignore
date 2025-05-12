@@ -34,6 +34,7 @@ env/
 
 # Streamlit
 .streamlit/
+temp_secrets.toml
 
 # Logs
 *.log
